@@ -1,0 +1,46 @@
+
+how this proj was initialized
+
+
+PS D:\Coding\projects> npm init svelte@next gun-tests
+Need to install the following packages:
+  create-svelte@next
+Ok to proceed? (y) y
+
+create-svelte version 2.0.0-next.78
+
+Welcome to SvelteKit!
+
+This is beta software; expect bugs and missing features.
+
+If you encounter a problem, open an issue on https://github.com/sveltejs/kit/issues if none exists already.
+
+√ Which Svelte app template? » Skeleton project
+√ Use TypeScript? ... No / Yes
+√ Add ESLint for code linting? ... No / Yes
+√ Add Prettier for code formatting? ... No / Yes
+✔ Copied project files
+✔ Added TypeScript support. To use it inside Svelte components, add lang="ts" to the attributes of a script tag.
+✔ Added ESLint.
+Readme for ESLint and Svelte: https://github.com/sveltejs/eslint-plugin-svelte3
+✔ Added Prettier.
+General formatting options: https://prettier.io/docs/en/options.html
+Svelte-specific formatting options: https://github.com/sveltejs/prettier-plugin-svelte#options
+
+Want to add other parts to your code base? Visit https://github.com/svelte-add/svelte-adders, a community project of commands to add particular functionality to Svelte projects
+
+
+Next steps:
+  1: cd gun-tests
+  2: npm install (or pnpm install, etc)
+  3: git init && git add -A && git commit -m "Initial commit" (optional step)
+  4: npm run dev -- --open
+
+To close the dev server, hit Ctrl-C
+
+Stuck? Visit us at https://svelte.dev/chat
+
+
+
+additional notes:
+no global pkg was installed

@@ -1,0 +1,25 @@
+
+
+3: git init && git add -A && git commit -m "Initial commit" (optional step)
+4: npm run dev -- --open
+
+
+css: scss / postcss
+font
+git
+svelte vscode extension: configure
+
+
+
+might be useful later on
+https://github.com/svelte-add/svelte-add
+if this thing works in a file called "proj setup reminders"
+I might note that I used it when adding scss or postcss
+
+
+
+
+
+
+
+
