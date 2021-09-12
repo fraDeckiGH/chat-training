@@ -1,3 +1,20 @@
 /* Write your global styles here, in SCSS syntax */
 
 
+
+$color: green;
+
+.from-app-scss {
+  color: $color;
+  // margin: auto *;
+}
+.from-app-scss-2 {
+  /* -x- */size: 40px;
+  // margin: 40px *;
+  // background-color: yellowgreen;
+  background-color: $color;
+}
+
+
+
+
