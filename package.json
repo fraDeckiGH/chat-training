@@ -15,8 +15,8 @@
 		"prepare": "husky install"
 	},
 	"browserslist": [
-    "defaults"
-  ],
+		"defaults"
+	],
 	"dependencies": {
 		"gun": "^0.2020.1234"
 	},
