@@ -1,0 +1,14 @@
+
+in pkj.json the script
+"prepare": "husky install"
+
+from what I gather, does the same of
+npx husky-init && npm install
+
+see for example
+https://typicode.github.io/husky/#/?id=custom-directory
+
+
+
+
+
