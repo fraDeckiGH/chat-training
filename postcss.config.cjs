@@ -1,6 +1,7 @@
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
 const postcssFocus = require("postcss-focus");
+const postcssNormalize = require('postcss-normalize');
 
 
 const mode = process.env.NODE_ENV;
@@ -8,6 +9,10 @@ const dev = mode === "development";
 
 const config = {
 	plugins: [
+		// TODO plugin order matters?
+		
+		// postcssNormalize(/* pluginOptions */),
+		
 		!dev && autoprefixer(),
 		
 		!dev && cssnano({
@@ -26,6 +31,7 @@ const config = {
 		
 		// apply PostCSS transformations to .scss files
 		// https://github.com/postcss/postcss-scss
+		// TODO i didnt try to import it in plugins as well
 		
 	],
 };
