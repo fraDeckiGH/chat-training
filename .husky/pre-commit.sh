@@ -1,4 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npx browserslist@latest --update-db
