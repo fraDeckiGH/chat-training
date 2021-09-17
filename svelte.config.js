@@ -5,10 +5,18 @@ const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
 	preprocess: [
+		
 		preprocess({
 			// "postcss": true,
 			postcss: true, // untested
-    })
+    }),
+		
+		// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/preprocessing.md#scss-sass
+		// scss({
+		// 	// faster for dart sass, but am I using the dart version?
+		// 	renderSync: true,
+		// }),
+		
 	],
 
 	kit: {

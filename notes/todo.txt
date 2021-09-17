@@ -1,14 +1,24 @@
 
 
-npm run dev -- --open
+------------
+css:
+
+{font}
+family
+
+{icon}
+animated+non-animated icon set - these 2 set have look similar/the same
+
+-----------
 
 
-css: 
-  postcss: if I use it w/ sass "adapter" do I need sass in my devDep?
-svelte-preprocess set custom settings (in svelte.config.js)
-font: family, resize(rfs)
 
-postcss fix emmet
+
+
+
+
+
+
 
 
 

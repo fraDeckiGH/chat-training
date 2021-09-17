@@ -1,0 +1,30 @@
+
+
+
+{package}
+> svelte-preprocess set custom settings (in svelte.config.js)
+  compiles sass w/out 'sass' pkg o.o
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

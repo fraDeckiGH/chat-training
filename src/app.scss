@@ -1,21 +1,32 @@
 /* Write your global styles here, in SCSS syntax */
 
-// @import "sanitize/*";
-
-
-$color: green;
-
-.from-app-scss {
-  color: $color;
-  // margin: auto *;
-}
-.from-app-scss-2 {
-  /* -x- */size: 40px;
-  // margin: 40px *;
-  // background-color: yellowgreen;
-  background-color: $color;
+html {
+  background-color: #222;
+  color: #ddd;
+  font-size: max(12px, 62.5% + .6vw);
+  // line-height: ;
 }
 
+// centered column for content (name is a draft)
+.content-container {
+  margin: 0 auto;
+  
+  $px: 20px;
+  padding: 30px $px 50px;
+  
+  // TODO 1st value is draft -> decide it
+  width: max(1280px + (#{$px} * 2), 85%);
+  max-width: 100%;
+}
 
+
+h1 {
+  font-size: 170%; // def 2em
+}
+
+// $color: green;
+// .div {
+//   background-image: linear-gradient(90deg, $color 75%, transparent 75%);
+// }
 
 
