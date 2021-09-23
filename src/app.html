@@ -15,17 +15,12 @@
 		<link href="https://unpkg.com/sanitize.css/system-ui.css" rel="stylesheet" />
 		<link href="https://unpkg.com/sanitize.css/ui-monospace.css" rel="stylesheet" />
 		
-		<script>
-			// Set this variable before the script gets loaded
-			window.cqConfig = {
-				preprocess: true
-			};
-		</script>
-		<script src="/node_modules/cq-prolyfill/cq-prolyfill.min.js" async></script>
-		
 		%svelte.head%
 	</head>
 	<body>
-		<div id="svelte">%svelte.body%</div>
+		<!-- was a <div> -->
+		<main id="svelte">
+			%svelte.body%
+		</main>
 	</body>
 </html>

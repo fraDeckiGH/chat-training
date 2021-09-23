@@ -2,47 +2,66 @@
 <script lang=ts>
   // import "../app.scss"
   // import "app.scss"
+  
+  import Gun from "gun"
+  
+  const gun = Gun(/* {
+    // file: "gen/gundb",
+    // peers: [
+    //   "https://gundb-peer.herokuapp.com/gun",
+    // ],
+  } */)
+
+  // const alice = gun.get('alice').put({fancyName: 'alice', age: 22})
+  // const bob = gun.get('bob').put({name: 'bob', age: 24})
+  // const dave = gun.get('dave').put({name: 'dave'})
+  // const carl = gun.get('carl').put({namee: 'carl', age: 3})
+  // console.log(`alice`, alice)
+
+  // const company = gun.get('startup').put({
+  //   name: "hype",
+  //   profitable: false,
+  //   address: {
+  //     street: "123 Hipster Lane",
+  //     city: "San Francisco",
+  //     state: "CA",
+  //     country: "USA"
+  //   }
+  // })
+
+  // const employees = company.get('employees')
+  // employees.set(dave)
+  // employees.set(alice)
+  // employees.set(bob)
+
+  // alice.get('spouse').put(bob)
+  // bob.get('spouse').put(alice)
+
+  // alice.get('spouse').get('employer').put(company)
+  // alice.get('employer').put(company)
+
+  // dave.get('kids').set(carl)
+  // carl.get('dad').put(dave)
+
+  // carl.get('friends').set(alice)
+  // carl.get('friends').set(bob)
+
+  gun
+    .get('alice')
+    .get('spouse')
+    .get('employer')
+    .get('employees')
+    .map()
+    .get('name')
+    .once(function(data, key) {
+      console.log("employee", key, data)
+    })
 </script>
 
-<div class="content-container">
-  <h1 class="h1">
-    Welcome to SvelteKit
-  </h1>
-  <h2 class="h2">
-    h2 H2
-  </h2>
-  <h3 class="h3">
-    h3h3h3h3h3h3h3h3hh3h3h3
-  </h3>
-  <h4>
-    ifwuhe ewofwGUOGWURRW iewjow
-  </h4>
-  <h5 class="h5">
-    This is a brutal h5 !!
-  </h5>
-  <h6>
-    890432 fjsf UIYIUYIUY 
-  </h6>
-  
-  <p class="p">
-    A rAnDoM paragraph
-  </p>
-  
-  <div class="div">
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-    Esse quo possimus repellat quas maiores vero, consequuntur
-    iusto, culpa consequatur eius voluptatibus fuga nobis
-    nostrum voluptatum totam velit nulla beatae reprehenderit.
-  </div>
-</div>
+<main class="content-container">
+  index
+</main>
 
-<!-- <style lang=scss>
-  $color: fuchsia;
-  .from-here {
-    height: 10px;
-    /* -x-size: 40px; */
-    // /* -x- */margin: 40px *;
-    /* background-color: yellowgreen; */
-    background-color: $color;
-  }
-</style> -->
+<style lang=scss>
+  
+</style>

@@ -2,7 +2,7 @@
 import Gun from "gun"
 
 const gun = Gun({
-  file: "gen/gundb"
+  file: "gen/gundb",
   // peers: [
   //   "https://gundb-peer.herokuapp.com/gun",
   // ],
@@ -12,7 +12,7 @@ const alice = gun.get('alice').put({fancyName: 'alice', age: 22})
 const bob = gun.get('bob').put({name: 'bob', age: 24})
 const dave = gun.get('dave').put({name: 'dave'})
 const carl = gun.get('carl').put({namee: 'carl', age: 3})
-
+console.log(`alice`, alice)
 
 const company = gun.get('startup').put({
   name: "hype",
@@ -50,8 +50,10 @@ gun
   .map()
   .get('name')
   .once(function(data, key) {
-  console.log("employee", key, data)
-})
+    console.log("employee", key, data)
+  })
+
+
 
 
 

@@ -16,27 +16,28 @@
 		"browserslist:update-db": "npx browserslist@latest --update-db"
 	},
 	"dependencies": {
-		"cq-prolyfill": "^0.4.0",
-		"gun": "^0.2020.1235"
+		"gun": "^0.2020.1235",
+		"sanitize.css": "^13.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/kit": "next",
-		"@typescript-eslint/eslint-plugin": "^4.31.1",
-		"@typescript-eslint/parser": "^4.31.1",
-		"autoprefixer": "^10.3.4",
+		"@typescript-eslint/eslint-plugin": "^4.31.2",
+		"@typescript-eslint/parser": "^4.31.2",
+		"autoprefixer": "^10.3.5",
 		"cssnano": "^5.0.8",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
 		"husky": "^7.0.2",
-		"postcss": "^8.3.6",
+		"postcss": "^8.3.7",
 		"postcss-focus": "^5.0.1",
 		"postcss-load-config": "^3.1.0",
 		"prettier": "2.4.1",
 		"prettier-plugin-svelte": "2.4.0",
-		"svelte": "^3.42.6",
+		"sass": "^1.42.1",
+		"svelte": "^3.43.0",
 		"svelte-check": "^2.2.6",
-		"svelte-preprocess": "^4.9.4",
+		"svelte-preprocess": "^4.9.5",
 		"tslib": "^2.3.1",
 		"typescript": "^4.4.3"
 	},

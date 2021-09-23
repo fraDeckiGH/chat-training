@@ -3,11 +3,16 @@
 ------------
 css:
 
+{effect}
+> 'ripple effect'
+> JS effects library
+
 {font}
-family
+family: search on Google Fonts
 
 {icon}
-animated+non-animated icon set - these 2 set have look similar/the same
+animated checkmark
+animated loading spinner
 
 -----------
 

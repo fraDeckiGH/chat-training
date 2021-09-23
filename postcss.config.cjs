@@ -1,7 +1,6 @@
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
 const postcssFocus = require("postcss-focus");
-const cqProlyfill = require("cq-prolyfill/postcss-plugin");
 
 
 const mode = process.env.NODE_ENV;
@@ -16,8 +15,6 @@ const config = {
 		!dev && cssnano({
 			preset: "default",
 		}),
-		
-		cqProlyfill(),
 		
 		// * aka "postcss-fail-on-warn"
 		// https://github.com/postcss/postcss#treat-warnings-as-errors
