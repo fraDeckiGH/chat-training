@@ -1,10 +1,39 @@
 // Write your global styles here, in SCSS syntax
 
+// * font
+// ? https://fontsource.org/fonts/asap
+@use "@fontsource/asap/variable.css"; // 25.6 kB
+// @use "@fontsource/asap/variable-italic.css"; // 28.9 kB
+
+// * sanitize.css
+// ? https://github.com/csstools/sanitize.css
+// BUG wasn't able to import in TS
+// issue may be related to: 
+// Vite
+// SSR
+// ? maybe importing in TS there gets done in parallel
+// update: w/ @use the above may not be needed
+@use "sanitize.css";
+@use "sanitize.css/forms.css";
+@use "sanitize.css/assets.css";
+@use "sanitize.css/typography.css";
+@use "sanitize.css/reduce-motion.css";
+@use "sanitize.css/system-ui.css";
+@use "sanitize.css/ui-monospace.css";
+
+
 html {
   background-color: #222;
   color: #ddd;
+  
+  font-family: "AsapVariable", sans-serif;
   font-size: max(12px, 62.5% + .6vw);
   // line-height: ;
+  
+}
+
+h1 {
+  font-size: 170%; // def 2em
 }
 
 // centered column for content (name is a draft)
@@ -20,9 +49,7 @@ html {
 }
 
 
-h1 {
-  font-size: 170%; // def 2em
-}
+
 
 // $color: green;
 // .div {
