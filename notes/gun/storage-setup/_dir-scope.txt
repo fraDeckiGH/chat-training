@@ -1,0 +1,21 @@
+
+
+this directory stores notes on storage/pagination setups
+while doing CRUD w/ gun
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

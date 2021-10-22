@@ -19,10 +19,30 @@ animated loading spinner
 
 
 
+gundb
 
 
+array: 
+  - gun.set, best way to do unique "set properties/fields"?
+  - if I do pagination w/ some sort of timeTree do I still need the above?
 
+count all elems in a collection: 
+what about a node which all elems in a given set can update?
 
+extend gun api w/ the following chain methods:
+  - count
+  - delete/remove
+  - replace
+
+index
+case-insensitive unique index, eg. email
+
+pagination
+  - can I paginate the same data in different ways?
+  eg. time added / time updated / <some other column>
+
+search engine capabilities
+-> explore lib/match.js
 
 
 

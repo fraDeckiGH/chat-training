@@ -8,7 +8,7 @@ const dev = mode === "development";
 
 const config = {
 	plugins: [
-		// TODO plugin order matters?
+		// plugin order matters
 		
 		!dev && autoprefixer(),
 		

@@ -44,6 +44,7 @@ h1 {
   padding: 30px $px 50px;
   
   // TODO 1st value is draft -> decide it
+  // ? what if aspect-ratio isn't 16:9
   width: max(1280px + (#{$px} * 2), 85%);
   max-width: 100%;
 }
