@@ -215,6 +215,7 @@ while I might need just... I dunno: 3?
 
 ======================================
 transactions when updating the chain
+ie. make updates to a pagination chain transactional
 
 2 updates sent to a chain almost at the same time do not allow
 the chain to do its work
@@ -238,6 +239,9 @@ which does the updates in the same order the data is received
 (not saying to use a server, just trying to describe a structure
 for the update system)
 
+NOTE: might not work if a peer goes offline. 
+The way gun sync changes between peers - which I'm not familiar w/ - 
+might break the said pagination chain(s) anyway
 
 
 

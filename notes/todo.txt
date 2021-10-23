@@ -46,7 +46,10 @@ search engine capabilities
 
 
 
+husky
 
+it's slowing down commit+push by quite a bit
+due to the pre-commit hook
 
 
 
