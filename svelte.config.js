@@ -42,7 +42,8 @@ const config = {
 			optimizeDeps: {
 				include: [
 					// * gun (https://gun.eco/docs/Vite)
-					// "gun",
+					"gun",
+					// "gun/axe",
 					// "gun/gun",
 					// "gun/lib/match",
 					// "gun/lib/not",
@@ -53,8 +54,8 @@ const config = {
 					// "gun/lib/then",
 					// "gun/lib/unset",
 					// "gun/lib/webrtc",
-					// "gun/sea",
-					// "gun/sea.js",
+					"gun/sea",
+					"gun/sea.js",
 					
 					// * sanitize.css
 					// 'sanitize.css',

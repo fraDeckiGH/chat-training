@@ -24,7 +24,8 @@
 
 html {
   background-color: #222;
-  color: #ddd;
+  --color: #ddd;
+  color: var(--color);
   
   font-family: "AsapVariable", sans-serif;
   font-size: max(12px, 62.5% + .6vw);
