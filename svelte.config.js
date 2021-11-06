@@ -15,7 +15,7 @@ const config = {
 	preprocess: [
 		
 		preprocess({
-			postcss: true, 
+			postcss: true,
     }),
 		
 		// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/preprocessing.md#scss-sass

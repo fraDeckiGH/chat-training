@@ -4,6 +4,8 @@
   import { nanoid } from 'nanoid'
   import { gun_state } from '../gun/util'
   
+  import Login from './Login.svelte'
+  
   const gun = Gun({
     // localStorage: false,
     // peers: [
@@ -73,35 +75,16 @@
     let elToAdd: any
     
     files.forEach(async (el, i) => {
-      // adding fields which allow for proper storage
-      
-      elToAdd = {
-        _id: i,
-        // _id: nanoid(),
-        
-        // FIXME trading(losing) nanosecond precision for millisecond
-        // TODO change Windows hour 
-        //   testare che Gun.state() rimanga giusto
-        _dateCreated: new Date(gun_state()).toISOString(),
-        _dateUpdated: new Date(gun_state()).toISOString(),
-        
-        // _entityName: "File", // useful?
-      }
-      // elToAdd["_id"] = i
-      // elToAdd["_id"] = nanoid()
-      
-      // key sort needed?
-      elToAdd = {
-        ...elToAdd,
-        ...el,
-      }
+      elToAdd = enrichEl(el)
       
       // add elem
       
       const elDbRef = gun
+        .user()
         .get("File")
-        .get("_id")
-        .get(elToAdd["_id"])
+        // .get("_id")
+        // .get(elToAdd._id)
+        .get(i + "")
       elDbRef.put(elToAdd)
       
       // 
@@ -151,25 +134,30 @@
     return elToAdd
   }
   
-  function interrogateGun(path: string) {
-    console.log('interrogateGun()')
+  function interrogateGun(path: string = "no-path") {
+    console.log('interrogateGun() path', path)
     
     /* const ref =  */gun
+      .user()
+      .get("kvobufgb03tVotqu1W6m4QU")
       .get("File")
-      .get(
+      /* .get(
         // @ts-ignore
         {
           '.': {
-            '>': `${path}:2019-06-20T11:40:16.301Z`,
-            '<': `${path}:2019-07-24b`, // added a "b" at the end
+            // '>': `${path}:2019-06-20T11:40:16.301Z`,
+            // '<': `${path}:2019-07-24b`, // added a "b" at the end
+            '>': `1`,
+            '<': `9`, // added a "b" at the end
             // "*": path,
             // "=": "",
           },
           // 1 item = ~200 bytes -> ~50 items
           // '%': 10000,
         }
-      )
-      .map()
+      ) */
+      .get("1")
+      // .map()
       .once(function(data, key) {
         console.log(key, data)
         
@@ -188,6 +176,7 @@
 
 
 <main class="content-container">
+  <Login></Login>
   
   <h4>
     index
@@ -198,6 +187,12 @@
     <!-- <button on:click="{queueElems}">
       queue elems
     </button> -->
+    <button on:click="{createNodes}">
+      createNodes
+    </button>
+    <button on:click="{(event) => interrogateGun('File')}">
+      interrogateGun
+    </button>
     
   </div>
   
