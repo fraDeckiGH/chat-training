@@ -1,5 +1,4 @@
 import preprocess from 'svelte-preprocess'
-// import { moduleExclude } from './plugins/moduleExclude.js';
 // const scss = preprocess
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -37,41 +36,6 @@ const config = {
 		
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
-		
-		/* vite: {
-			optimizeDeps: {
-				include: [
-					// * gun (https://gun.eco/docs/Vite)
-					"gun",
-					// "gun/axe",
-					// "gun/gun",
-					// "gun/lib/match",
-					// "gun/lib/not",
-					// "gun/lib/radix",
-					// "gun/lib/radisk",
-					// "gun/lib/rindexed",
-					// "gun/lib/store",
-					// "gun/lib/then",
-					// "gun/lib/unset",
-					// "gun/lib/webrtc",
-					"gun/sea",
-					"gun/sea.js",
-					
-					// * sanitize.css
-					// 'sanitize.css',
-					// 'sanitize.css/forms.css',
-					// 'sanitize.css/assets.css',
-					// 'sanitize.css/typography.css',
-					// 'sanitize.css/reduce-motion.css',
-					// 'sanitize.css/system-ui.css',
-					// 'sanitize.css/ui-monospace.css',
-				],
-			},
-			plugins: [
-				moduleExclude('text-encoding'),
-			],
-			
-		}, */
 	},
 	
 };
