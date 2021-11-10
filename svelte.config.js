@@ -1,5 +1,5 @@
 import preprocess from 'svelte-preprocess'
-import { moduleExclude } from './plugins/moduleExclude.js';
+// import { moduleExclude } from './plugins/moduleExclude.js';
 // const scss = preprocess
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -38,7 +38,7 @@ const config = {
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		
-		vite: {
+		/* vite: {
 			optimizeDeps: {
 				include: [
 					// * gun (https://gun.eco/docs/Vite)
@@ -71,7 +71,7 @@ const config = {
 				moduleExclude('text-encoding'),
 			],
 			
-		},
+		}, */
 	},
 	
 };

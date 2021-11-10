@@ -17,6 +17,7 @@
 	},
 	"dependencies": {
 		"@fontsource/asap": "^4.5.0",
+		"firebase": "^9.3.0",
 		"gun": "^0.2020.1235",
 		"nanoid": "^3.1.30",
 		"sanitize.css": "^13.0.0"

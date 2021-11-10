@@ -16,6 +16,9 @@
       // @ts-ignore: Property 'err' does not exist on type
       const { err } = cb
       
+      // https://gun.eco/docs/User#return-via-callback
+      console.log(`signup() cb`, cb)
+      
       if (err) {
         alert(err);
       } else {

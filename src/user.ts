@@ -24,7 +24,7 @@ db.on('auth', async (event: any) => {
     const alias = /* await  */user.get('alias'); // username string
     // HACK <any>alias
     username.set(<any>alias);
-    console.log(`signed in as ${alias}`);
+    console.log(`signed in as`, alias);
 });
 
 

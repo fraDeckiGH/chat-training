@@ -44,7 +44,7 @@ Stuck? Visit us at https://svelte.dev/chat
 
 additional notes:
 
-> no global pkg was installed, during the initalization process
+> no global pkg was installed, during the initialization process
 
 > the following scripts were present in pkj.json
 "dev": "svelte-kit dev",
