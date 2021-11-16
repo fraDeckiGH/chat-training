@@ -1,4 +1,5 @@
 import preprocess from 'svelte-preprocess'
+import adapterNode from '@sveltejs/adapter-node'
 // const scss = preprocess
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -32,6 +33,15 @@ const config = {
 	],
 	
 	kit: {
+		/* 
+		? "fixes" a bug when using firebase/auth and then running 
+		? 'dev' cmd;
+		? 'build' cmd runs fine
+		  haven't checked if this happens w/ other firebase services as well
+		*/
+		// https://github.com/sveltejs/kit/tree/master/packages/adapter-node
+		// adapter: adapterNode(),
+		
 		// ssr: false,
 		
 		// hydrate the <div id="svelte"> element in src/app.html

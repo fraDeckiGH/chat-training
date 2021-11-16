@@ -5,6 +5,9 @@
 @use "@fontsource/asap/variable.css"; // 25.6 kB
 // @use "@fontsource/asap/variable-italic.css"; // 28.9 kB
 
+// * normalize.css
+// @use "@csstools/normalize.css";
+
 // * sanitize.css
 // ? https://github.com/csstools/sanitize.css
 // BUG wasn't able to import in TS
@@ -22,27 +25,84 @@
 @use "sanitize.css/ui-monospace.css";
 
 
+// {pinned}
 html {
-  background-color: #222;
-  --color: #ddd;
-  color: var(--color);
+  // * {pinned} palette
+  --plt-base: #131516;
+  // --plt-1: ;
+  // --plt-2: ;
+  --plt-cover: #d8d4cf;
+  // * END palette
   
+  --border-radius: .3em;
+  // =========================
+  
+  // * colors
+  background-color: var(--plt-base);
+  color: var(--plt-cover);
+  
+  // * typography
   font-family: "AsapVariable", sans-serif;
-  font-size: max(12px, 62.5% + .6vw);
+  
+  // ** font-size
+  // TODO curious to see how 12px looks on smartphone
+  
+  // ? 2k = normal text too big
+  // font-size: max(12px, 62.5% + .6vw);
+  
+  // ? default texts size is the 1 a label or "weak-title" would have
+  // font-size: max(12px, 62.5% + .3vw);
+  // ? default texts size is the same I would give a paragraph
+  font-size: max(12px, 50% + .3vw);
+  // * END font-size
+  
   // line-height: ;
   
+  // * END typography
+  
+  
+}
+
+
+// * tag
+
+button {
+  border: 0;
+  border-radius: var(--border-radius);
+  
+  font-weight: 500;
+  
+  cursor: pointer;
 }
 
 h1 {
   font-size: 170%; // def 2em
 }
 
+input {
+  border: 0;
+  border-radius: var(--border-radius);
+  min-width: 0;
+  
+  &:focus {
+    outline: 0;
+  }
+  &:hover {
+    // background-color: ;
+  }
+}
+
+
+// * class
+
 // centered column for content (name is a draft)
-.content-container {
+.page {
   margin: 0 auto;
   
   $px: 20px;
   padding: 30px $px 50px;
+  
+  height: 100vh;
   
   // TODO 1st value is draft -> decide it
   // ? what if aspect-ratio isn't 16:9
