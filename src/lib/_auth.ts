@@ -1,5 +1,5 @@
 
-// ? insiration
+// ? inspiration
 // https://github.com/CaptainCodeman/sveltekit-example/blob/master/src/lib/auth.ts
 
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
@@ -8,8 +8,16 @@ import { firebaseApp } from "./firebase";
 export {
   createUser,
 }
+export type {
+  Form,
+}
 
-function createUser(form: any) {
+type Form = {
+  email: string
+  password: string
+}
+
+function createUser(form: Form) {
   console.log(`form`, form)
   
   const auth = getAuth(firebaseApp)
@@ -31,12 +39,6 @@ function createUser(form: any) {
   
   
 }
-
-
-
-
-
-
 
 
 

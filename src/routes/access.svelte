@@ -1,48 +1,20 @@
 
-<script context=module lang=ts>
-  // import { createUser } from "$lib/_auth";
-  // import { firebaseApp } from "$lib/firebase";
-  // import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-  
-  /* function createUser(form: any) {
-    console.log(`form`, form)
-    
-    const auth = getAuth(firebaseApp)
-    
-    createUserWithEmailAndPassword(auth, form.email, form.password)
-    .then((userCredential) => {
-      console.log(`userCredential`, userCredential)
-
-      // Signed in 
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      console.error(`error`, error)
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-    })
-    
-    
-  } */
-  
-</script>
-
 <script lang=ts>
+  // import type { Form } from "$lib/_auth"; 
   import { onMount } from "svelte";
-  // import { createUser } from "$lib/_auth";
   
-  const form = {
+  const form/* : Form */ = {
     email: "",
     password: "",
   }
   
   
-  let createUser: any
+  // let createUser: any
+  let auth: any
   
   onMount(async () => {
-    createUser = (await import("$lib/_auth")).createUser
+    // createUser = (await import("$lib/_auth")).createUser
+    auth = await import("$lib/_auth")
     
   })
   
@@ -57,7 +29,8 @@
     </h4>
     
     <div class="form">
-    
+      
+      <!-- {#if $auth} -->
       <input bind:value={form.email}
         placeholder="Email"
       >
@@ -66,8 +39,8 @@
         type="password"
       >
       
-      {#if createUser}
-      <button on:click={() => createUser(form)}
+      {#if auth}
+      <button on:click={() => auth.createUser(form)}
         class="btn-submit"
       >
         Enter

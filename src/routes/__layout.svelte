@@ -1,5 +1,5 @@
 
-<script context=module lang=ts>
+<script lang=ts>
   // import '@csstools/normalize.css'
   
   // import 'sanitize.css'
