@@ -1,71 +1,51 @@
 
 <script lang=ts>
-  // import type { Form } from "$lib/_auth"; 
+  import type { Auth } from "$lib/auth"; 
   import { onMount } from "svelte";
   
-  const form/* : Form */ = {
-    email: "",
-    password: "",
-  }
-  
-  
-  // let createUser: any
-  let auth: any
+  let auth: Auth
   
   onMount(async () => {
-    // createUser = (await import("$lib/_auth")).createUser
-    auth = await import("$lib/_auth")
-    
+    auth = (await import("$lib/auth")).createAuth()
   })
   
 </script>
 
 
 <main class="page">
-  <!-- <div class="page"> -->
     
-    <h4>
-      login
-    </h4>
+  <h4>
+    login
+  </h4>
+  
+  <div class="form">
     
-    <div class="form">
-      
-      <!-- {#if $auth} -->
-      <input bind:value={form.email}
+    {#if auth}
+      <input 
+        bind:value={auth.form.email}
         placeholder="Email"
       >
-      <input bind:value={form.password}
+      <input 
+        bind:value={auth.form.password}
         placeholder="Password"
         type="password"
       >
       
-      {#if auth}
-      <button on:click={() => auth.createUser(form)}
+      <button on:click={() => auth.createUserWithEmailAndPassword()}
         class="btn-submit"
       >
         Enter
       </button>
-      <!-- <button on:click={createUser}
-        class="btn-submit"
-      >
-        Enter
-      </button> -->
-      {/if}
-      
-    </div>
+    {/if}
     
-  <!-- </div> -->
+  </div>
+    
 </main>
 
 
 <style lang=scss>
   
   main {
-    // height: 100vh;
-  // }
-  // .page {
-  //   height: 100%;
-    
     display: grid;
     align-content: flex-start;
   }

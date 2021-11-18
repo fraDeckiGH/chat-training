@@ -18,9 +18,8 @@ animated loading spinner
 
 
 
-might have to reinitialize husky
-https://typicode.github.io/husky/#/?id=automatic-recommended
-
+onAuthStateChanged
+can it catch the error when signin-in or signin-up
 
 
 
