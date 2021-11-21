@@ -25,17 +25,46 @@
 @use "sanitize.css/ui-monospace.css";
 
 
-// {pinned}
-html {
-  // * {pinned} palette
+@mixin theme-dark {
   --plt-base: #131516;
   // --plt-1: ;
   // --plt-2: ;
   --plt-cover: #d8d4cf;
-  // * END palette
+}
+@mixin theme-light {
+  --plt-base: #fff;
+  // --plt-1: ;
+  // --plt-2: ;
+  --plt-cover: #222;
+}
+// #10EF8E verde
+// #EF1071 fuxia
+
+
+// {pinned}
+html {
+  // * {pinned} palette / theme
+  /*
+    The page supports both dark and light color schemes,
+    and the page author prefers dark.
+    https://web.dev/color-scheme/
+    ? no firefox support
+  */
+  color-scheme: dark light;
+  
+  // @include theme-dark;
+  @media (prefers-color-scheme: dark), 
+  // ? very poor browser support
+  (prefers-color-scheme: no-preference) {
+    @include theme-dark;
+  }
+  // ? should be default when user doesn't set a theme, see mdn
+  @media (prefers-color-scheme: light) {
+    @include theme-light;
+  }
+  // =========================
   
   --border-radius: .3em;
-  // =========================
   
   // * colors
   background-color: var(--plt-base);
@@ -110,12 +139,12 @@ input {
   max-width: 100%;
 }
 
+.theme-dark {
+  @include theme-dark;
+}
+.theme-light {
+  @include theme-light;
+}
 
-
-
-// $color: green;
-// .div {
-//   background-image: linear-gradient(90deg, $color 75%, transparent 75%);
-// }
 
 

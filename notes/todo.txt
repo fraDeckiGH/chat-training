@@ -19,8 +19,7 @@ animated loading spinner
 
 
 onAuthStateChanged
-can it catch the error when signin-in or signin-up
-
+is there a way to unsubscribe it?
 
 
 
