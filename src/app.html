@@ -3,17 +3,13 @@
 	lang="en"
 >
 	<head>
+		<!-- ? does order matter? -->
 		<meta charset="utf-8" />
 		<link rel="icon" href="/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		
-		<!--
-			The page supports both dark and light color schemes,
-			and the page author prefers dark.
-    	https://web.dev/color-scheme/
-			? no firefox support
-		-->
-		<meta name="color-scheme" content="dark light">
+		<!-- no firefox -->
+		<meta name="color-scheme" content="dark">
 		
 		<title>
 			chat-training
@@ -22,11 +18,18 @@
 		%svelte.head%
 	</head>
 	
-	<body>
+	<body id="svelte">
 		
-		<div id="svelte">
+		<!-- <div id="svelte"
+			style="
+				display: contents;
+			"
+		>
 			%svelte.body%
-		</div>
+		</div> -->
+		
+		<!-- ? whats the purpose of this? -->
+		%svelte.body%
 		
 	</body>
 </html>

@@ -9,7 +9,7 @@ export type {
   Theme,
 }
 
-type Preference = "dark" | "light" | "system"
+type TTheme = "dark" | "light"
 
 function create() {
   const instance = new Theme()
@@ -18,62 +18,86 @@ function create() {
 
 class Theme {
   
-  currentPreference: Preference
+  private _currentTheme!: TTheme
   
-  constructor() {
-    this.currentPreference = 
-      <Preference>localStorage.getItem("theme") ?? "system"
+  // dom elements
+  colorScheme_metaEl = document.head.querySelector('meta[name="color-scheme"]')
+  htmlEl = document.documentElement
+  
+  // ============
+  // * accessor
+  
+  public get currentTheme(): TTheme {
+    return this._currentTheme
+  }
+  public set currentTheme(value: TTheme) {
+    switch (value) {
+      case "dark":
+        this.htmlEl.classList.add("theme-dark")
+        this.htmlEl.classList.remove("theme-light")
+        this.colorScheme_metaEl?.setAttribute("content", "dark")
+        break
+        case "light":
+        this.htmlEl.classList.add("theme-light")
+        this.htmlEl.classList.remove("theme-dark")
+        this.colorScheme_metaEl?.setAttribute("content", "light")
+        break
+      default:
+        console.log(`default case`, value)
+        return
+    }
+    this._currentTheme = value
+    localStorage.setItem("theme", value)
   }
   
-  switchTheme() {
-    // get current theme
-    // if (
-    //   window.matchMedia(`
-    //     (prefers-color-scheme: dark), 
-    //     (prefers-color-scheme: no-preference)
-    //   `).matches
-    // ) {
-    //   // dark theme
-    //   console.log(`dark`, )
-    //   document.documentElement.classList
-    //     .replace("theme-light", "theme-dark")
-    // } else {
-    //   // light theme
-    //   console.log(`light`, )
-    //   document.documentElement.classList
-    //     .replace("theme-dark", "theme-light")
-    // }
+  // * constructor
+  
+  constructor() {
+    this.currentTheme = this.initCurrentTheme()
+  }
+  
+  // * method
+  
+  initCurrentTheme() {
+    const fromStorage = localStorage.getItem("theme")
     
-    
-    switch (this.currentPreference) {
-      case "dark":
-        nextTheme = "light"
-        
-        document.documentElement.classList
-          .replace("theme-light", "theme-dark")
-        localStorage.setItem("theme", "dark")
-        break
-      case "light":
-        nextTheme = "system"
-        
-        document.documentElement.classList
-          .replace("theme-dark", "theme-light")
-        localStorage.setItem("theme", "light")
-        break
-      case "system":
-        nextTheme = "dark"
-        
-        // current is now system
-        document.documentElement.classList.remove(
-          "theme-dark", "theme-light",
-        )
-        localStorage.removeItem("theme")
-        break
-    
-      default:
-        console.log(`switch default`, )
+    if (fromStorage) {
+      return <TTheme>fromStorage
     }
     
+    // at OS level user prefers...
+    if (
+      window.matchMedia(`
+        (prefers-color-scheme: dark), 
+        (prefers-color-scheme: no-preference)
+      `).matches
+    ) {
+      // dark theme
+      // console.log(`prefers dark`, )
+      return "dark"
+    } else {
+      // light theme
+      // console.log(`prefers light`, )
+      return "light"
+    }
+  }
+  
+  switchCurrentTheme() {
+    if (!this.currentTheme) {
+      console.log(`return: !this.currentTheme`, )
+      return
+    }
+    
+    switch (this.currentTheme) {
+      case "dark":
+        this.currentTheme = "light"
+        break
+      case "light":
+        this.currentTheme = "dark"
+        break
+      default:
+        console.log(`default case`, this.currentTheme)
+    }
   }
   
   

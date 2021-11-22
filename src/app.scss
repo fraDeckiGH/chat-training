@@ -10,12 +10,6 @@
 
 // * sanitize.css
 // ? https://github.com/csstools/sanitize.css
-// BUG wasn't able to import in TS
-// issue may be related to: 
-// Vite
-// SSR
-// ? maybe importing in TS there gets done in parallel
-// update: w/ @use the above may not be needed
 @use "sanitize.css";
 @use "sanitize.css/forms.css";
 @use "sanitize.css/assets.css";
@@ -26,12 +20,16 @@
 
 
 @mixin theme-dark {
+  color-scheme: dark; // no firefox
+  
   --plt-base: #131516;
   // --plt-1: ;
   // --plt-2: ;
   --plt-cover: #d8d4cf;
 }
 @mixin theme-light {
+  color-scheme: light;
+  
   --plt-base: #fff;
   // --plt-1: ;
   // --plt-2: ;
@@ -41,28 +39,20 @@
 // #EF1071 fuxia
 
 
-// {pinned}
+// * {pinned}
+
 html {
-  // * {pinned} palette / theme
-  /*
-    The page supports both dark and light color schemes,
-    and the page author prefers dark.
-    https://web.dev/color-scheme/
-    ? no firefox support
-  */
-  color-scheme: dark light;
-  
-  // @include theme-dark;
-  @media (prefers-color-scheme: dark), 
-  // ? very poor browser support
-  (prefers-color-scheme: no-preference) {
-    @include theme-dark;
+  &:not(.theme-dark, .theme-light) {
+    @media (prefers-color-scheme: dark) 
+    , (prefers-color-scheme: no-preference) // Safari only
+    { 
+      @include theme-dark;
+    }
+    // should be default when user doesn't set a theme, see mdn
+    @media (prefers-color-scheme: light) {
+      @include theme-light;
+    }
   }
-  // ? should be default when user doesn't set a theme, see mdn
-  @media (prefers-color-scheme: light) {
-    @include theme-light;
-  }
-  // =========================
   
   --border-radius: .3em;
   
@@ -92,6 +82,20 @@ html {
   
 }
 
+// structure
+html {
+  height: 100%;
+  body {
+    height: inherit;
+    
+    display: flex;
+    flex-direction: column;
+    .page {
+      flex: 1;
+    }
+  }
+}
+
 
 // * tag
 
@@ -114,7 +118,7 @@ input {
   min-width: 0;
   
   &:focus {
-    outline: 0;
+    // outline: 0;
   }
   &:hover {
     // background-color: ;
@@ -130,8 +134,6 @@ input {
   
   $px: 20px;
   padding: 30px $px 50px;
-  
-  height: 100vh;
   
   // TODO 1st value is draft -> decide it
   // ? what if aspect-ratio isn't 16:9
