@@ -19,7 +19,11 @@ animated loading spinner
 
 
 onAuthStateChanged
-is there a way to unsubscribe it?
+unsubscribe not working?
+
+
+
+
 
 
 

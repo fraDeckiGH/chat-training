@@ -1,6 +1,6 @@
 
 <script lang=ts>
-  import type { Theme } from "$lib/theme"
+  import type { Theme } from "$lib/theme/theme"
   import "../app.scss"
   import { onMount } from "svelte"
   
@@ -17,7 +17,7 @@
     // import("sanitize.css/system-ui.css")
     // import("sanitize.css/ui-monospace.css")
     
-    theme = (await import("$lib/theme")).create()
+    theme = (await import("$lib/theme/theme")).create()
   })
 </script>
 

@@ -18,47 +18,13 @@
 @use "sanitize.css/system-ui.css";
 @use "sanitize.css/ui-monospace.css";
 
-
-@mixin theme-dark {
-  color-scheme: dark; // no firefox
-  
-  --plt-base: #131516;
-  // --plt-1: ;
-  // --plt-2: ;
-  --plt-cover: #d8d4cf;
-}
-@mixin theme-light {
-  color-scheme: light;
-  
-  --plt-base: #fff;
-  // --plt-1: ;
-  // --plt-2: ;
-  --plt-cover: #222;
-}
-// #10EF8E verde
-// #EF1071 fuxia
+@use "lib/theme/theme";
 
 
 // * {pinned}
 
 html {
-  &:not(.theme-dark, .theme-light) {
-    @media (prefers-color-scheme: dark) 
-    , (prefers-color-scheme: no-preference) // Safari only
-    { 
-      @include theme-dark;
-    }
-    // should be default when user doesn't set a theme, see mdn
-    @media (prefers-color-scheme: light) {
-      @include theme-light;
-    }
-  }
-  
   --border-radius: .3em;
-  
-  // * colors
-  background-color: var(--plt-base);
-  color: var(--plt-cover);
   
   // * typography
   font-family: "AsapVariable", sans-serif;
@@ -103,9 +69,17 @@ button {
   border: 0;
   border-radius: var(--border-radius);
   
+  background-color: var(--plt-1);
+  color: var(--plt-1);
+  
   font-weight: 500;
   
-  cursor: pointer;
+  &:disabled {
+    opacity: 0.7;
+  }
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 }
 
 h1 {
@@ -141,12 +115,7 @@ input {
   max-width: 100%;
 }
 
-.theme-dark {
-  @include theme-dark;
-}
-.theme-light {
-  @include theme-light;
-}
+
 
 
 
