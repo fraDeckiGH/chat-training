@@ -145,7 +145,7 @@
     display: grid;
     gap: 1em;
     
-    font-size: 110%;
+    // font-size: 110%;
     
     input {
       // border: initial;
