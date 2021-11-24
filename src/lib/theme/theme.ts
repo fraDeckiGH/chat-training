@@ -98,6 +98,7 @@ class Theme {
       default:
         console.log(`default case`, this.currentTheme)
     }
+    
   }
   
   

@@ -1,4 +1,7 @@
 
+// * themes
+// turn off night light when testing the palette
+
 
 @mixin theme-dark {
   color-scheme: dark; // no firefox
@@ -14,7 +17,7 @@
   // cold yellow (tetradic) hsl(63.8,87.5%,50%) #e1ef10
   
   // --plt-cover: #d8d4cf;
-  --plt-cover: hsl(154deg 20% 82%);
+  --plt-cover: hsl(154deg, 20%, 82%);
   
 }
 @mixin theme-light {
@@ -26,7 +29,7 @@
   --plt-base: hsl(215deg 100% 98%);
   
   // TODO test these 2
-  --plt-1: hsl(154, 87%, 50%);
+  --plt-1: hsl(154, 87%, 40%);
   --plt-accent: hsl(53, 88%, 50%);
   
   // --plt-cover: #222;

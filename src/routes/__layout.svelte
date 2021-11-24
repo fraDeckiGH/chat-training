@@ -19,17 +19,19 @@
     
     theme = (await import("$lib/theme/theme")).create()
   })
+  
 </script>
 
 
 <div class="actions">
   {#if theme}
-    <button on:click={() => {
-      theme?.switchCurrentTheme()
-    }}
+    <button 
       class=""
+      on:click={() => {
+        theme?.switchCurrentTheme()
+        theme = theme
+      }}
     >
-      <!-- BUG doesn't update -->
       currentTheme: {theme.currentTheme}
     </button>
   {/if}
