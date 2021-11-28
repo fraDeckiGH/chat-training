@@ -12,7 +12,9 @@ family: search (a better 1) on Google Fonts
 
 {icon}
 animated checkmark
-animated loading spinner
+
+animated loading spinner/indicator
+loading can be done in other ways as well
 
 -----------
 
