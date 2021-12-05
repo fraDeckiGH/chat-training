@@ -73,7 +73,8 @@ class Auth {
       // Signed in 
       const user = userCredential.user
       
-      /* await  */this.sendEmailVerification()
+      // ? await is needed for the catch to do its job
+      // await this.sendEmailVerification()
       
     } catch (error: any) {
       console.error(`error`, error)

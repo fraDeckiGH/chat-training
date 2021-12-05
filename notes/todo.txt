@@ -23,7 +23,7 @@ loading can be done in other ways as well
 onAuthStateChanged
 unsubscribe not working?
 
-
+underway: sending email verification
 
 
 

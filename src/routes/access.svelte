@@ -13,6 +13,8 @@
   onMount(async () => {
     auth = (await import("$lib/auth")).create()
     // console.log(`auth`, auth)
+    
+    // localStorage.item might change while user is using the app
     userHasAccount = window.localStorage.getItem("userHasAccount")
     initForm()
     
@@ -48,7 +50,6 @@
     
     submittingForm = true
     // loading
-    // when btn is disabled css is needed
     // evalutate error cases
     
     try {
@@ -125,6 +126,8 @@
         
     </form>
   {/if}
+  
+  
     
 </main>
 
