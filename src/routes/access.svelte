@@ -4,6 +4,10 @@
   import type { Maybe } from "$lib/type";
   import { onMount } from "svelte";
   
+  import tippy from 'tippy.js';
+  // TODO try w/out styles
+  import 'tippy.js/dist/tippy.css'; // optional for styling
+  
   // let access: (() => void) | undefined
   let auth: Auth | undefined
   let psw_autocomplete = "new-password"
@@ -18,7 +22,18 @@
     userHasAccount = window.localStorage.getItem("userHasAccount")
     initForm()
     
+    
+    tippy('#myButton', {
+      content: 'My tooltip!',
+    })
+    
   })
+  
+  function seeTooltip() {
+    console.log('seeTooltip() ', );
+    
+    
+  }
   
   // * form
   
@@ -67,6 +82,7 @@
     console.log(`btn not disabled anymore`, )
   }
   
+  
 </script>
 
 
@@ -87,6 +103,13 @@
       class=""
     >
       see password
+    </button>
+    
+    <button 
+      id="myButton"
+      on:click="{seeTooltip}"
+    >
+      My button
     </button>
   </div>
   
