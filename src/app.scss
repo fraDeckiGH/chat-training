@@ -1,4 +1,6 @@
-// Write your global styles here, in SCSS syntax
+
+// * global styles
+
 
 // * font
 // ? https://fontsource.org/fonts/asap
@@ -18,6 +20,7 @@
 @use "sanitize.css/system-ui.css";
 @use "sanitize.css/ui-monospace.css";
 
+// * theme
 @use "lib/theme/theme";
 
 

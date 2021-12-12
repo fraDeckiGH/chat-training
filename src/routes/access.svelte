@@ -4,9 +4,9 @@
   import type { Maybe } from "$lib/type";
   import { onMount } from "svelte";
   
-  import tippy from 'tippy.js';
+  // import tippy from 'tippy.js';
   // TODO try w/out styles
-  import 'tippy.js/dist/tippy.css'; // optional for styling
+  // import 'tippy.js/dist/tippy.css'; // optional for styling
   
   // let access: (() => void) | undefined
   let auth: Auth | undefined
@@ -23,15 +23,9 @@
     initForm()
     
     
-    tippy('#myButton', {
-      content: 'My tooltip!',
-    })
-    
   })
   
-  function seeTooltip() {
-    console.log('seeTooltip() ', );
-    
+  function seeModal() {
     
   }
   
@@ -87,6 +81,12 @@
 
 
 <main class="page">
+  
+  <div 
+    class="modal"
+  >
+    this is a modal
+  </div>
     
   <h4>
     access
@@ -107,9 +107,9 @@
     
     <button 
       id="myButton"
-      on:click="{seeTooltip}"
+      on:click="{seeModal}"
     >
-      My button
+      see modal
     </button>
   </div>
   
@@ -156,6 +156,53 @@
 
 
 <style lang=scss>
+  
+  @use "sass:map";
+  
+  @use "../lib/color";
+  @use "../lib/palette" as plt;
+  
+  
+  .modal {
+    position: fixed;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    // dark theme
+    background-color: color.scale(
+      map.get(plt.$dark, "base"), 
+      $lightness: 3%,
+    );
+    
+    // lightness 1 to 3
+    // box-shadow: 0em .2em .5em .1em hsla(0 0 0 / .1);
+    // lightness 3 to 5
+    box-shadow: 0em .4em 1em .2em hsla(0 0 0 / .1);
+    
+    
+    
+    // light theme
+    // background-color: var(--plt-base);
+    
+    // ? add slightly more blur?
+    // box-shadow: 0px 2px 7px 1px hsla(var(--plt-cover-hsl), .1);
+    
+    // box-shadow: 0px .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
+    
+    // BUG could not make this work
+    /* box-shadow: 0 0 5px 5px hsla(
+      #{color.get-hsl(
+        map.get(plt.$light, "cover")
+      )} 
+      / .1
+    ); */
+    
+    
+    height: 45%;
+    width: 45%;
+  }
   
   main {
     display: grid;

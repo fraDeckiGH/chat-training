@@ -1,0 +1,31 @@
+
+// * palette source
+/* 
+moved palette here from _theme cuz there was a warning 
+like "unused CSS selector" when importing the module
+just to use the palette
+*/
+
+
+$dark: (
+  "base": hsl(215deg 30% 9%),
+  "1": hsl(154, 87%, 50%),
+  "accent": hsl(53, 88%, 50%),
+  "cover": hsl(154deg, 20%, 82%),
+);
+$light: (
+  "base": hsl(215deg 100% 98%),
+  "1": hsl(154, 87%, 40%),
+  "accent": hsl(53, 88%, 50%),
+  "cover": hsl(215deg 50% 20%),
+);
+
+
+
+
+
+
+
+
+
+

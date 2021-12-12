@@ -1,0 +1,30 @@
+
+// * color utils extended
+
+@use "sass:color";
+@forward "sass:color";
+
+
+// ? https://codepen.io/jakealbaugh/post/css4-variables-and-sass#working-together-3
+// ? toward the end of the section
+// @function color($color-name) {
+//   @return var(--plt-#{$color-name});
+// }
+
+
+@function get-hsl($color) {
+  @return #{ 
+    color.hue($color),
+    color.saturation($color),
+    color.lightness($color)
+  };
+}
+
+
+
+
+
+
+
+
+
