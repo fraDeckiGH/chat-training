@@ -1,20 +1,10 @@
 
 
 ------------
-css:
-
-{effect}
-> 'ripple effect'
-> JS effects library
+ui/ux
 
 {font}
 family: search (a better 1) on Google Fonts
-
-{icon}
-animated checkmark
-
-animated loading spinner/indicator
-loading can be done in other ways as well
 
 -----------
 
@@ -32,8 +22,14 @@ underway
 - trying to add loadings & modals w/ tippy
   I might not need tippy to do these
   search for:
-  svelte modal
   svelte snackbar/toast
+
+- i need an already made toastHandler solution
+
+
+
+
+
 
 
 

@@ -12,6 +12,11 @@ export type {
 type TTheme = "dark" | "light"
 
 function create() {
+  if (!document) {
+    console.log(`return: !document`, document)
+    return
+  }
+  
   const instance = new Theme()
   return instance
 }
@@ -23,6 +28,7 @@ class Theme {
   // dom elements
   colorScheme_metaEl = document.head.querySelector('meta[name="color-scheme"]')
   htmlEl = document.documentElement
+  // htmlEl = document.body
   
   // ============
   // * accessor

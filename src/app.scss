@@ -2,6 +2,11 @@
 // * global styles
 
 
+// * {pinned} misc
+@use "lib/page";
+@use "lib/reset";
+@use "lib/theme/theme";
+
 // * font
 // ? https://fontsource.org/fonts/asap
 @use "@fontsource/asap/variable.css"; // 25.6 kB
@@ -19,9 +24,6 @@
 @use "sanitize.css/reduce-motion.css";
 @use "sanitize.css/system-ui.css";
 @use "sanitize.css/ui-monospace.css";
-
-// * theme
-@use "lib/theme/theme";
 
 
 // * {pinned}
@@ -53,15 +55,17 @@ html {
 
 // structure
 html {
-  height: 100%;
+  // height: 100%;
   body {
-    height: inherit;
+    // height: inherit;
     
-    display: flex;
-    flex-direction: column;
+    // display: flex;
+    // flex-direction: column;
+    
     .page {
       flex: 1;
     }
+    
   }
 }
 
@@ -107,17 +111,8 @@ input {
 
 // centered column for content (name is a draft)
 .page {
-  margin: 0 auto;
-  
-  $px: 20px;
-  padding: 30px $px 50px;
-  
-  // TODO 1st value is draft -> decide it
-  // ? what if aspect-ratio isn't 16:9
-  width: max(1280px + (#{$px} * 2), 85%);
-  max-width: 100%;
+  @include page.ux-size(page.$pb);
 }
-
 
 
 

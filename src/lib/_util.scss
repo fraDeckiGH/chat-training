@@ -1,0 +1,23 @@
+
+
+
+@mixin trueHeight($display: flex) {
+  @if $display == (flex or block) {
+    display: $display;
+  } @else {
+    @error "\
+    $display must be: flex or block \
+    passed value: #{$display}\
+    ";
+  }
+  
+  // these also work but seem out of place
+  // vertical-align: bottom;
+  // vertical-align: middle;
+  // vertical-align: top;
+}
+
+
+
+
+

@@ -3,13 +3,11 @@
 // turn off night light when testing the palette
 // https://codepen.io/jakealbaugh/post/css4-variables-and-sass
 
-@use "sass:list";
-@use "sass:string";
-
 @use "../color";
 @use "../palette" as plt;
 
 
+//
 @mixin gen-palette($palette) {
   @each $key, $value in $palette {
     // * hex
@@ -23,66 +21,88 @@
     --plt-#{$key}-hsl: #{ 
       color.get-hsl($value)
     };
+    
+    /* result example
+    --plt-colorName
+    --plt-colorName-hsl
+    */
   }
 }
 
 
 @mixin theme-dark {
-  color-scheme: dark; // no firefox
-  // ? reminder: also test palette w/ night light off
-  
-  // --plt-base: hsl(215deg 30% 9%);
-  
-  // --plt-1: hsl(154, 87%, 50%); // #10ef8e
-  // // https://www.colorhexa.com/72ef10 (vivid green)
-  
-  // --plt-accent: hsl(53, 88%, 50%); // #efd610
-  // // cold yellow (analogous) hsl(63.5,87.5%,50%) #e2ef10
-  // // cold yellow (tetradic) hsl(63.8,87.5%,50%) #e1ef10
-  
-  // // --plt-cover: #d8d4cf;
-  // --plt-cover: hsl(154deg, 20%, 82%);
-  
-  @include gen-palette(plt.$dark)
-  
-}
-@mixin theme-light {
-  color-scheme: light;
-  // ! turn of night light when testing light mode's palette
-  
-  // // --plt-base: #fff;
-  // // --plt-base: hsl(154deg 100% 98%);
-  // --plt-base: hsl(215deg 100% 98%);
-  
-  // // TODO test these 2
-  // --plt-1: hsl(154, 87%, 40%);
-  // // stolen from amazon (alternatives)
-  // // hsl(166deg 91% 26%)
-  // // hsl(120deg 100% 23%)
-  
-  // --plt-accent: hsl(53, 88%, 50%);
-  
-  // // --plt-cover: #222;
-  // // --plt-cover: hsl(154deg 50% 20%);
-  // --plt-cover: hsl(215deg 50% 20%);
-  
-  @include gen-palette(plt.$light)
-  
-}
-
-
-html {
   
   &:not(.theme-dark, .theme-light) {
     @media (prefers-color-scheme: dark) 
     , (prefers-color-scheme: no-preference) // Safari only
     { 
-      @include theme-dark;
+      @content;
     }
+  }
+  
+  &.theme-dark {
+    @content;
+  }
+  
+}
+@mixin theme-light {
+  
+  &:not(.theme-dark, .theme-light) {
     // should be default when user doesn't set a theme, see mdn
     @media (prefers-color-scheme: light) {
-      @include theme-light;
+      @content;
     }
+  }
+  
+  &.theme-light {
+    @content;
+  }
+  
+}
+
+
+html {
+  @include theme-dark {
+    color-scheme: dark; // no firefox
+    // ? reminder: also test palette w/ night light off
+    
+    // --plt-base: hsl(215deg 30% 9%);
+    
+    // --plt-1: hsl(154, 87%, 50%); // #10ef8e
+    // // https://www.colorhexa.com/72ef10 (vivid green)
+    
+    // --plt-accent: hsl(53, 88%, 50%); // #efd610
+    // // cold yellow (analogous) hsl(63.5,87.5%,50%) #e2ef10
+    // // cold yellow (tetradic) hsl(63.8,87.5%,50%) #e1ef10
+    
+    // // --plt-cover: #d8d4cf;
+    // --plt-cover: hsl(154deg, 20%, 82%);
+    
+    @include gen-palette(plt.$dark)
+    
+  }
+  @include theme-light {
+    color-scheme: light;
+    // ! turn of night light when testing light mode's palette
+    
+    // // --plt-base: #fff;
+    // // --plt-base: hsl(154deg 100% 98%);
+    // --plt-base: hsl(215deg 100% 98%);
+    
+    // // TODO test these 2
+    // --plt-1: hsl(154, 87%, 40%);
+    // // stolen from amazon (alternatives)
+    // // hsl(166deg 91% 26%)
+    // // hsl(120deg 100% 23%)
+    
+    // --plt-accent: hsl(53, 88%, 50%);
+    
+    // // --plt-cover: #222;
+    // // --plt-cover: hsl(154deg 50% 20%);
+    // --plt-cover: hsl(215deg 50% 20%);
+    
+    @include gen-palette(plt.$light)
+    
   }
   
   
@@ -90,13 +110,6 @@ html {
   background-color: var(--plt-base);
   color: var(--plt-cover);
   
-  
-  &.theme-dark {
-    @include theme-dark;
-  }
-  &.theme-light {
-    @include theme-light;
-  }
   
 }
 

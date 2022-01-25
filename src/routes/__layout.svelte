@@ -1,10 +1,12 @@
 
 <script lang=ts>
-  import type { Theme } from "$lib/theme/theme"
   import "../app.scss"
+  import type { Theme } from "$lib/theme/theme"
+  import type ToastHandler  from "$lib/toast-handler/toast-handler.svelte"
   import { onMount } from "svelte"
   
   let theme: Theme | undefined
+  let toast: ToastHandler | undefined
   
   onMount(async () => {
     // import("@csstools/normalize.css")
@@ -18,31 +20,80 @@
     // import("sanitize.css/ui-monospace.css")
     
     theme = (await import("$lib/theme/theme")).create()
+    toast = (await import("$lib/toast-handler/toast-handler")).singleton
   })
   
 </script>
 
 
-<div class="actions">
-  {#if theme}
-    <button 
-      class=""
-      on:click={() => {
-        theme?.switchCurrentTheme()
-        theme = theme
-      }}
-    >
-      currentTheme: {theme.currentTheme}
-    </button>
-  {/if}
-  
-  
+<!-- scrollable/scroller container -->
+<!-- ? why do this? read css comment -->
+<div 
+  class="app-scroller"
+  id="appScroller"
+>
+  <!-- scrollable content -->
+  <div 
+    class="app-scrollable"
+    id="appScrollable"
+  >
+    
+    <div class="actions">
+      {#if theme}
+        <button
+          class=""
+          on:click={() => {
+            if (theme) {
+              theme/* ? */.switchCurrentTheme()
+              theme = theme
+            }
+          }}
+        >
+          currentTheme: {theme.currentTheme}
+        </button>
+      {/if}
+    
+      {#if toast}
+        <button
+          id="myButton"
+          on:click="{toast.add}"
+        >
+          add toast
+        </button>
+    
+        <button
+          on:click="{toast.remove}"
+        >
+          remove toast
+        </button>
+      {/if}
+    </div>
+    
+    <slot></slot>
+    
+  </div>
 </div>
-
-<slot></slot>
 
 
 <style lang=scss>
+  
+  /*
+    prevent scroll on the 'body' tag
+    useful for dialogs (if we want the scrollbar to be visible underneath)
+  */
+  .app-scroller {
+    // height: inherit;
+    height: 100vh;
+    
+    overflow-y: auto;
+    
+    .app-scrollable {
+      display: flex;
+      flex-direction: column;
+      
+      position: relative;
+    }
+  }
   
   .actions {
     position: sticky;
@@ -50,6 +101,7 @@
     
     // background-color: var(--plt-cover);
   }
+  
   
 </style>
 

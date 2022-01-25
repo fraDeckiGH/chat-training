@@ -1,0 +1,22 @@
+
+
+
+$pb: 50px;
+// $px: 20px;
+$py: 30px;
+
+
+@mixin ux-size($padding-bottom: $py) {
+  margin: 0 auto;
+  
+  $px: 20px;
+  padding: $py $px $padding-bottom;
+  
+  // TODO 1st value is draft -> decide it
+  // ? what if aspect-ratio isn't 16:9
+  // width: max(1280px + (#{$px} * 2), 85%);
+  width: max(1280px + ($px * 2), 85%);
+  max-width: 100%;
+}
+
+

@@ -16,7 +16,11 @@
     "target": "es2019",                                     /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     "lib": [
-      "es2020", 
+      // "es2020",
+      // TODO check this doesn't give problems
+      // ? used by: String.replaceAll
+      "es2021",
+      
       "DOM",
     ],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */

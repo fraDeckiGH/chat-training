@@ -1,0 +1,139 @@
+
+
+
+
+-----------
+actions on a single toast
+  top or right-side of the toast
+    only appear on hover
+
+
+close
+  the classic 'x' btn, which dismisses/removes the toast completely
+
+hide (temporarily)
+  opacity of the toast becomes 0
+  ?buttons still visible when hovering?
+    if so, maybe not all of them?
+
+?number of
+  times the same 1 showed up
+
+?pin
+
+--
+expand / shows more text
+
+expands the toast, 
+?when the notification area is not hovered anymore collapses back
+when the toast itself is not hovered anymore collapses back
+
+what if there isn't enough height, in the window-size notification area?
+(the above could happen like in some mobile+landscape scenarios)
+
+I open the notification page instead of expanding it, 
+maybe ask the user w/ an alert before going there
+
+
+another way is to use tooltips when hovering over a certain part 
+of the toast and show the full message like that
+  
+--
+undo
+
+____________________
+specific actions to a certain toast
+  bottom-left
+    always visible
+
+
+-----------
+
+
+
+
+
+-------------------
+behavior + design
+
+height
+2 lines on desktop (screens with more height)
+1 on mobile
+
+
+:hover
+when hovered the toast... 
+
+?opacity diminishes (not needed if it can be hidden/dismissed)
+its delay before disappearing is paused
+
+
+
+-------------------
+
+
+
+
+
+--------------
+_fab btn
+governs if the notification area is locked/unlocked
+
+
+when locked
+
+toasts disappear after a while
+  ?more relevant maybe not?
+ 
+those outside scrollable area disappear right away
+  or those which are not completely inside the scrollable area 
+  (unless they are expanded)
+  
+  if expanded when :hover ends they're automatically collapsed, 
+  and then they disappear
+
+
+
+when unlocked
+
+on hover shows the scrollbar and all the toasts
+visibile within the scrollable area (of the notification area ofc)
+
+
+--------------
+
+
+
+
+
+----------
+mobile
+
+?notification area takes the entire screen?
+  only when unlocked?
+
+
+
+
+
+----------
+{recap} recap notification page
+
+
+it shows/saves... 
+
+all?
+  should require a bit less work but it's a bigger memory leak
+
+only most relevant?
+
+
+
+will this be a page or a modal?
+
+if the content isn't much I'ld say a modal on desktop 
+and page on mobile.
+If this is the case, how do I do "the switch" when resizing the screen?
+
+
+
