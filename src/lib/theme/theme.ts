@@ -43,7 +43,7 @@ class Theme {
         this.htmlEl.classList.remove("theme-light")
         this.colorScheme_metaEl?.setAttribute("content", "dark")
         break
-        case "light":
+      case "light":
         this.htmlEl.classList.add("theme-light")
         this.htmlEl.classList.remove("theme-dark")
         this.colorScheme_metaEl?.setAttribute("content", "light")
