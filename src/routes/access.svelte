@@ -7,8 +7,10 @@
   import type ToastHandler from "$lib/toast-handler/toast-handler.svelte"
   
   // import tippy from 'tippy.js';
-  // TODO try w/out styles
+  // // TODO try w/out styles
   // import 'tippy.js/dist/tippy.css'; // optional for styling
+  import Menu from "$lib/menu/menu.svelte";
+  import { popover } from "$lib/popover";
   
   
   // let access: (() => void) | undefined
@@ -30,6 +32,7 @@
     userHasAccount = window.localStorage.getItem("userHasAccount")
     initForm()
     
+    // callMenu()
   })
   
   
@@ -81,6 +84,9 @@
   }
   
   
+  
+  
+  
 </script>
 
 
@@ -124,6 +130,12 @@
         remove toast
       </button>
     {/if}
+    
+    <button 
+      use:popover={{ cmp: Menu }}
+    >
+      tippyMenu
+    </button>
   </div>
   
   {#if auth}

@@ -15,9 +15,9 @@
 	},
 	"dependencies": {
 		"@csstools/normalize.css": "^12.0.0",
-		"@fontsource/asap": "^4.5.0",
+		"@fontsource/asap": "^4.5.2",
 		"@material/circular-progress": "^13.0.0",
-		"firebase": "^9.6.1",
+		"firebase": "^9.6.6",
 		"nanoid": "^3.2.0",
 		"sanitize.css": "^13.0.0",
 		"tippy.js": "^6.3.7"
@@ -25,18 +25,18 @@
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^1.0.0-next.55",
 		"@sveltejs/kit": "next",
-		"autoprefixer": "^10.4.0",
-		"cssnano": "^5.0.14",
+		"autoprefixer": "^10.4.2",
+		"cssnano": "^5.0.16",
 		"husky": "^7.0.4",
-		"postcss": "^8.4.5",
+		"postcss": "^8.4.6",
 		"postcss-focus": "^5.0.1",
-		"postcss-load-config": "^3.1.0",
-		"sass": "^1.45.1",
-		"svelte": "^3.44.3",
-		"svelte-check": "^2.2.11",
-		"svelte-preprocess": "^4.10.1",
+		"postcss-load-config": "^3.1.1",
+		"sass": "^1.49.7",
+		"svelte": "^3.46.4",
+		"svelte-check": "^2.4.2",
+		"svelte-preprocess": "^4.10.2",
 		"tslib": "^2.3.1",
-		"typescript": "^4.5.4"
+		"typescript": "^4.5.5"
 	},
 	"browserslist": [
 		"defaults"

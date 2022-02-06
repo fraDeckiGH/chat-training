@@ -91,16 +91,15 @@
     // the node has been mounted in the DOM
     // console.log(`HTMLEl`, HTMLEl)
     
-    /*
-    BUG ontransitionend when hovering the toast
-    
-    possible solution
-    use HTMLEl.PointerEvent
-    https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events
-    
-    see also
-    mouseenter, mousemove, mouseover
-    https://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_event_mouseenter_mouseover#:~:text=mouseenter%20and%20mouseover.-,The%20mouseover%20event%20triggers%20when%20the%20mouse%20pointer%20enters%20the,moved%20over%20the%20div%20element.
+    /* BUG ontransitionend when hovering the toast
+      
+      possible solution
+      use HTMLEl.PointerEvent
+      https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events
+      
+      see also
+      mouseenter, mousemove, mouseover
+      https://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_event_mouseenter_mouseover#:~:text=mouseenter%20and%20mouseover.-,The%20mouseover%20event%20triggers%20when%20the%20mouse%20pointer%20enters%20the,moved%20over%20the%20div%20element.
     */
     
     HTMLEl.onanimationstart = (/* ev */) => {
