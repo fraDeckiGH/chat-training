@@ -44,12 +44,12 @@
           class=""
           on:click={() => {
             if (theme) {
-              theme/* ? */.switchCurrentTheme()
+              theme/* ? */.switch()
               theme = theme
             }
           }}
         >
-          currentTheme: {theme.currentTheme}
+          currentTheme: {theme.switcher}
         </button>
       {/if}
     

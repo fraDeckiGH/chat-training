@@ -10,6 +10,7 @@ export type {
 }
 
 type TTheme = "dark" | "light"
+type Switcher = TTheme | "system"
 
 function create() {
   if (!document) {
@@ -23,7 +24,9 @@ function create() {
 
 class Theme {
   
-  private _currentTheme!: TTheme
+  private _current!: TTheme
+  private _switcher!: Switcher
+  switcher_nextValue!: Switcher
   
   // dom elements
   colorScheme_metaEl = document.head.querySelector('meta[name="color-scheme"]')
@@ -33,42 +36,64 @@ class Theme {
   // ============
   // * accessor
   
-  public get currentTheme(): TTheme {
-    return this._currentTheme
+  public get current(): TTheme {
+    return this._current
   }
-  public set currentTheme(value: TTheme) {
+  public set current(value: TTheme) {
     switch (value) {
       case "dark":
-        this.htmlEl.classList.add("theme-dark")
+        this.htmlEl.classList.add("theme-" + value)
         this.htmlEl.classList.remove("theme-light")
-        this.colorScheme_metaEl?.setAttribute("content", "dark")
         break
       case "light":
-        this.htmlEl.classList.add("theme-light")
+        this.htmlEl.classList.add("theme-" + value)
         this.htmlEl.classList.remove("theme-dark")
-        this.colorScheme_metaEl?.setAttribute("content", "light")
         break
       default:
         console.log(`default case`, value)
         return
     }
-    this._currentTheme = value
-    localStorage.setItem("theme", value)
+    this.colorScheme_metaEl?.setAttribute("content", value)
+    this._current = value
+  }
+  
+  public get switcher(): Switcher {
+    return this._switcher
+  }
+  public set switcher(value: Switcher) {
+    this._switcher = value
+    
+    if (value !== "system") {
+      localStorage.setItem("theme", value)
+    } else {
+      localStorage.removeItem("theme")
+    }
   }
   
   // * constructor
   
   constructor() {
-    this.currentTheme = this.initCurrentTheme()
+    this.init()
   }
   
   // * method
   
-  initCurrentTheme() {
-    const fromStorage = localStorage.getItem("theme")
+  init() {
+    const fromStorage = <TTheme>localStorage.getItem("theme")
     
     if (fromStorage) {
-      return <TTheme>fromStorage
+      this.switch(fromStorage)
+      return
+    }
+    
+    this.switch("system")
+  }
+  
+  switch(value?: Switcher) {
+    if (value) {
+      this.switcher = value
+    } else {
+      this.switcher = this.switcher_nextValue
     }
     
     // at OS level user prefers...
@@ -79,30 +104,40 @@ class Theme {
       `).matches
     ) {
       // dark theme
-      // console.log(`prefers dark`, )
-      return "dark"
+      switch (this.switcher) {
+        case "dark":
+          this.current = this.switcher
+          this.switcher_nextValue = "system"
+          break
+        case "light":
+          this.current = this.switcher
+          this.switcher_nextValue = "dark"
+          break
+        case "system":
+          this.current = "dark"
+          this.switcher_nextValue = "light"
+          break
+        default:
+          console.log(`default case`, )
+      }
     } else {
       // light theme
-      // console.log(`prefers light`, )
-      return "light"
-    }
-  }
-  
-  switchCurrentTheme() {
-    if (!this.currentTheme) {
-      console.log(`return: !this.currentTheme`, )
-      return
-    }
-    
-    switch (this.currentTheme) {
-      case "dark":
-        this.currentTheme = "light"
-        break
-      case "light":
-        this.currentTheme = "dark"
-        break
-      default:
-        console.log(`default case`, this.currentTheme)
+      switch (this.switcher) {
+        case "dark":
+          this.current = this.switcher
+          this.switcher_nextValue = "light"
+          break
+        case "light":
+          this.current = this.switcher
+          this.switcher_nextValue = "system"
+          break
+        case "system":
+          this.current = "light"
+          this.switcher_nextValue = "dark"
+          break
+        default:
+          console.log(`default case`, )
+      }
     }
     
   }
