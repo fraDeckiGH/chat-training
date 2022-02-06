@@ -5,7 +5,15 @@
 // * user authentication
 // import this module only if the app is running in the browser
 
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendEmailVerification, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { 
+  createUserWithEmailAndPassword, 
+  getAuth, 
+  // initializeAuth,
+  onAuthStateChanged, 
+  sendEmailVerification, 
+  signInWithEmailAndPassword, 
+  signOut, 
+} from "firebase/auth";
 import { firebaseApp } from "./firebase";
 
 export {
@@ -25,6 +33,21 @@ function create() {
 class Auth {
   
   auth = getAuth(firebaseApp)
+  // ? to load less stuff, ie fine-grain deps
+  // ? https://firebase.google.com/docs/auth/web/custom-dependencies
+  /* auth = initializeAuth(firebaseApp, {
+    persistence: [
+      // @ts-ignore
+      onAuthStateChanged, 
+      // @ts-ignore
+      sendEmailVerification, 
+      // @ts-ignore
+      signInWithEmailAndPassword, 
+      // @ts-ignore
+      signOut, 
+    ]
+  }) */
+  
   form = {
     email: "",
     password: "",
