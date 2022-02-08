@@ -1,0 +1,52 @@
+
+
+// ? a possible way to apply custom css 
+// https://atomiks.github.io/tippyjs/v6/themes/
+
+
+.tippy-root {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .tippy-box/* [data-theme~='popover'] */ {
+    overflow: inherit;
+    display: inherit;
+    flex-direction: inherit;
+    
+    .tippy-content {
+      overflow: auto;
+      
+      // background-color: tomato;
+      // color: yellow;
+    }
+    
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

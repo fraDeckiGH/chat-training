@@ -8,7 +8,7 @@
   import { fade, fly } from "svelte/transition";
   
   
-  // this component
+  // this component (instance)
   export let component: Component
   
   

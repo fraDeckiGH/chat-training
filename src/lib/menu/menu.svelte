@@ -1,23 +1,41 @@
 
 
 <script lang=ts>
+  import { onDestroy } from "svelte";
+
+
+  // import type Component from "./menu.svelte"
   
-  export let items: any[] = [
-    {
-      lbl: "1",
-    },
-    {
-      lbl: "2",
-    },
-    {
-      lbl: "3",
-    },
-    {
-      lbl: "4",
-    },
+  // this component
+  // export let component: Component
+  
+  export let itemsNumber = 0
+  let items: any[] = []
+  
+  $: {
+    console.log(`itemsNumber`, itemsNumber)
     
-  ]
+    for (let i = 0; i < itemsNumber; i++) {
+      items.push({
+        lbl: i + "",
+      })
+      items
+    }
+    items = items
+  }
   
+  
+  onDestroy(() => {
+		console.log(`onDestroy `, )
+	})
+  
+  
+  export function addItems(addendum: number = 10) {
+    itemsNumber += addendum
+  }
+  export function removeItems(addendum: number = 10) {
+    itemsNumber -= addendum
+  }
   
 </script>
 
@@ -35,8 +53,18 @@
 
 <style lang=scss>
   
-  .li:hover {
-    background-color: red;
+  .menu {
+    padding: .3em 0;
+    
+    .li {
+      padding: .3em 1em;
+      &:hover {
+        background-color: tomato;
+      }
+    }
+  
   }
+  
+  
   
 </style>

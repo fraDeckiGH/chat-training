@@ -19,6 +19,7 @@
 		"@material/circular-progress": "^13.0.0",
 		"firebase": "^9.6.6",
 		"nanoid": "^3.2.0",
+		"popper-max-size-modifier": "^0.2.0",
 		"sanitize.css": "^13.0.0",
 		"tippy.js": "^6.3.7"
 	},
