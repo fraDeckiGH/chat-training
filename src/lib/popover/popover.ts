@@ -226,7 +226,8 @@ function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
         in the 1st place (for example)
         
         * also NOTE: func signature's defaults
-        eg. args.cmpProps = {} don't count in this scenario
+        eg. args.cmpProps = {} 
+        don't count in this scenario
       */
       // #endregion
       if (updatedArgs.cmpProps) { // no func signature's defaults

@@ -17,7 +17,7 @@
     
     for (let i = 0; i < itemsNumber; i++) {
       items.push({
-        lbl: i + "",
+        lbl: i + "00000000000000000000000000000000000",
       })
       items
     }
