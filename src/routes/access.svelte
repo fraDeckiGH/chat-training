@@ -1,14 +1,11 @@
 
 <script lang=ts>
-  import type { Auth } from "$lib/auth"; 
-  import { createModal } from "$lib/modal/modal";
-  import type { Maybe } from "$lib/type";
-  import { onMount } from "svelte";
+  import type { Auth } from "$lib/auth"
+  import { createModal } from "$lib/modal/modal"
+  import type { Maybe } from "$lib/type"
+  import { onMount } from "svelte"
+  import PopoverDemo from "$lib/popover/popover-demo.svelte"
   import type ToastHandler from "$lib/toast-handler/toast-handler.svelte"
-  
-  import Menu from "$lib/menu/menu.svelte"
-  import { popover, popoverCtrl } from "$lib/popover/popover"
-  import type { PopoverArgs } from "$lib/popover/popover"
   
   
   // let access: (() => void) | undefined
@@ -80,16 +77,6 @@
     console.log(`btn not disabled anymore`, )
   }
   
-  let pippo = true
-  
-  // may also be a simple literal in the HTML
-  const popoverArgs: PopoverArgs<Menu> = {
-    cmp: Menu,
-    // cmpProps: {},
-    // controller: {},
-    popoverCtrl_key: "randId",
-    // tippyOpts: {},
-  }
   
 </script>
 
@@ -135,34 +122,7 @@
       </button>
     {/if}
     
-    <!-- <span class="btn-wrapper"> -->
-    {#if pippo}
-    <button
-      use:popover={popoverArgs}
-    >
-      menu
-    </button>
-    {/if}
-    <!-- </span> -->
-    <button 
-      on:click="{() => {
-        
-        // pippo = !pippo
-        
-        // popoverCtrl.randId.cmp.addItems()
-        // popoverCtrl.randId.cmp.$set({itemsNumber: 7})
-        
-        // popoverArgs.cmpProps = {
-        //   itemsNumber: 4,
-        // }
-        popoverArgs.tippyOpts = {
-          placement: "right",
-        }
-        
-      }}"
-    >
-      add menu items
-    </button>
+    <PopoverDemo></PopoverDemo>
     
   </div>
   
