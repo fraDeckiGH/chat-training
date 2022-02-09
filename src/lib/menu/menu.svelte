@@ -3,11 +3,6 @@
 <script lang=ts>
   import { onDestroy, onMount } from "svelte";
 
-
-  // import type Component from "./menu.svelte"
-  
-  // this component
-  // export let component: Component
   
   export let itemsNumber = 0
   let items: any[] = []
