@@ -7,7 +7,6 @@
   import Btn from "$lib/btn/btn.svelte"
   import Menu from "$lib/menu/menu.svelte"
   
-  import { popover, popoverCtrl } from "$lib/popover/popover"
   import type { PopoverArgs } from "$lib/popover/popover"
   
   import { afterUpdate, onMount } from "svelte"
@@ -50,12 +49,12 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    popoverCtrl.randId.cmp.addItems()
+    // popoverCtrl.randId.cmp.addItems()
     // popoverCtrl.randId.cmp.$set({itemsNumber: 7})
     
-    // popoverArgs.cmpProps = {
-    //   itemsNumber: 4,
-    // }
+    popoverArgs.cmpProps = {
+      itemsNumber: 4,
+    }
     
     
     // * ways of changing tippy instance's props

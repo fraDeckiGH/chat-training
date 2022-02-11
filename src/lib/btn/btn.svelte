@@ -1,7 +1,7 @@
 
 <script lang=ts>
-  import { /* popover,  */popoverCtrl } from "$lib/popover/popover"
-  import type { PopoverArgs, PopoverContent } from "$lib/popover/popover"
+  import { popover/* , popoverCtrl */ } from "$lib/popover/popover"
+  import type { PopoverArgs/* , PopoverContent */ } from "$lib/popover/popover"
   import { onMount } from "svelte"
   
   export {
@@ -19,7 +19,6 @@
   // let cta
   // let isCta
   
-  let popover: Function
   // let popoverArgs = <PopoverArgs<PopoverContent> | undefined>undefined
   let popoverArgs = <PopoverArgs | undefined>undefined
   
@@ -36,32 +35,7 @@
       return
     }
     
-    
-    // if (!popover) {
-    //   // ? svelte use:action error
-    //   // popover = (await import("$lib/popover/popover")).popover
-      
-    //   return import("$lib/popover/popover").then((value) => {
-    //     popover = value.popover
-    //     return popover(htmlEl, args)
-    //   })
-    // }
-    // return popover(htmlEl, args)
-    
-    
-    
-    // let ret: any
-    
-    // if (!popover) {
-    //   new Promise<void>(async (resolve) => {
-    //     popover = (await import("$lib/popover/popover")).popover
-    //     ret = popover(htmlEl, args) // makes it work
-    //     resolve()
-    //   })
-    // }
-    
-    // return ret || popover(htmlEl, args)
-    // // return popover(htmlEl, args) // does not work
+    return popover(htmlEl, args)
   }
   
 </script>

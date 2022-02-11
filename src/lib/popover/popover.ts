@@ -114,6 +114,7 @@ const popoverCtrl: {
  */
 // function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
 function popover(htmlEl: HTMLElement, args: PopoverArgs) {
+  console.log(`popover() `, )
   // console.log(`popover() htmlEl`, htmlEl)
   // console.log(`popover() popoverArgs`, popoverArgs)
   const {
