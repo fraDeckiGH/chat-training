@@ -31,6 +31,7 @@ export {
   // tipz,
 }
 export type {
+  PopoverContent,
   // ? if I need autocompletion
   PopoverArgs,
 }
@@ -38,18 +39,27 @@ export type {
 // TODO remove 'any' type where present
 
 
-// ? possible content types for the popup
-type PopupContent = Menu/*  | SomethingElse */
+/**
+ * ? possible content types for the popup
+ */
+type PopoverContent = Menu/*  | SomethingElse */
 
-type PopoverArgs<T> = {
-  cmp: new (...args: any) => T & SvelteComponentTyped/* <{ record: T }> */
+// type PopoverArgs<T> = {
+type PopoverArgs = {
+  // cmp: new (...args: any) => T & SvelteComponentTyped/* <{ record: T }> */
+  cmp: new (...args: any) => PopoverContent
   cmpProps?: any
   cmpOpts?: any
+  /**
+   * ? an id (eg gen from nanoid() is safer than a simple string)
+   */
   popoverCtrl_key?: Readonly<string>
   tippyOpts?: Partial<TippyProps>
 }
-type PopoverCtrl_value<T> = {
-  cmp: T // component instance
+// type PopoverCtrl_value<T> = {
+type PopoverCtrl_value = {
+  // cmp: T // component instance
+  cmp: InstanceType<PopoverArgs["cmp"]>
   tippy: TippyInstance
   useActionReturn?: {
     update?: (parameters: any) => void
@@ -94,14 +104,16 @@ const applyMaxSize = {
  * each key is a different controller
  */
 const popoverCtrl: {
-  [key: string]: PopoverCtrl_value<PopupContent>
+  // [key: string]: PopoverCtrl_value<PopoverContent>
+  [key: string]: PopoverCtrl_value
 } = {}
 
 
 /**
  * usage https://svelte.dev/docs#template-syntax-element-directives-use-action
  */
-function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
+// function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
+function popover(htmlEl: HTMLElement, args: PopoverArgs) {
   // console.log(`popover() htmlEl`, htmlEl)
   // console.log(`popover() popoverArgs`, popoverArgs)
   const {
@@ -118,7 +130,7 @@ function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
   
   let cmpInstance: InstanceType<typeof cmp>
   tippyOpts.onCreate = (instance: TippyInstance) => {
-    console.log(`onCreate`, instance)
+    // console.log(`onCreate`, instance)
     instance.popper.classList.add("tippy-root")
     
     cmpInstance = new cmp({ 
@@ -217,16 +229,16 @@ function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
       // ensure reactivity
       // #region
       /* 
-        triggers when arguments - passed by ref, 
-        basically anything that's not primitive, 
-        eg. obj literals - previously passed to the popover func 
-        change from outside.
-        Like in the very component which called the popover func 
-        in the 1st place (for example)
-        
-        * also NOTE: func signature's defaults
-        eg. args.cmpProps = {} 
-        don't count in this scenario
+      triggers when arguments - passed by ref, 
+      basically anything that's not primitive, 
+      eg. obj literals - previously passed to the popover func 
+      change from outside.
+      Like in the very component which called the popover func 
+      in the 1st place (for example)
+      
+      * also NOTE: func signature's defaults
+      eg. args.cmpProps = {} 
+      don't count in this scenario
       */
       // #endregion
       if (updatedArgs.cmpProps) { // no func signature's defaults
@@ -236,12 +248,19 @@ function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
     destroy() {
       console.log(`use:action.destroy()`, )
       
-      // w/out these lines -> memory leak
+      /*
+      in case htmlEl is removed from the DOM
+      these instances need to be destroyed manually
+      */
       cmpInstance.$destroy()
       tippyInstance.destroy()
     },
   }
-  const popoverController: PopoverCtrl_value<typeof cmpInstance> = {
+  // const popoverController: PopoverCtrl_value<typeof cmpInstance> = {
+  // const popoverController: PopoverCtrl_value<PopoverContent & T> = {
+  const popoverController: PopoverCtrl_value = {
+    // cmp: cmpInstance!,
+    // cmp: <T & PopoverContent>cmpInstance!,
     cmp: cmpInstance!,
     tippy: tippyInstance,
     

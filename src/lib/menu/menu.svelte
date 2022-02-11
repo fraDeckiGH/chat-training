@@ -1,18 +1,25 @@
 
 
 <script lang=ts>
-  import { onDestroy, onMount } from "svelte";
-
+  import { nanoid } from "nanoid";
+  import { afterUpdate, onDestroy, onMount } from "svelte"
   
-  export let itemsNumber = 0
+  export {
+    itemsNumber,
+  }
+  
+  const id = nanoid() // test
   let items: any[] = []
+  let itemsNumber = 0
   
   $: {
     console.log(`itemsNumber`, itemsNumber)
     
+    items = []
     for (let i = 0; i < itemsNumber; i++) {
       items.push({
-        lbl: i + "00000000000000000000000000000000000",
+        // lbl: i + "00000000000000000000000000000000000",
+        lbl: i + id,
       })
       items
     }
@@ -20,8 +27,13 @@
   }
   
   
+  afterUpdate(() => {
+		console.log(`afterUpdate `, )
+    
+	})
   onDestroy(() => {
 		console.log(`onDestroy `, )
+    
 	})
   
   
