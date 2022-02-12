@@ -4,21 +4,93 @@
 // https://atomiks.github.io/tippyjs/v6/themes/
 
 
+// * bugs
+/* BUG arrow doesn't show 
+  when "overflow: hidden;" is set on either 
+  .tippy-root
+  .tippy-box
+  
+  arrow is positioned after .tippy-content as a sibling
+  ? svg-arrow same problem?
+*/
+
+// * defaults
+/* 
+  main excerpts
+  
+  .tippy-box {
+    position: relative;
+    background-color: #333;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: normal;
+    outline: 0;
+    transition-property: transform,visibility,opacity;
+  }
+  .tippy-content {
+    position: relative;
+    padding: 5px 9px;
+    z-index: 1;
+  }
+*/
+
+// * theme additional styles
+/* 
+  arrow not taken into consideration
+  but for the rest of the tooltip, what follows is 
+  all the customization there is
+  
+  .tippy-box[data-theme~=light] {
+    color: #26323d;
+    ? VERY weak(/pointless) shadow
+    box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%), 0 4px 4px -2px rgb(91 94 105 / 15%);
+    background-color: #fff;
+  }
+  
+  .tippy-box[data-theme~=light-border] {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,8,16,.15);
+    color: #333;
+    ? VERY weak(/pointless) shadow
+    box-shadow: 0 4px 14px -2px rgb(0 8 16 / 8%);
+  }
+  
+  .tippy-box[data-theme~=material] {
+    background-color: #505355;
+    font-weight: 600;
+  }
+  
+	.tippy-box[data-theme~=translucent] {
+    background-color: rgba(0,0,0,.7);
+  }
+*/
+
+
 .tippy-root {
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 
   .tippy-box/* [data-theme~='popover'] */ {
-    overflow: inherit;
+    overflow: hidden;
     display: inherit;
     flex-direction: inherit;
+    
+    // border-radius: 15px; // test
+    border-radius: initial;
+    
+    background-color: initial;
+    color: initial;
+    
+    font-size: initial;
+    line-height: initial;
     
     .tippy-content {
       overflow: auto;
       
-      // background-color: tomato;
-      // color: yellow;
+      padding: initial;
     }
     
   }

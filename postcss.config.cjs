@@ -12,6 +12,16 @@ const config = {
 		
 		!dev && autoprefixer(),
 		
+		// #region
+		/*
+			? put at the end of plugin list?
+			https://cssnano.co/docs/getting-started/
+			
+			"If you’ve installed Tailwind as a PostCSS plugin, 
+			add cssnano to the end of your plugin list"
+			https://tailwindcss.com/docs/optimizing-for-production
+		*/
+		// #endregion
 		!dev && cssnano({
 			preset: "default",
 		}),

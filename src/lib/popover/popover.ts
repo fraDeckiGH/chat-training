@@ -15,9 +15,7 @@ import type {
   Props as TippyProps,
 } from 'tippy.js';
 
-// TODO try w/out styles
-import 'tippy.js/dist/tippy.css'; // optional for styling
-// import './_popover.scss'
+import 'tippy.js/dist/tippy.css'
 import './_popover.scss'
 
 import maxSize from 'popper-max-size-modifier';
@@ -227,9 +225,9 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     //   console.log(`onClickOutside`, instance, event)
     // },
     // onCreate
-    onDestroy(instance) {
-      console.log(`onDestroy instance`, instance)
-    },
+    // onDestroy(instance) {
+    //   console.log(`onDestroy instance`, instance)
+    // },
     // onHidden(instance) {
     //   console.log(`onHidden instance`, instance)
     // },

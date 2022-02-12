@@ -37,6 +37,7 @@
     tooltipOpts: {
       hideOnClick: 'toggle',
       // placement: "left",
+      
     },
     
   }
