@@ -10,9 +10,8 @@ REPL (corrected 1) https://svelte.dev/repl/ffd2b212ae9e48e4b0279e72c1c7cb21?vers
 
 import tippy from 'tippy.js';
 import type { 
-  Content as TippyContent,
   Instance as TippyInstance, 
-  Props as TippyProps,
+  Props as TippyProps
 } from 'tippy.js';
 
 // TODO try w/out styles
@@ -23,101 +22,52 @@ import './_popover.scss'
 import maxSize from 'popper-max-size-modifier';
 
 import type Menu from "$lib/menu/menu.svelte"
-import type Menu_1 from "$lib/menu/menu-1.test.svelte" // test
-import type { UnionToIntersection } from '$lib/type'
+import type { /* SvelteComponent,  */SvelteComponentTyped } from 'svelte'
 
 
 export {
   popover,
   popoverCtrl,
-  
+  // tipz,
 }
 export type {
-  PopoverArgs, // autocompletion
-  
+  PopoverContent,
+  // ? if I need autocompletion
+  PopoverArgs,
 }
 
+// TODO remove 'any' type where present
 
-/**
- * either pass cmp || content
- */
-type PopoverArgs<T = PopoverContent> = {
-  /**
-   * a component to use as the tippy's content
-   * see related: 'Popover.cmp'
-   */
-  cmp?: new (...args: any) => T
-  
-  cmpProps?: any
-  // reminder  cmpProps?: PopoverContent // proposes all
-  // ? only exported funcs are getting suggested
-  // cmpProps?: Partial<T>
-  // ? works like above, also same limitations
-  // cmpProps?: Partial<
-  //   InstanceType<
-  //     NonNullable<
-  //       PopoverArgs<T>["cmp"]
-  //     >
-  //   >
-  // >
-  
-  cmpOpts?: Partial<
-    Svelte2TsxComponentConstructorParameters<
-      NonNullable<
-        PopoverArgs<T>["cmpProps"]
-      >
-    >
-  >
-  
-  /**
-   * static content
-   */
-  content?: TippyContent
-  
-  /**
-   * a key identifier of a popoverCtrl's prop
-   * to further manipulate the popover once generated
-   * 
-   * recommended: Symbol(); cuz unique
-   */
-  ctrlId?: keyof (typeof popoverCtrl)
-  
-  /**
-   * tooltip options
-   */
-  tooltipOpts?: Partial<TippyProps>
-}
 
 /**
  * ? possible content types for the popup
  */
-type PopoverContent = 
-  | Menu 
-  | Menu_1 // test
+type PopoverContent = Menu/*  | SomethingElse */
 
+// type PopoverArgs<T> = {
+type PopoverArgs = {
+  // cmp: new (...args: any) => T & SvelteComponentTyped/* <{ record: T }> */
+  cmp: new (...args: any) => PopoverContent
+  cmpProps?: any
+  cmpOpts?: any
+  /**
+   * ? an id (eg gen from nanoid() is safer than a simple string)
+   */
+  popoverCtrl_key?: Readonly<string>
+  tippyOpts?: Partial<TippyProps>
+}
+// type PopoverCtrl_value<T> = {
 type PopoverCtrl_value = {
-  /**
-   * component (within tooltip content)
-   * ? work around: interesection over union, to fix a very subtle usage bug
-   */
-  cmp?: 
-    UnionToIntersection<
-      InstanceType<
-        NonNullable<
-          PopoverArgs["cmp"]
-        >
-      >
-    >
-  
-  /**
-   * meant to be used like: '_tippy' property
-   * https://atomiks.github.io/tippyjs/v6/tippy-instance/#-property
-   */
-  tooltip: TippyInstance
+  // cmp: T // component instance
+  cmp: InstanceType<PopoverArgs["cmp"]>
+  tippy: TippyInstance
+  useActionReturn?: {
+    update?: (parameters: any) => void
+    destroy?: () => void
+  }
 }
 
-
-
+ 
 // Create your own apply modifier that adds the styles to the state
 /**
  * ? overflow handling (also see bookmarks)
@@ -154,65 +104,50 @@ const applyMaxSize = {
  * each key controls a different popover
  */
 const popoverCtrl: {
-  [key: number | string | symbol]: PopoverCtrl_value
+  // [key: string]: PopoverCtrl_value<PopoverContent>
+  [key: string]: PopoverCtrl_value
 } = {}
 
 
-
 /**
- * usage: svelte's use:action
- * 
- * req. args
- * either pass cmp || content 
- * cmp: to a component as content
- * content: for static as content
-*/
+ * usage https://svelte.dev/docs#template-syntax-element-directives-use-action
+ */
+// function popover<T>(htmlEl: HTMLElement, args: PopoverArgs<T>) {
 function popover(htmlEl: HTMLElement, args: PopoverArgs) {
   console.log(`popover() `, )
   // console.log(`popover() htmlEl`, htmlEl)
   // console.log(`popover() popoverArgs`, popoverArgs)
   const {
-    cmp = null, 
+    cmp, 
     cmpProps = {}, 
     cmpOpts,
-    content,
-    ctrlId,
-    tooltipOpts = {},
+    popoverCtrl_key,
+    tippyOpts = {},
   } = args
   
+  // defaults (tippy instance's options)
+  // opts = { delay: 100, distance: '-20px', ...opts }
   
-  // * content
   
-  let cmpInstance: InstanceType<
-    NonNullable<typeof cmp>
-  > | undefined
-  
-  if (cmp) {
-    tooltipOpts.onCreate = (instance: TippyInstance) => {
-      // console.log(`onCreate`, instance)
-      instance.popper.classList.add("tippy-root")
-      
-      cmpInstance = new cmp({ 
-        target: instance.popper.querySelector('.tippy-content'),
-        
-        ...cmpOpts, // untested
-        
-        // ? {pinned down} so that cmpProps overwrites cmpOpts.props
-        props: {
-          // defaults here (valid for every component)
-          ...cmpProps
-        },
-      })
-    }
+  let cmpInstance: InstanceType<typeof cmp>
+  tippyOpts.onCreate = (instance: TippyInstance) => {
+    // console.log(`onCreate`, instance)
+    instance.popper.classList.add("tippy-root")
     
-  } else if (content) {
-    tooltipOpts.content = content
+    cmpInstance = new cmp({ 
+      props: {
+        // defaults here
+        ...cmpProps
+      },
+      target: instance.popper.querySelector('.tippy-content'),
+      ...cmpOpts // untested (usage)
+    })
   }
   
   
-  // * tooltip
+  // * tippy instance
   
-  const local_tippyOpts: typeof tooltipOpts = {
+  const tippyInstance = tippy(htmlEl, <TippyProps>{
     
     arrow: false,
     interactive: true,
@@ -257,7 +192,7 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     popperOptions: {
       modifiers: [
         
-        <any>applyMaxSize, // BUG
+        applyMaxSize,
         // maxSize,
         {
           ...maxSize,
@@ -280,71 +215,122 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     },
     
     // theme: "popover",
-    
     // trigger: 'mouseenter focus', // default
     trigger: "click",
     
-    ...tooltipOpts
-  }
-  
-  const tooltip = tippy(htmlEl, local_tippyOpts)
-  
-  
-  // * controller
-  
-  if (ctrlId) {
-    const ctrl: PopoverCtrl_value = {
-      tooltip,
-    }
-    
-    popoverCtrl[ctrlId] = ctrl
-    
-    if (cmpInstance) {
-      ctrl.cmp = <PopoverCtrl_value["cmp"]>cmpInstance
-    }
-  }
+    ...tippyOpts
+  })
+  // console.log(`tippyInstance`, tippyInstance)
   
   
-  // * use:action return
-  
-  const useActionReturn: SvelteActionReturnType = {
-    /* triggers when 'args' change from outside
-      
-      * NOTE initial func args
-      cmpProps & tooltipOpts initially passed to this func 
-      will continue working but won't appear when logged
-    */
-    update: (updatedArgs: typeof args) => {
+  const useActionReturn = {
+    update(updatedArgs: typeof args) {
       console.log(`use:action.update()`, updatedArgs)
       
       // ensure reactivity
-      if (updatedArgs.cmpProps) {
-        cmpInstance?.$set(updatedArgs.cmpProps)
-      }
-      if (updatedArgs.tooltipOpts) {
-        tooltip.setProps(updatedArgs.tooltipOpts)
+      // #region
+      /* 
+      triggers when arguments - passed by ref, 
+      basically anything that's not primitive, 
+      eg. obj literals - previously passed to the popover func 
+      change from outside.
+      Like in the very component which called the popover func 
+      in the 1st place (for example)
+      
+      * also NOTE: func signature's defaults
+      eg. args.cmpProps = {} 
+      don't count in this scenario
+      */
+      // #endregion
+      if (updatedArgs.cmpProps) { // no func signature's defaults
+        cmpInstance.$set(updatedArgs.cmpProps)
       }
     },
-    
-    destroy: () => {
+    destroy() {
       console.log(`use:action.destroy()`, )
       
       /*
-      in case the reference htmlEl is removed from the DOM
+      in case htmlEl is removed from the DOM
       these instances need to be destroyed manually
       */
-      cmpInstance?.$destroy()
-      ctrlId && delete popoverCtrl[ctrlId]
-      tooltip.destroy()
+      cmpInstance.$destroy()
+      tippyInstance.destroy()
     },
+  }
+  // const popoverController: PopoverCtrl_value<typeof cmpInstance> = {
+  // const popoverController: PopoverCtrl_value<PopoverContent & T> = {
+  const popoverController: PopoverCtrl_value = {
+    // cmp: cmpInstance!,
+    // cmp: <T & PopoverContent>cmpInstance!,
+    cmp: cmpInstance!,
+    tippy: tippyInstance,
+    
+    // ? useful?
+    // useActionReturn,
+  }
+  
+  
+  if (popoverCtrl_key) {
+    popoverCtrl[popoverCtrl_key] = popoverController
   }
   
   return useActionReturn
+}
+
+
+/**
+ * closer to the original
+ */
+function tipz(elem: HTMLElement, {
+  content, 
+  props, 
+  ...opts
+}: any) {
+  // console.log(`elem`, elem)
+  
+  // let tp: any // tippy instance
+  let cmp: any // component instance
+
+  // defaults (tippy instance's options)
+  // opts = { delay: 100, distance: '-20px', ...opts }
+  console.log(`opts`, opts)
+  
+  
+  if (typeof content === 'function') {
+    // supposing content is a Component
+    opts.onCreate = (instance: any) => {
+      cmp = new content({ 
+        target: instance.popper.querySelector('.tippy-content'),
+        props,
+      })
+    }
+  } else {
+    opts.content = content
+  }
+
+  // tippy instance
+  const tp = tippy(elem, opts)
+  
+  
+  return {
+    update(params: any) {
+      // ensure reactivity
+      if (cmp) {
+        cmp.$set(params.props)
+      }
+    },
+    
+    destroy() {
+      tp.destroy();
+      if (cmp) {
+        // debugger;
+        // cleanup component
+        cmp.$destroy()
+      }
+    },
+  }
   
 }
-  
-  
-
 
 
 

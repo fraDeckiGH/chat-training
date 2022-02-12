@@ -1,12 +1,14 @@
 
 <script lang=ts>
-  import { popover/* , popoverCtrl */ } from "$lib/popover/popover"
-  import type { PopoverArgs/* , PopoverContent */ } from "$lib/popover/popover"
+  import { popover } from "$lib/popover/popover"
+  import type { PopoverArgs } from "$lib/popover/popover"
+  
   import { onMount } from "svelte"
+  
   
   export {
     btnEl,
-    popover,
+    // popover,
     popoverArgs,
   }
   
@@ -19,8 +21,8 @@
   // let cta
   // let isCta
   
-  // let popoverArgs = <PopoverArgs<PopoverContent> | undefined>undefined
-  let popoverArgs = <PopoverArgs | undefined>undefined
+  // let popover: Popover
+  let popoverArgs = <PopoverArgs | null>null
   
   
   onMount(() => {
