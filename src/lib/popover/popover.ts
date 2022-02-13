@@ -1,5 +1,5 @@
 
-// * 
+// * a tooltip w/ a chosen component inside of it, as it's content
 // client side module
 
 /*
@@ -44,7 +44,7 @@ type PopoverArgs<T = PopoverContent> = {
    * a component to use as the tippy's content
    * see related: 'Popover.cmp'
    */
-  cmp?: new (...args: any) => T
+  cmp/* ? */: new (...args: any) => T
   
   cmpProps?: any
   // reminder  cmpProps?: PopoverContent // proposes all
@@ -61,16 +61,16 @@ type PopoverArgs<T = PopoverContent> = {
   
   cmpOpts?: Partial<
     Svelte2TsxComponentConstructorParameters<
-      NonNullable<
+      // NonNullable<
         PopoverArgs<T>["cmpProps"]
-      >
+      // >
     >
   >
   
   /**
    * static content
    */
-  content?: TippyContent
+  // content?: TippyContent
   
   /**
    * a key identifier of a popoverCtrl's prop
@@ -78,7 +78,7 @@ type PopoverArgs<T = PopoverContent> = {
    * 
    * recommended: Symbol(); cuz unique
    */
-  ctrlId?: keyof (typeof popoverCtrl)
+  ctrlId?: Readonly<keyof (typeof popoverCtrl)>
   
   /**
    * tooltip options
@@ -98,12 +98,12 @@ type PopoverCtrl_value = {
    * component (within tooltip content)
    * ? work around: interesection over union, to fix a very subtle usage bug
    */
-  cmp?: 
+  cmp/* ? */: 
     UnionToIntersection<
       InstanceType<
-        NonNullable<
+        // NonNullable<
           PopoverArgs["cmp"]
-        >
+        // >
       >
     >
   
@@ -131,18 +131,29 @@ const applyMaxSize = {
   phase: 'beforeWrite',
   requires: ['maxSize'],
   fn({state}: any) {
+    // console.log(`state`, state)
+    
     // The `maxSize` modifier provides this data
     const {width, height} = state.modifiersData.maxSize;
- 
+    // const {x} = state.modifiersData.popperOffsets;
+    
+    // console.log(`window.innerWidth`, window.innerWidth)
+    // console.log(`document.getElementById("appScroller").clientWidth`, document.getElementById("appScroller")!.clientWidth)
+    // console.log(`document.getElementById("appScroller").offsetWidth`, document.getElementById("appScroller")!.offsetWidth)
+    
     state.styles.popper = {
       ...state.styles.popper,
       
-      maxHeight: `${height}px`,
-      maxWidth: `${width}px`,
+      // maxHeight: `${height}px`,
+      // maxWidth: `${width}px`,
       
-      // Minimum acceptable size is 100px
-      // maxHeight: `${Math.max(100, height)}px`,
-      // maxWidth: `${Math.max(100, width)}px`,
+      // Minimum acceptable size is 280px
+      maxHeight: `${Math.max(280, height)}px`,
+      maxWidth: `${Math.max(280, width)}px`,
+      
+      // maxWidth: `90vw`,
+      // maxWidth: `calc(100vw - 40px)`,
+      // maxWidth: `${Math.max(document.getElementById("appScroller")!.clientWidth - (x/*  + 40 */), 280)}px`,
     };
   }
 }
@@ -166,14 +177,11 @@ const popoverCtrl: {
  * content: for static as content
 */
 function popover(htmlEl: HTMLElement, args: PopoverArgs) {
-  console.log(`popover() `, )
-  // console.log(`popover() htmlEl`, htmlEl)
-  // console.log(`popover() popoverArgs`, popoverArgs)
   const {
-    cmp = null, 
+    cmp, 
     cmpProps = {}, 
     cmpOpts,
-    content,
+    // content,
     ctrlId,
     tooltipOpts = {},
   } = args
@@ -181,9 +189,12 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
   
   // * content
   
-  let cmpInstance: InstanceType<
-    NonNullable<typeof cmp>
-  > | undefined
+  let cmpInstance: 
+    InstanceType<
+      // NonNullable<
+        typeof cmp
+      // >
+    > | undefined
   
   if (cmp) {
     tooltipOpts.onCreate = (instance: TippyInstance) => {
@@ -193,7 +204,7 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
       cmpInstance = new cmp({ 
         target: instance.popper.querySelector('.tippy-content'),
         
-        ...cmpOpts, // untested
+        ...cmpOpts,
         
         // ? {pinned down} so that cmpProps overwrites cmpOpts.props
         props: {
@@ -203,17 +214,18 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
       })
     }
     
-  } else if (content) {
+  }/*  else if (content) {
     tooltipOpts.content = content
-  }
+  } */
   
   
   // * tooltip
   
-  const local_tippyOpts: typeof tooltipOpts = {
+  const tooltip = tippy(htmlEl, {
     
     arrow: false,
     interactive: true,
+    maxWidth: 'none',
     
     // onAfterUpdate(instance, partialProps) {
     //   console.log(`onAfterUpdate`, instance, partialProps)
@@ -261,8 +273,17 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
           ...maxSize,
           options: {
             // ? https://popper.js.org/docs/v2/utils/detect-overflow/#boundary
-            // boundary: customBoundaryEl, // 'clippingParents' by default
-            padding: 20,
+            // 'clippingParents' by default
+            // boundary: customBoundaryHTMLEl,
+            // boundary: document.getElementById("appScroller"),
+            
+            // padding: 20,
+            padding: {
+              top: 25,
+              left: 20,
+              right: 20,
+              bottom: 25,
+            },
           }
         },
         
@@ -283,14 +304,14 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     trigger: "click",
     
     ...tooltipOpts
-  }
-  
-  const tooltip = tippy(htmlEl, local_tippyOpts)
+  })
   
   
   // * controller
   
-  if (ctrlId) {
+  // ? vers. where static 'content' is a possible parameter
+  // #region
+  /* if (ctrlId) {
     const ctrl: PopoverCtrl_value = {
       tooltip,
     }
@@ -299,6 +320,13 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     
     if (cmpInstance) {
       ctrl.cmp = <PopoverCtrl_value["cmp"]>cmpInstance
+    }
+  } */
+  // #endregion
+  if (ctrlId/*  && cmpInstance */) {
+    popoverCtrl[ctrlId] = {
+      cmp: <PopoverCtrl_value["cmp"]>cmpInstance,
+      tooltip,
     }
   }
   

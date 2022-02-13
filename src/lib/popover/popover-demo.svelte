@@ -59,7 +59,7 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    popoverCtrl[ctrlId].cmp?.addItems()
+    popoverCtrl[ctrlId].cmp.addItems()
     // popoverCtrl[ctrlId].cmp?.$set({itemsNumber: 50})
     
     // popoverArgs.cmpProps = {

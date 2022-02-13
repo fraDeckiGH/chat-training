@@ -53,6 +53,12 @@
       on:click|trusted
       use:popoverWrap={popoverArgs}
     >
+      <!-- 
+        possible content ideas (ie untested):
+        component
+        html
+        text
+       -->
       <slot></slot>
     </button>
     

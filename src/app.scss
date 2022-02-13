@@ -107,12 +107,21 @@ input {
 }
 
 
+
 // * class
 
-// centered column for content (name is a draft)
+
+// TODO make a "page" (name to decide) component and use that
+// should be a good solution even for the usage I make in 
+// the toast-handler
+
+// ? centered column for content (name is a draft)
 .page {
   @include page.ux-size(page.$pb);
 }
+
+
+
 
 
 

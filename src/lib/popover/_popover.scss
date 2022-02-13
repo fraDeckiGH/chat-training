@@ -5,14 +5,7 @@
 
 
 // * bugs
-/* BUG arrow doesn't show 
-  when "overflow: hidden;" is set on either 
-  .tippy-root
-  .tippy-box
-  
-  arrow is positioned after .tippy-content as a sibling
-  ? svg-arrow same problem?
-*/
+
 
 // * defaults
 /* 
@@ -70,27 +63,29 @@
 
 
 .tippy-root {
-  display: flex;
-  flex-direction: column;
-
   .tippy-box/* [data-theme~='popover'] */ {
-    overflow: hidden;
-    display: inherit;
-    flex-direction: inherit;
+    max-height: inherit;
+    
+    // * resets
+    // ? 'inherit' inherits from my globals
+    // ? 'initial' sets html's default
     
     // border-radius: 15px; // test
-    border-radius: initial;
+    border-radius: inherit;
     
-    background-color: initial;
-    color: initial;
+    background-color: inherit;
+    color: inherit;
     
-    font-size: initial;
-    line-height: initial;
+    font-size: inherit;
+    line-height: inherit;
+    // white-space: inherit;
     
     .tippy-content {
-      overflow: auto;
+      // overflow: auto;
+      max-height: inherit;
       
-      padding: initial;
+      // * resets
+      padding: inherit;
     }
     
   }
