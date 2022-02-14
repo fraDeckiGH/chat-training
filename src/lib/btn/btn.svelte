@@ -1,28 +1,20 @@
 
 <script lang=ts>
-  import { popover } from "$lib/popover/popover"
   import type { PopoverArgs } from "$lib/popover/popover"
   
   import { onMount } from "svelte"
   
   
-  export {
-    btnEl,
-    // popover,
-    popoverArgs,
-  }
-  
   /**
    * render <button>?
    */
-  let btnEl = <boolean>true // tests
+  export let btnEl = <boolean>true // tests
   
   // Call To Action: bg and/or color 'accent' instead of 'primary'
   // let cta
   // let isCta
   
-  // let popover: Popover
-  let popoverArgs = <PopoverArgs | null>null
+  export let popoverArgs = <PopoverArgs | null>null
   
   
   onMount(() => {
@@ -31,13 +23,13 @@
 	})
   
   
-  function popoverWrap(htmlEl: HTMLElement, args: typeof popoverArgs) {
+  function popover(htmlEl: HTMLElement, args: any) {
     if (!args) {
-      console.log(`return: !args`, )
+      // console.log(`return: !args`, args)
       return
     }
     
-    return popover(htmlEl, args)
+    return args.popover(htmlEl.parentElement, popoverArgs)
   }
   
 </script>
@@ -48,10 +40,11 @@
 >
   {#if btnEl}
     
+  <!-- 
+      use:popoverWrap={popoverArgs} -->
     <button 
       class="btn"
       on:click|trusted
-      use:popoverWrap={popoverArgs}
     >
       <!-- 
         possible content ideas (ie untested):
@@ -60,6 +53,15 @@
         text
        -->
       <slot></slot>
+      
+      {#if popoverArgs}
+        {#await import("$lib/popover/popover") then value}
+          <div 
+            class="logic-only"
+            use:popover={value}
+          ></div>
+        {/await}
+      {/if}
     </button>
     
   {/if}
@@ -73,6 +75,10 @@
     .btn {
       display: inherit;
     }
+  }
+  
+  .logic-only {
+    display: none;
   }
   
 </style>

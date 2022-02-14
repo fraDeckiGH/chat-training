@@ -1,30 +1,23 @@
 
+<!-- <svelte:options accessors={true} /> -->
 
 <script lang=ts>
   import { nanoid } from "nanoid";
   import { afterUpdate, onDestroy, onMount } from "svelte"
   
-  export {
-    itemsNumber,
-  }
+  // BUG svelte: declarations not seen outside
+  // export {
+  //   // addItems, 
+  //   itemsNumber,
+  // }
   
   const id = nanoid() // test
   let items: any[] = []
-  let itemsNumber = 0
+  export let itemsNumber = 0
   
   $: {
     console.log(`itemsNumber`, itemsNumber)
-    
-    items = []
-    for (let i = 0; i < itemsNumber; i++) {
-      items.push({
-        // lbl: i + "00000000000000000000000000000000000",
-        lbl: i + id,
-        // lbl: i + id + "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-      })
-      items
-    }
-    items = items
+    createItems()
   }
   
   
@@ -37,6 +30,20 @@
     
 	})
   
+  
+  function createItems() {
+    // console.log(`itemsNumber`, itemsNumber)
+    
+    items = []
+    for (let i = 0; i < itemsNumber; i++) {
+      items.push({
+        // lbl: i + "00000000000000000000000000000000000",
+        lbl: i + id,
+        // lbl: i + id + "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      })
+    }
+    items = items
+  }
   
   export function addItems(addendum: number = 10) {
     itemsNumber += addendum
@@ -51,7 +58,7 @@
 <div 
   class="cmp"
 >
-  <div class="scroll">
+  <div class="scroller">
     
     {#each items as item}
       <div class="li">
@@ -73,22 +80,23 @@
   
   .cmp {
     // when put inside 'popover' cmp
-    // &--popover {
-      max-height: inherit;
-    // }
+    max-height: inherit;
     
     border-radius: var(--border-radius);
-    padding: .3em 0;
+    padding: .5em 0;
     
     display: grid;
     grid-template-rows: 1fr;
     
-    .scroll {
+    .scroller {
       overflow-y: auto;
+      padding: 0 .5em;
     }
     
     .li {
-      padding: .4em 1em;
+      border-radius: var(--border-radius);
+      padding: .4em .7em;
+      
       &:hover {
         background-color: tomato;
       }

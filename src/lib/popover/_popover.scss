@@ -63,18 +63,20 @@
 
 
 .tippy-root {
+  
   .tippy-box/* [data-theme~='popover'] */ {
     max-height: inherit;
     
     // * resets
     // ? 'inherit' inherits from my globals
     // ? 'initial' sets html's default
+    // ? 'revert' used w/in the user agent's default styles == 'unset'
     
     // border-radius: 15px; // test
     border-radius: inherit;
     
     background-color: inherit;
-    color: inherit;
+    color: revert;
     
     font-size: inherit;
     line-height: inherit;

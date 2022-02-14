@@ -1,7 +1,8 @@
 
 <script lang=ts>
-  import type Component from "./modal.svelte"
+  import { htmlElems, stackingContext } from "$lib/misc";
   import ProgressCircular from "$lib/progress-circular.svelte";
+  import type Component from "./modal.svelte"
   // import type Component from "./modal"
   import { /* onDestroy,  */onMount } from "svelte";
   // import { blur, fade, fly, scale } from "svelte/transition";
@@ -18,7 +19,10 @@
   // used by: transition directive(s)
   let componentIsLive = true
   
-  // useful: before destroying this component
+  /**
+   * useful: before destroying this component
+   * make animation/transitions end before destroying the cmp
+   */
   const outroEnded = {
     backdrop: false,
     modal: false,
@@ -30,7 +34,7 @@
   // * scroll
   let initialInlineStyles: CSSStyleDeclaration
   
-  type TargetHTMLEl = HTMLElement | null
+  type TargetHTMLEl = HTMLElement | undefined
   let scrollableContainer: TargetHTMLEl
   
   let scrollbarWasReset = false
@@ -65,13 +69,14 @@
    */
   function destroyComponent() {
     componentIsLive = false
+    // scrollbarWasReset = true // test
     resetScrollbarY(scrollableContainer)
   }
   
   // * scroll
   
   function initScrollableElVars() {
-    scrollableContainer = document.getElementById("appScroller")
+    scrollableContainer = htmlElems.appScroller
     
     if (!scrollableContainer) {
       console.log(`return: !scrollableContainer`, scrollableContainer)
@@ -178,7 +183,9 @@
 
 
 {#if componentIsLive}
-  <div class="component component--modal">
+  <div class="component component--modal"
+    style:z-index={stackingContext.modal}
+  >
     
     <div class="backdrop"
       on:click="{destroyComponent}"
@@ -223,7 +230,7 @@
       <!-- <div class="modal__content"> -->
     
         <ProgressCircular></ProgressCircular>
-    
+        
         <div class="text">
           this is a modal
         </div>
@@ -246,6 +253,7 @@
   
   .component {
     position: fixed;
+    // z-index: ;
     top: 0;
     left: 0;
     height: 100%;
@@ -260,13 +268,17 @@
     
     .backdrop {
       position: absolute;
-      z-index: -1;
+      // z-index: -1;
       height: 100%;
       width: 100%;
     }
     .modal {
       // test (can be left as is)
       pointer-events: initial;
+      
+      // to avoid z-index 
+      // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_without_z-index
+      isolation: isolate;
       
       // TODO actual values must be decided still
       height: 45%;

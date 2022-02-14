@@ -35,7 +35,7 @@
     
     // tooltipOpts: {},
     tooltipOpts: {
-      hideOnClick: 'toggle',
+      // hideOnClick: 'toggle',
       // placement: "left",
       
     },
@@ -59,35 +59,41 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    popoverCtrl[ctrlId].cmp.addItems()
-    // popoverCtrl[ctrlId].cmp?.$set({itemsNumber: 50})
+    // popoverCtrl[ctrlId].cmp.addItems()
+    popoverCtrl[ctrlId].cmp?.$set({itemsNumber: 50})
+    // popoverCtrl[ctrlId].cmp.itemsNumber! += 10 // set acaccessors={true}
     
     // popoverArgs.cmpProps = {
-    //   itemsNumber: 4,
+    //   itemsNumber: 7,
     // }
     
     
     // * ways of changing tippy instance's props
     
+    popoverCtrl[ctrlId].tooltip.setProps({
+      placement: "left",
+    })
+    
     // popoverArgs.tooltipOpts = {
-    //   placement: "right",
+    //   placement: "left",
     // }
     
     
-    // ? tests on SvelteActionReturnType.update()
+  }
+  
+  function testHelper() {
     
-    // setTimeout(() => {
-    //   console.log(`addMenuItems() popoverCtrl`, popoverCtrl)
-    // }, 100)
+    popoverCtrl[ctrlId].cmp?.$set({itemsNumber: 2})
+    // popoverArgs.cmpProps = {
+    //   itemsNumber: 2,
+    // }
     
-    // setTimeout(() => {
-    //   popoverArgs.cmpProps = {
-    //     itemsNumber: 2,
-    //   }
-    //   popoverArgs.tooltipOpts = {
-    //     placement: "right",
-    //   }
-    // }, 4000)
+    popoverCtrl[ctrlId].tooltip.setProps({
+      placement: "right",
+    })
+    // popoverArgs.tooltipOpts = {
+    //   placement: "right",
+    // }
     
   }
   
@@ -106,6 +112,20 @@
   on:click="{addMenuItems}"
 >
   add menu items
+</Btn>
+
+<Btn 
+  on:click="{testHelper}"
+>
+  testHelper
+</Btn>
+
+<Btn 
+  on:click="{() => {
+    showReferenceElem = !showReferenceElem
+  }}"
+>
+  destroy tippyTriggerEl
 </Btn>
 
 

@@ -3,6 +3,7 @@
 // client-side module
 // ? take inspiration from auth.ts, if this module needs to become more complex
 
+import { htmlElems } from "$lib/misc"
 // import { default as Component } from "$lib/modal/modal.svelte"
 import Component from "./modal.svelte"
 
@@ -21,12 +22,19 @@ function create() {
     return
   }
   
+  const target = htmlElems.appScroller
+  if (!target) {
+    console.log(`return: !target`, target)
+    return
+  }
+  
   const component = new Component({
     intro: true,
     props: {
       component: <Component><unknown>null,
     },
-    target: document.body,
+    // target: document.body,
+    target,
   })
   
   component.$set({

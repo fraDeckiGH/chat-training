@@ -2,6 +2,7 @@
 // * helper module for the <Component>
 // import this module only if the app is running in the browser
 
+import { htmlElems } from "$lib/misc"
 import ToastHandler from "./toast-handler.svelte"
 
 export {
@@ -15,8 +16,7 @@ function create() {
     return
   }
   
-  const target = 
-    document.getElementById("appScrollable")
+  const target = htmlElems.appScrollable
   
   if (!target) {
     console.log(`return: !target`, !target)

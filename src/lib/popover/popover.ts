@@ -8,21 +8,22 @@ https://stackoverflow.com/questions/59889859/how-can-i-return-the-rendered-html-
 REPL (corrected 1) https://svelte.dev/repl/ffd2b212ae9e48e4b0279e72c1c7cb21?version=3.17.3
 */
 
-import tippy from 'tippy.js';
+import { htmlElems, stackingContext } from "$lib/misc"
+import './_popover.scss'
+import maxSize from 'popper-max-size-modifier'
+
+import tippy from 'tippy.js'
 import type { 
   Content as TippyContent,
   Instance as TippyInstance, 
   Props as TippyProps,
-} from 'tippy.js';
-
+} from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
-import './_popover.scss'
 
-import maxSize from 'popper-max-size-modifier';
+import type { UnionToIntersection } from '$lib/type'
 
 import type Menu from "$lib/menu/menu.svelte"
 import type Menu_1 from "$lib/menu/menu-1.test.svelte" // test
-import type { UnionToIntersection } from '$lib/type'
 
 
 export {
@@ -138,8 +139,8 @@ const applyMaxSize = {
     // const {x} = state.modifiersData.popperOffsets;
     
     // console.log(`window.innerWidth`, window.innerWidth)
-    // console.log(`document.getElementById("appScroller").clientWidth`, document.getElementById("appScroller")!.clientWidth)
-    // console.log(`document.getElementById("appScroller").offsetWidth`, document.getElementById("appScroller")!.offsetWidth)
+    // console.log(`htmlElems.appScroller.clientWidth`, htmlElems.appScroller!.clientWidth)
+    // console.log(`htmlElems.appScroller.offsetWidth`, htmlElems.appScroller!.offsetWidth)
     
     state.styles.popper = {
       ...state.styles.popper,
@@ -153,7 +154,7 @@ const applyMaxSize = {
       
       // maxWidth: `90vw`,
       // maxWidth: `calc(100vw - 40px)`,
-      // maxWidth: `${Math.max(document.getElementById("appScroller")!.clientWidth - (x/*  + 40 */), 280)}px`,
+      // maxWidth: `${Math.max(htmlElems.appScroller!.clientWidth - (x/*  + 40 */), 280)}px`,
     };
   }
 }
@@ -275,7 +276,7 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
             // ? https://popper.js.org/docs/v2/utils/detect-overflow/#boundary
             // 'clippingParents' by default
             // boundary: customBoundaryHTMLEl,
-            // boundary: document.getElementById("appScroller"),
+            // boundary: htmlElems.appScroller,
             
             // padding: 20,
             padding: {
@@ -302,6 +303,8 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     
     // trigger: 'mouseenter focus', // default
     trigger: "click",
+    
+    zIndex: stackingContext.popover,
     
     ...tooltipOpts
   })
@@ -340,7 +343,8 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
       cmpProps & tooltipOpts initially passed to this func 
       will continue working but won't appear when logged
     */
-    update: (updatedArgs: typeof args) => {
+    // ? disabled: hard to maintain
+    /* update: (updatedArgs: typeof args) => {
       console.log(`use:action.update()`, updatedArgs)
       
       // ensure reactivity
@@ -350,18 +354,19 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
       if (updatedArgs.tooltipOpts) {
         tooltip.setProps(updatedArgs.tooltipOpts)
       }
-    },
+    }, */
     
     destroy: () => {
       console.log(`use:action.destroy()`, )
       
       /*
       in case the reference htmlEl is removed from the DOM
-      these instances need to be destroyed manually
+      I'll destroy these instances manually
+      ? needed
       */
       cmpInstance?.$destroy()
-      ctrlId && delete popoverCtrl[ctrlId]
       tooltip.destroy()
+      ctrlId && delete popoverCtrl[ctrlId]
     },
   }
   

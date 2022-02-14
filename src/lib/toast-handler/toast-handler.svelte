@@ -1,7 +1,8 @@
 
 <script lang=ts>
-  import { createIntersectionObserver } from "./toast-handler.intersection-observer"
+  import { stackingContext } from "$lib/misc"
   import { nanoid } from 'nanoid'
+  import { createIntersectionObserver } from "./toast-handler.intersection-observer"
   import { onMount } from 'svelte'
   
   type Toast = {
@@ -166,7 +167,9 @@
 </script>
 
 
-<div class="component component--toast-handler">
+<div class="component component--toast-handler"
+  style:z-index={stackingContext.toastHandler}
+>
   <div class="notification-area">
     
     <!-- <div class="visibile-notifications"> -->
@@ -230,6 +233,7 @@
   
   .component {
     position: absolute;
+    // z-index: ;
     top: 0;
     left: 0;
     height: 100%;
