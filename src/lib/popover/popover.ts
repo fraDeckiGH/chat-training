@@ -132,7 +132,7 @@ const applyMaxSize = {
   phase: 'beforeWrite',
   requires: ['maxSize'],
   fn({state}: any) {
-    console.log(`state`, state)
+    // console.log(`state`, state)
     
     // The `maxSize` modifier provides this data
     const {width, height} = state.modifiersData.maxSize;
