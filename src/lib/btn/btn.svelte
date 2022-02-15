@@ -1,7 +1,6 @@
 
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover/popover"
-  
   import { onMount } from "svelte"
   
   
@@ -40,8 +39,6 @@
 >
   {#if btnEl}
     
-  <!-- 
-      use:popoverWrap={popoverArgs} -->
     <button 
       class="btn"
       on:click|trusted

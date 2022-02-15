@@ -132,7 +132,7 @@ const applyMaxSize = {
   phase: 'beforeWrite',
   requires: ['maxSize'],
   fn({state}: any) {
-    // console.log(`state`, state)
+    console.log(`state`, state)
     
     // The `maxSize` modifier provides this data
     const {width, height} = state.modifiersData.maxSize;
@@ -145,16 +145,20 @@ const applyMaxSize = {
     state.styles.popper = {
       ...state.styles.popper,
       
-      // maxHeight: `${height}px`,
-      // maxWidth: `${width}px`,
+      maxHeight: `${height}px`,
+      maxWidth: `${width}px`,
       
       // Minimum acceptable size is 280px
-      maxHeight: `${Math.max(280, height)}px`,
-      maxWidth: `${Math.max(280, width)}px`,
+      // maxHeight: `${Math.max(280, height)}px`,
+      // maxHeight: `clamp(280px, ${height}, calc(100vh - 50px))`,
+      // maxWidth: `${Math.max(280, width)}px`,
+      
       
       // maxWidth: `90vw`,
       // maxWidth: `calc(100vw - 40px)`,
       // maxWidth: `${Math.max(htmlElems.appScroller!.clientWidth - (x/*  + 40 */), 280)}px`,
+      // maxWidth: `${htmlElems.appScroller!.clientWidth - (x/*  + 40 */)}px`,
+      // maxWidth: `${Math.max(280, Math.min(width, htmlElems.appScroller!.clientWidth - (x/*  + 40 */)))}px`,
     };
   }
 }
