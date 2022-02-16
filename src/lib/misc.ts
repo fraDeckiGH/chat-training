@@ -12,6 +12,9 @@ const htmlElems: {
   appScrollable?: HTMLElement
 } = {}
 
+/**
+ * zIndexes throughout the app
+ */
 const stackingContext: Readonly<{
   [key: string]: number
 }> = {

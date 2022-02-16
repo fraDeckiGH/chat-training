@@ -2,6 +2,7 @@
 <script lang=ts>
   /* 
     dependencies
+    Btn ($lib/btn)
     Menu ($lib/menu)
   */
   import Btn from "$lib/btn/btn.svelte"
@@ -26,7 +27,7 @@
     
     // cmpProps: {},
     cmpProps: {
-      itemsNumber: 4,
+      itemsNumber: 10,
     },
     
     // cmpOpts: { props: {}, },
@@ -45,6 +46,13 @@
   let showReferenceElem = true
   
   
+  $: {
+    console.log(`item selected `, 
+      $popoverCtrl[ctrlId]?.cmp.get_selectedItem()
+    )
+  }
+  
+  
   onMount(() => {
 		// console.log(`onMount `, )
     
@@ -59,8 +67,8 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    // popoverCtrl[ctrlId].cmp.addItems()
-    popoverCtrl[ctrlId].cmp?.$set({itemsNumber: 50})
+    popoverCtrl[ctrlId].cmp.addItems()
+    // popoverCtrl[ctrlId].cmp?.$set({ itemsNumber: 50 })
     // popoverCtrl[ctrlId].cmp.itemsNumber! += 10 // set acaccessors={true}
     
     // popoverArgs.cmpProps = {
@@ -70,9 +78,9 @@
     
     // * ways of changing tippy instance's props
     
-    popoverCtrl[ctrlId].tooltip.setProps({
-      placement: "left",
-    })
+    // popoverCtrl[ctrlId].tooltip.setProps({
+    //   placement: "left",
+    // })
     
     // popoverArgs.tooltipOpts = {
     //   placement: "left",

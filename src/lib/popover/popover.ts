@@ -9,18 +9,19 @@ REPL (corrected 1) https://svelte.dev/repl/ffd2b212ae9e48e4b0279e72c1c7cb21?vers
 */
 
 import { htmlElems, stackingContext } from "$lib/misc"
+import type { UnionToIntersection } from '$lib/type'
 import './_popover.scss'
 import maxSize from 'popper-max-size-modifier'
+import { writable } from 'svelte/store'
+import type { Writable } from 'svelte/store'
 
 import tippy from 'tippy.js'
 import type { 
-  Content as TippyContent,
-  Instance as TippyInstance, 
-  Props as TippyProps,
+  Content as TooltipContent,
+  Instance as TooltipInstance, 
+  Props as TooltipProps,
 } from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
-
-import type { UnionToIntersection } from '$lib/type'
 
 import type Menu from "$lib/menu/menu.svelte"
 import type Menu_1 from "$lib/menu/menu-1.test.svelte" // test
@@ -32,17 +33,23 @@ export {
   
 }
 export type {
-  PopoverArgs, // autocompletion
+  // Controller as PopoverCtrl,
+  Controller_val as PopoverCtrl_val,
+  PopoverArgs,
   
 }
 
+
+type Controller = {
+  [key: number | string | symbol]: Controller_val
+}
 
 /**
  * either pass cmp || content
  */
 type PopoverArgs<T = PopoverContent> = {
   /**
-   * a component to use as the tippy's content
+   * a component to use as the tooltip's content
    * see related: 'Popover.cmp'
    */
   cmp/* ? */: new (...args: any) => T
@@ -71,7 +78,7 @@ type PopoverArgs<T = PopoverContent> = {
   /**
    * static content
    */
-  // content?: TippyContent
+  // content?: TooltipContent
   
   /**
    * a key identifier of a popoverCtrl's prop
@@ -79,12 +86,12 @@ type PopoverArgs<T = PopoverContent> = {
    * 
    * recommended: Symbol(); cuz unique
    */
-  ctrlId?: Readonly<keyof (typeof popoverCtrl)>
+  ctrlId?: Readonly<keyof Controller>
   
   /**
    * tooltip options
    */
-  tooltipOpts?: Partial<TippyProps>
+  tooltipOpts?: Partial<TooltipProps>
 }
 
 /**
@@ -94,7 +101,7 @@ type PopoverContent =
   | Menu 
   | Menu_1 // test
 
-type PopoverCtrl_value = {
+type Controller_val = {
   /**
    * component (within tooltip content)
    * ? work around: interesection over union, to fix a very subtle usage bug
@@ -112,7 +119,7 @@ type PopoverCtrl_value = {
    * meant to be used like: '_tippy' property
    * https://atomiks.github.io/tippyjs/v6/tippy-instance/#-property
    */
-  tooltip: TippyInstance
+  tooltip: TooltipInstance
 }
 
 
@@ -148,11 +155,12 @@ const applyMaxSize = {
       maxHeight: `${height}px`,
       maxWidth: `${width}px`,
       
-      // Minimum acceptable size is 280px
+      // Minimum acceptable size is 280px 
+      // BUG overflow-x in some viewports
       // maxHeight: `${Math.max(280, height)}px`,
-      // maxHeight: `clamp(280px, ${height}, calc(100vh - 50px))`,
       // maxWidth: `${Math.max(280, width)}px`,
       
+      // maxHeight: `clamp(280px, ${height}, calc(100vh - 50px))`,
       
       // maxWidth: `90vw`,
       // maxWidth: `calc(100vw - 40px)`,
@@ -167,9 +175,7 @@ const applyMaxSize = {
  * popover controller (global store)
  * each key controls a different popover
  */
-const popoverCtrl: {
-  [key: number | string | symbol]: PopoverCtrl_value
-} = {}
+const popoverCtrl: Writable<Controller> = writable({})
 
 
 
@@ -202,7 +208,7 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     > | undefined
   
   if (cmp) {
-    tooltipOpts.onCreate = (instance: TippyInstance) => {
+    tooltipOpts.onCreate = (instance: TooltipInstance) => {
       // console.log(`onCreate`, instance)
       instance.popper.classList.add("tippy-root")
       
@@ -214,7 +220,7 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
         // ? {pinned down} so that cmpProps overwrites cmpOpts.props
         props: {
           // defaults here (valid for every component)
-          ...cmpProps
+          ...cmpProps,
         },
       })
     }
@@ -241,7 +247,9 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     // onClickOutside(instance, event) {
     //   console.log(`onClickOutside`, instance, event)
     // },
-    // onCreate
+    // onCreate(instance) {
+    //   console.log(`onCreate instance`, instance)
+    // },
     // onDestroy(instance) {
     //   console.log(`onDestroy instance`, instance)
     // },
@@ -305,8 +313,38 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
     
     // theme: "popover",
     
-    // trigger: 'mouseenter focus', // default
-    trigger: "click",
+    /* 
+      ? did a number of tests
+      reminders 
+      
+      focus events give keyboard focus a "mouse hover"-like behavior
+      they make it so the popover shows right away when focusing the ref
+      w/ the keyboard, whereas w/out 'enter' key must be pressed
+      
+      mouse events behave better than pointer's (at least w/ tippy.js)
+      
+      https://atomiks.github.io/tippyjs/v6/all-props/#hideonclick
+      
+      https://atomiks.github.io/tippyjs/v6/all-props/#touch
+      https://atomiks.github.io/tippyjs/v6/misc/#touch-devices
+    */
+    // default
+    // hideOnClick: true,
+    // never hide upon clicking
+    // hideOnClick: false,
+    // hide only upon clicking the reference, but not outside
+    // hideOnClick: 'toggle',
+    
+    // trigger: "click",
+    // trigger: 'click mouseenter', // no keyboard "mouse hover"-like behavior
+    // trigger: 'click focus mouseenter',
+    // trigger: 'click focus pointerenter',
+    // trigger: 'click focus focusin mouseenter',
+    trigger: 'click focusin mouseenter', // * best (not perfect)
+    // trigger: 'focus mouseenter', // * default
+    // trigger: 'focus pointerenter',
+    // trigger: 'mousedown', // no keyboard (at all)
+    // trigger: 'pointerdown', // no keyboard (at all)
     
     zIndex: stackingContext.popover,
     
@@ -319,22 +357,29 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
   // ? vers. where static 'content' is a possible parameter
   // #region
   /* if (ctrlId) {
-    const ctrl: PopoverCtrl_value = {
+    const ctrl: Controller_val = {
       tooltip,
     }
     
     popoverCtrl[ctrlId] = ctrl
     
     if (cmpInstance) {
-      ctrl.cmp = <PopoverCtrl_value["cmp"]>cmpInstance
+      ctrl.cmp = <Controller_val["cmp"]>cmpInstance
     }
   } */
   // #endregion
   if (ctrlId/*  && cmpInstance */) {
-    popoverCtrl[ctrlId] = {
-      cmp: <PopoverCtrl_value["cmp"]>cmpInstance,
+    const ctrl: Controller_val = {
+      cmp: <Controller_val["cmp"]>cmpInstance,
       tooltip,
     }
+    
+    cmpInstance.$set({ ctrl, })
+    popoverCtrl.update(val => ({
+        ...val,
+        [ctrlId]: ctrl
+      })
+    )
   }
   
   

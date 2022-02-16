@@ -13,6 +13,8 @@
   // let cta
   // let isCta
   
+  // svelte warns: "prop not passed" (when cmp is created in HTML)
+  // export let popoverArgs: PopoverArgs | undefined
   export let popoverArgs = <PopoverArgs | null>null
   
   

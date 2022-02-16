@@ -17,14 +17,13 @@
     --plt-#{$key}: hsl(#{
       color.get-hsl($value)
     });
-    // ? might be needed in the future
     --plt-#{$key}-hsl: #{ 
       color.get-hsl($value)
     };
     
     /* result example
-    --plt-colorName
-    --plt-colorName-hsl
+    --plt-colorName: hsl(154deg, 20%, 82%);
+    --plt-colorName-hsl: 154deg, 20%, 82%;
     */
   }
 }

@@ -88,8 +88,9 @@
   </h4>
   
   <div class="actions">
-    <button on:click={() => auth?.signOut()}
+    <button 
       class=""
+      on:click={() => auth?.signOut()}
     >
       sign out
     </button>

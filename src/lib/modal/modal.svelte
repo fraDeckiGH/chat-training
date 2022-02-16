@@ -9,7 +9,7 @@
   import { fade, fly } from "svelte/transition";
   
   
-  // this component (instance)
+  // this component's instance
   export let component: Component
   
   
@@ -350,7 +350,7 @@
       // box-shadow: 0px 2px 7px 1px hsla(var(--plt-cover-hsl), .1);
       
       // ? colored shadow = good idea?
-      box-shadow: 0px .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
+      box-shadow: 0em .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
       
       // BUG could not make this work
       /* box-shadow: 0 0 5px 5px hsla(
