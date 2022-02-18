@@ -1,17 +1,21 @@
 
 <!-- <svelte:options accessors={true} /> -->
 
-<script lang=ts>
+<script lang="ts">
   /*
     todo
     
-    component as list-item
-    pass a component and its props, and make items w/ that
+    {component as list-item}
+    use a passed component as list-item
+    pass a component and its props, and make items w/ that.
+    in other words, iterate that in the html
   */
   import { nanoid } from "nanoid"
-  import { popoverCtrl } from "$lib/popover/popover"
-  import type { PopoverCtrl_val } from "$lib/popover/popover"
+  import { popoverCtrls } from "$lib/popover/popover"
+  import type { PopoverCtrl } from "$lib/popover/popover"
   import { afterUpdate, onDestroy, onMount } from "svelte"
+  import { getContext/* , hasContext */ } from 'svelte'
+  import type { Unsubscriber, Writable } from "svelte/store"
   import type { 
     // Content as TooltipContent,
     Instance as TooltipInstance, 
@@ -24,6 +28,9 @@
   //   addItems, 
   //   // itemsNumber,
   // }
+  export type {
+    Item as MenuItem,
+  }
   
   type Item = {
     // icon: 
@@ -31,26 +38,45 @@
     lbl: string
   }
   
-  export let ctrl = <PopoverCtrl_val | null>null
+  export let popoverCtrl = <PopoverCtrl | null>null
   const id = nanoid() // test
-  let items: Item[] = []
   export let itemsNumber = 0 // test
+  
+  // non-reactive
+  export let items: Item[] = []
+  // store, can be passed as prop or w/ context
+  export let items$: Writable<typeof items> | undefined = 
+    getContext("items$")
+  let unsub_items$: Unsubscriber | undefined = 
+    items$?.subscribe((value) => {
+      items = value
+    })
+  ;
+  
   
   /**
    * container tooltip, 
    * populated if this cmp was instanced inside a tooltip
    */
+  // all good
   // export let tooltip = <TooltipInstance | null>null
   // svelte warns: "prop not passed" (when cmp is created in HTML)
   // export let tooltip: TooltipInstance | undefined
   
   
   $: {
+    // these 2 log the same result
+    // console.log(`items`, items)
+    // console.log(`$items$`, $items$)
+  }
+  
+  // tests
+  /* $: { 
     // needed to make this expr reactive
     console.log(`itemsNumber`, itemsNumber)
     
     createItems()
-  }
+  } */
   
   
   // * lifecycle
@@ -61,7 +87,7 @@
 	})
   onDestroy(() => {
 		console.log(`onDestroy `, )
-    
+    unsub_items$?.()
 	})
   onMount(() => {
 		console.log(`onMount `, )
@@ -79,13 +105,17 @@
     // console.log(`selectItem() `, item)
     
     selectedItem = item
-    popoverCtrl.update(val => val)
+    popoverCtrls.sync()
     
-    ctrl?.tooltip.hide()
-    // $popoverCtrl[ctrlId].tooltip.hide()
+    // tooltip?.hide()
+    popoverCtrl?.tooltip.hide()
+    // $popoverCtrls[ctrlId].tooltip.hide()
+    
+    // TODO destroy cmp (?)
     
     return item
 	}
+  
   
   // * tests
   
@@ -121,18 +151,18 @@
   <!-- <div class="rug"></div> -->
   
   <div class="scroller">
-    <div class="list-items">
+    <ul class="list-items">
     
       {#each items as item}
-        <div
+        <li
           class="li"
           on:click={() => selectItem(item)}
         >
           {item.lbl}
-        </div>
+        </li>
       {/each}
     
-    </div>
+    </ul>
   </div>
   
 </div>

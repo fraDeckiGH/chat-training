@@ -7,19 +7,36 @@
   */
   import Btn from "$lib/btn/btn.svelte"
   
-  import Menu from "$lib/menu/menu.svelte"
+  import Menu/* , { MenuItem } */ from "$lib/menu/menu.svelte"
   // import type Menu from "$lib/menu/menu.svelte"
+  // import type { MenuItem } from "$lib/menu/menu.svelte"
   // import Menu_1 from "$lib/menu/menu-1.test.svelte"
   
-  import { popoverCtrl } from "$lib/popover/popover"
+  import { popoverCtrls } from "$lib/popover/popover"
   import type { PopoverArgs } from "$lib/popover/popover"
   
   import { afterUpdate, onMount } from "svelte"
+  import { writable } from "svelte/store";
   
   
   // const ctrlId = 5308
   // const ctrlId = "randId"
   const ctrlId = Symbol()
+  
+  // let items: MenuItem = ([
+  // let items: any[] = ([
+  const items = writable([
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    
+  ])
   
   // may also be a simple literal in the HTML
   const popoverArgs: PopoverArgs<Menu> = {
@@ -27,10 +44,21 @@
     
     // cmpProps: {},
     cmpProps: {
-      itemsNumber: 10,
+      // items,
+      items$: items,
+      // itemsNumber: 10,
     },
     
     // cmpOpts: { props: {}, },
+    /* cmpOpts: {
+      context: new Map(
+        Object.entries({
+          items$: items, // works!
+        })
+      ),
+      
+    }, */
+    
     // content: "my tip is...",
     ctrlId,
     
@@ -46,9 +74,11 @@
   let showReferenceElem = true
   
   
+  $: console.log(`$popoverCtrls test: key removed? `, $popoverCtrls)
+  $: console.log(`$items `, $items)
   $: {
     console.log(`item selected `, 
-      $popoverCtrl[ctrlId]?.cmp.get_selectedItem()
+      $popoverCtrls[ctrlId]?.cmp.get_selectedItem()
     )
   }
   
@@ -56,20 +86,51 @@
   onMount(() => {
 		// console.log(`onMount `, )
     
+    
 	})
   
   
+  /**
+   * reactivity test
+   */
+  function alterMenuItems() {
+    
+    // items.push({
+    //   lbl: "4444",
+    // })
+    // items = items
+    
+    console.log(`items`, items)
+    
+    items.update((val: any) => {
+      val.push({
+        lbl: "4444",
+      })
+      return val
+    })
+    
+  }
+  
+  /**
+   * worked even when popoverCtrls wasn't a store
+   * w/ the following limitation: 
+   * parent/utilizer of popoverCtrls.cmp (eg. this cmp), 
+   * could not be notified of changes. no reactivity event 
+   * was fired when changes happened);
+   * could still retrieve the updated value(s) tho, 
+   * (problem is when to?)
+   */
   function addMenuItems() {
-    // console.log(`addMenuItems() popoverCtrl`, popoverCtrl)
+    // console.log(`addMenuItems() popoverCtrls`, popoverCtrls)
     
     // showReferenceElem = !showReferenceElem
     
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    popoverCtrl[ctrlId].cmp.addItems()
-    // popoverCtrl[ctrlId].cmp?.$set({ itemsNumber: 50 })
-    // popoverCtrl[ctrlId].cmp.itemsNumber! += 10 // set acaccessors={true}
+    $popoverCtrls[ctrlId].cmp.addItems()
+    // $popoverCtrls[ctrlId].cmp?.$set({ itemsNumber: 50 })
+    // $popoverCtrls[ctrlId].cmp.itemsNumber! += 10 // set acaccessors={true}
     
     // popoverArgs.cmpProps = {
     //   itemsNumber: 7,
@@ -78,7 +139,7 @@
     
     // * ways of changing tippy instance's props
     
-    // popoverCtrl[ctrlId].tooltip.setProps({
+    // $popoverCtrls[ctrlId].tooltip.setProps({
     //   placement: "left",
     // })
     
@@ -91,12 +152,12 @@
   
   function testHelper() {
     
-    popoverCtrl[ctrlId].cmp?.$set({itemsNumber: 2})
+    $popoverCtrls[ctrlId].cmp?.$set({itemsNumber: 2})
     // popoverArgs.cmpProps = {
     //   itemsNumber: 2,
     // }
     
-    popoverCtrl[ctrlId].tooltip.setProps({
+    $popoverCtrls[ctrlId].tooltip.setProps({
       placement: "right",
     })
     // popoverArgs.tooltipOpts = {
@@ -117,9 +178,15 @@
 </Btn>
 
 <Btn 
+  on:click="{alterMenuItems}"
+>
+  alter items
+</Btn>
+
+<Btn 
   on:click="{addMenuItems}"
 >
-  add menu items
+  add items
 </Btn>
 
 <Btn 

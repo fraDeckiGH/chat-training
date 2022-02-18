@@ -8,7 +8,7 @@ https://stackoverflow.com/questions/59889859/how-can-i-return-the-rendered-html-
 REPL (corrected 1) https://svelte.dev/repl/ffd2b212ae9e48e4b0279e72c1c7cb21?version=3.17.3
 */
 
-import { htmlElems, stackingContext } from "$lib/misc"
+import { /* htmlElems,  */stackingContext } from "$lib/misc"
 import type { UnionToIntersection } from '$lib/type'
 import './_popover.scss'
 import maxSize from 'popper-max-size-modifier'
@@ -29,19 +29,40 @@ import type Menu_1 from "$lib/menu/menu-1.test.svelte" // test
 
 export {
   popover,
-  popoverCtrl,
+  controllers as popoverCtrls,
   
 }
 export type {
-  // Controller as PopoverCtrl,
-  Controller_val as PopoverCtrl_val,
+  Controller as PopoverCtrl,
+  // Controllers as PopoverCtrls,
   PopoverArgs,
   
 }
 
 
+type Controllers = {
+  [key: number | string | symbol]: Controller
+}
+
 type Controller = {
-  [key: number | string | symbol]: Controller_val
+  /**
+   * component (within tooltip content)
+   * ? work around: interesection over union, to fix a very subtle usage bug
+   */
+  cmp/* ? */: 
+    UnionToIntersection<
+      InstanceType<
+        // NonNullable<
+          PopoverArgs["cmp"]
+        // >
+      >
+    >
+  
+  /**
+   * meant to be used like: '_tippy' property
+   * https://atomiks.github.io/tippyjs/v6/tippy-instance/#-property
+   */
+  tooltip: TooltipInstance
 }
 
 /**
@@ -81,12 +102,13 @@ type PopoverArgs<T = PopoverContent> = {
   // content?: TooltipContent
   
   /**
-   * a key identifier of a popoverCtrl's prop
-   * to further manipulate the popover once generated
+   * a key (id), to navigate available controllers and use 1
+   * like this: " controllers[<<key/id>>].doSth() ";
+   * allowing to further manipulate the popover once generated
    * 
    * recommended: Symbol(); cuz unique
    */
-  ctrlId?: Readonly<keyof Controller>
+  ctrlId?: Readonly<keyof Controllers>
   
   /**
    * tooltip options
@@ -100,27 +122,6 @@ type PopoverArgs<T = PopoverContent> = {
 type PopoverContent = 
   | Menu 
   | Menu_1 // test
-
-type Controller_val = {
-  /**
-   * component (within tooltip content)
-   * ? work around: interesection over union, to fix a very subtle usage bug
-   */
-  cmp/* ? */: 
-    UnionToIntersection<
-      InstanceType<
-        // NonNullable<
-          PopoverArgs["cmp"]
-        // >
-      >
-    >
-  
-  /**
-   * meant to be used like: '_tippy' property
-   * https://atomiks.github.io/tippyjs/v6/tippy-instance/#-property
-   */
-  tooltip: TooltipInstance
-}
 
 
 
@@ -175,7 +176,26 @@ const applyMaxSize = {
  * popover controller (global store)
  * each key controls a different popover
  */
-const popoverCtrl: Writable<Controller> = writable({})
+// const controllers: Controllers = {}
+// const controllers: Writable<Controllers> = writable({})
+function createControllersStore() {
+  // ? https://svelte.dev/tutorial/custom-stores
+	const { set, subscribe, update } = writable<Controllers>({})
+
+	return {
+    subscribe,
+    update,
+    
+    /**
+     * alert/notify subscribers of the changes
+     */
+		sync: () => update(val => val),
+    
+		// decrement: () => update(n => n - 1),
+		// reset: () => set(0)
+	}
+}
+const controllers = createControllersStore()
 
 
 
@@ -357,25 +377,27 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
   // ? vers. where static 'content' is a possible parameter
   // #region
   /* if (ctrlId) {
-    const ctrl: Controller_val = {
+    const ctrl: Controller = {
       tooltip,
     }
     
-    popoverCtrl[ctrlId] = ctrl
+    controllers[ctrlId] = ctrl
     
     if (cmpInstance) {
-      ctrl.cmp = <Controller_val["cmp"]>cmpInstance
+      ctrl.cmp = <Controller["cmp"]>cmpInstance
     }
   } */
   // #endregion
   if (ctrlId/*  && cmpInstance */) {
-    const ctrl: Controller_val = {
-      cmp: <Controller_val["cmp"]>cmpInstance,
+    const ctrl: Controller = {
+      cmp: <Controller["cmp"]>cmpInstance,
       tooltip,
     }
     
-    cmpInstance.$set({ ctrl, })
-    popoverCtrl.update(val => ({
+    cmpInstance.$set({ 
+      popoverCtrl: ctrl,
+    })
+    controllers.update(val => ({
         ...val,
         [ctrlId]: ctrl
       })
@@ -415,7 +437,15 @@ function popover(htmlEl: HTMLElement, args: PopoverArgs) {
       */
       cmpInstance?.$destroy()
       tooltip.destroy()
-      ctrlId && delete popoverCtrl[ctrlId]
+      
+      // ctrlId && delete controllers[ctrlId]
+      if (ctrlId) {
+        controllers.update(val => {
+          delete val[ctrlId]
+          return val
+        })
+      }
+      
     },
   }
   
