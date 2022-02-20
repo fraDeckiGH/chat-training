@@ -2,6 +2,7 @@
 <script lang=ts>
   import type { Auth } from "$lib/auth"
   import { createModal } from "$lib/modal/modal"
+import PopoverDemo_2 from "$lib/popover/popover-demo-2.svelte"
   import PopoverDemo from "$lib/popover/popover-demo.svelte"
   import type ToastHandler from "$lib/toast-handler/toast-handler.svelte"
   import type { Maybe } from "$lib/type"
@@ -123,7 +124,8 @@
       </button>
     {/if}
     
-    <PopoverDemo></PopoverDemo>
+    <!-- <PopoverDemo></PopoverDemo> -->
+    <PopoverDemo_2></PopoverDemo_2>
     
   </div>
   

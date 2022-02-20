@@ -19,6 +19,9 @@
   
   
   onMount(async () => {
+    // css imports (don't delete)
+    //#region 
+    // don't delete, these lines have been useful in so many tests
     // import("@csstools/normalize.css")
     
     // import("sanitize.css")
@@ -28,6 +31,7 @@
     // import("sanitize.css/reduce-motion.css")
     // import("sanitize.css/system-ui.css")
     // import("sanitize.css/ui-monospace.css")
+    //#endregion
     
     theme = (await import("$lib/theme/theme")).create()
     // toast = (await import("$lib/toast-handler/toast-handler")).singleton
