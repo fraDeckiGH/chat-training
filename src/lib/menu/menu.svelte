@@ -77,7 +77,6 @@
     
     selectedItem = item
     popoverCtrls?.sync()
-    // popoverCtrl?.sync()
     
     popoverCtrl?.tooltip.hide()
     

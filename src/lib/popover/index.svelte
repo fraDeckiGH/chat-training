@@ -1,6 +1,4 @@
 
-
-<!--  -->
 <script lang="ts" context=module>
 // * a tooltip w/ a chosen component inside of it, as it's content
 // client side module
@@ -56,11 +54,6 @@ const applyMaxSize = {
     
     // The `maxSize` modifier provides this data
     const {width, height} = state.modifiersData.maxSize;
-    // const {x} = state.modifiersData.popperOffsets;
-    
-    // console.log(`window.innerWidth`, window.innerWidth)
-    // console.log(`htmlElems.appScroller.clientWidth`, htmlElems.appScroller!.clientWidth)
-    // console.log(`htmlElems.appScroller.offsetWidth`, htmlElems.appScroller!.offsetWidth)
     
     state.styles.popper = {
       ...state.styles.popper,
@@ -72,14 +65,6 @@ const applyMaxSize = {
       // BUG overflow-x in some viewports
       // maxHeight: `${Math.max(280, height)}px`,
       // maxWidth: `${Math.max(280, width)}px`,
-      
-      // maxHeight: `clamp(280px, ${height}, calc(100vh - 50px))`,
-      
-      // maxWidth: `90vw`,
-      // maxWidth: `calc(100vw - 40px)`,
-      // maxWidth: `${Math.max(htmlElems.appScroller!.clientWidth - (x/*  + 40 */), 280)}px`,
-      // maxWidth: `${htmlElems.appScroller!.clientWidth - (x/*  + 40 */)}px`,
-      // maxWidth: `${Math.max(280, Math.min(width, htmlElems.appScroller!.clientWidth - (x/*  + 40 */)))}px`,
     };
   }
 }
@@ -106,7 +91,6 @@ function popover(htmlEl: HTMLElement, args: Args) {
     cmp, 
     cmpProps = {}, 
     cmpOpts,
-    // content,
     ctrlId,
     tooltipOpts = {},
   } = args
@@ -139,9 +123,7 @@ function popover(htmlEl: HTMLElement, args: Args) {
       })
     }
     
-  }/*  else if (content) {
-    tooltipOpts.content = content
-  } */
+  }
   
   
   // * tooltip
@@ -268,43 +250,15 @@ function popover(htmlEl: HTMLElement, args: Args) {
   
   // * controller
   
-  // ? vers. where static 'content' is a possible parameter
-  // #region
-  /* if (ctrlId) {
-    const ctrl: Controller = {
-      tooltip,
-    }
-    
-    controllers[ctrlId] = ctrl
-    
-    if (cmpInstance) {
-      ctrl.cmp = <Controller["cmp"]>cmpInstance
-    }
-  } */
-  // #endregion
-  
-  // ? see use:action.destroy() code 4 more info
-  // let ctrl: Controller | undefined
-  // let ctrl$: Writable$<Controller> | undefined
-  
   if (ctrlId/*  && cmpInstance */) {
-    // ctrl = {
     const ctrl: Controller = {
       cmp: <Controller["cmp"]>cmpInstance,
       tooltip,
     }
     
-    // const ctrl$ = createWritable$(ctrl)
-    // ctrl$ = createWritable$(ctrl)
-    
-    
-    // when 'controllers' wasn't a store
-    // controllers[ctrlId] = ctrl$
-    
     controllers.update(val => ({
         ...val,
         [ctrlId]: ctrl,
-        // [ctrlId]: ctrl$,
       })
     )
     
@@ -314,8 +268,6 @@ function popover(htmlEl: HTMLElement, args: Args) {
       return
     }
     cmpInstance.$set({ 
-      // popoverCtrl: ctrl,
-      // popoverCtrl: ctrl$,
       popoverCtrls: controllers,
       popoverCtrls_key: ctrlId,
     })
@@ -326,25 +278,6 @@ function popover(htmlEl: HTMLElement, args: Args) {
   // * use:action return
   
   const useActionReturn: SvelteActionReturnType = {
-    /* triggers when 'args' change from outside
-      
-      * NOTE initial func args
-      cmpProps & tooltipOpts initially passed to this func 
-      will continue working but won't appear when logged
-    */
-    // ? disabled: hard to maintain
-    /* update: (updatedArgs: typeof args) => {
-      console.log(`use:action.update()`, updatedArgs)
-      
-      // ensure reactivity
-      if (updatedArgs.cmpProps) {
-        cmpInstance?.$set(updatedArgs.cmpProps)
-      }
-      if (updatedArgs.tooltipOpts) {
-        tooltip.setProps(updatedArgs.tooltipOpts)
-      }
-    }, */
-    
     destroy: () => {
       console.log(`use:action.destroy()`, )
       
@@ -372,9 +305,6 @@ function popover(htmlEl: HTMLElement, args: Args) {
         https://svelte.dev/tutorial/readable-stores
       */
       
-      // when 'controllers' wasn't a store
-      // ctrlId && delete controllers[ctrlId]
-      
       if (ctrlId) {
         controllers.update(val => {
           delete val[ctrlId]
@@ -386,12 +316,7 @@ function popover(htmlEl: HTMLElement, args: Args) {
         // I can rely on the garbage collector to actually remove it
         
         // nullify the entry itself
-        
-        // broken btw
-        /* ctrl$?.update(val => {
-          val = null
-          return val
-        }) */
+        // controllers[ctrlId] = null
         
       }
       
