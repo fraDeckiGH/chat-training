@@ -11,15 +11,14 @@ import type {
 
 // {pinned down}
 import type Menu from "$lib/menu/menu.svelte"
-import type Menu_1 from "$lib/menu/menu-1.test.svelte" // test
-import type Menu_2 from "$lib/menu/menu-2.svelte" // test
+import type Menu_1 from "$lib/menu/_4ref/menu-1.test.svelte" // test
 
 
 export type {
   Args,
   Controller,
   Controllers,
-  Controllers_key,
+  // Controllers_key,
   
 }
 
@@ -98,8 +97,8 @@ type Controller = {
 }
 
 type Controllers = {
-  // [key: number | string | symbol]: Controller
-  [key: number | string | symbol]: Writable$<Controller>
+  [key: number | string | symbol]: Controller
+  // [key: number | string | symbol]: Writable$<Controller>
 }
 
 type Controllers_key = Readonly<keyof Controllers>
@@ -111,7 +110,6 @@ type Controllers_key = Readonly<keyof Controllers>
 type Content = 
   | Menu 
   | Menu_1 // test
-  | Menu_2 // test
 ;
 
 

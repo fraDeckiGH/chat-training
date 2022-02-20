@@ -5,23 +5,30 @@
     Btn ($lib/btn)
     Menu ($lib/menu)
   */
-  
+  // import { getPopoverCtrl } from "."
   import { 
+    // getController,
+    // getPopoverCtrl,
     popoverCtrls,
   } from "$lib/popover/index.svelte"
   // } from "."
-  import type { PopoverArgs } from "."
+  import type { PopoverArgs, PopoverCtrl } from "."
   import Btn from "$lib/btn/btn.svelte"
+  import type { Writable$ } from "$lib/store"
   
-  // import Menu/* , { MenuItem } */ from "$lib/menu/menu.svelte"
-  import Menu_2 from "$lib/menu/menu-2.svelte";
+  import Menu/* , { MenuItem } */ from "$lib/menu/menu.svelte"
   // import type Menu from "$lib/menu/menu.svelte"
   import type { MenuItem } from "$lib/menu/menu.svelte"
   // import Menu_1 from "$lib/menu/menu-1.test.svelte"
   
   // import { popoverCtrls } from "$lib/popover/popover"
+  // import type { 
+  //   CustomStore, 
+  //   PopoverArgs, 
+  //   PopoverCtrl, 
+  // } from "$lib/popover/popover"
   
-  import { onMount } from "svelte"
+  import { /* afterUpdate,  */onMount } from "svelte"
   import { writable } from "svelte/store";
   
   
@@ -43,16 +50,15 @@
     
   ])
   
-  
   // may also be a simple literal in the HTML
-  const popoverArgs: PopoverArgs<Menu_2> = {
-    cmp: Menu_2,
+  const popoverArgs: PopoverArgs<Menu> = {
+    cmp: Menu,
     
     // cmpProps: {},
     cmpProps: {
       // items,
       items$: items,
-      
+      // itemsNumber: 10,
     },
     
     // cmpOpts: { props: {}, },
@@ -78,14 +84,25 @@
     
   }
   
+  let popoverCtrl: Writable$<PopoverCtrl> | undefined 
   let showReferenceElem = true
   
   
-  // $: console.log(`items `, items)
-  $: console.log(`$items `, $items)
+  // $: console.log(`$popoverCtrls test: key removed? `, $popoverCtrls)
+  // $: console.log(`$items `, $items)
+  $: {
+    popoverCtrl = $popoverCtrls[ctrlId]
+    // popoverCtrl = getPopoverCtrl?.(ctrlId)
+    console.log(`popoverCtrl`, popoverCtrl)
+    console.log(`$popoverCtrl`, $popoverCtrl)
+  }
   $: {
     console.log(`item selected `, 
-      // $popoverCtrls[ctrlId].cmp.get_selectedItem()
+      // $popoverCtrls[ctrlId]?.cmp.get_selectedItem()
+      // popoverCtrls[ctrlId]?.cmp.get_selectedItem()
+      // popoverCtrls[`$${[ctrlId]}`]?.cmp.get_selectedItem()
+      
+      $popoverCtrl?.cmp.get_selectedItem()
     )
   }
   
@@ -102,8 +119,6 @@
    */
   function alterMenuItems() {
     
-    // 1
-    
     // items.push(<MenuItem>{
     //   lbl: "4444",
     // })
@@ -112,16 +127,14 @@
     // console.log(`items`, items)
     
     
-    // 2
-    
     items.update((val) => {
-      val.push(<MenuItem>{
+      val.push({
         lbl: "4444",
       })
       return val
     })
     
-    // console.log(`$items`, $items)
+    console.log(`$items`, $items)
     
   }
   
@@ -133,13 +146,27 @@
    * was fired when changes happened);
    * could still retrieve the updated value(s) tho, 
    * (problem is when to?)
+   * 
+   * consider popoverArgs usage defunct
    */
   function addMenuItems() {
+    // console.log(`addMenuItems() popoverCtrls`, popoverCtrls)
+    
+    // showReferenceElem = !showReferenceElem
+    
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
+    // $popoverCtrl?.cmp.addItems()
+    $popoverCtrl?.cmp.alterMenuItems()
+    
     // $popoverCtrls[ctrlId].cmp.addItems()
-    // $popoverCtrls[ctrlId].cmp.$set({ itemsNumber: 50 })
+    // $popoverCtrls[ctrlId].cmp?.$set({ itemsNumber: 50 })
+    // $popoverCtrls[ctrlId].cmp.itemsNumber! += 10 // set acaccessors={true}
+    
+    // popoverArgs.cmpProps = {
+    //   itemsNumber: 7,
+    // }
     
     
     // * ways of changing tippy instance's props
@@ -148,15 +175,26 @@
     //   placement: "left",
     // })
     
+    // popoverArgs.tooltipOpts = {
+    //   placement: "left",
+    // }
+    
+    
   }
   
   function testHelper() {
     
-    // $popoverCtrls[ctrlId].cmp.$set({itemsNumber: 2})
+    // $popoverCtrls[ctrlId].cmp?.$set({itemsNumber: 2})
+    // // popoverArgs.cmpProps = {
+    // //   itemsNumber: 2,
+    // // }
     
     // $popoverCtrls[ctrlId].tooltip.setProps({
     //   placement: "right",
     // })
+    // // popoverArgs.tooltipOpts = {
+    // //   placement: "right",
+    // // }
     
   }
   

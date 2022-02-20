@@ -1,6 +1,4 @@
 
-<!-- <svelte:options accessors={true} /> -->
-
 <script lang="ts" context=module>
   export type {
     Item as MenuItem,
@@ -18,79 +16,55 @@
   /*
     todo
     
+    --
     {component as list-item}
     use a passed component as list-item
     pass a component and its props, and make items w/ that.
     in other words, iterate that in the html
+    
+    here? shouldn't I keep things simple?
+    --
   */
-  import { nanoid } from "nanoid"
-  import type { PopoverCtrl } from "$lib/popover"
+  import type { 
+    PopoverCtrl, 
+    PopoverCtrls, 
+    PopoverCtrls_key, 
+  } from "$lib/popover"
   import type { Writable$ } from "$lib/store"
-  // import { popoverCtrls } from "$lib/popover/popover"
-  import { afterUpdate, onDestroy, onMount } from "svelte"
-  import { getContext/* , hasContext */ } from 'svelte'
+  import { onDestroy } from "svelte"
   import type { Unsubscriber, Writable } from "svelte/store"
   
-  
-  // BUG svelte: declarations not seen outside
-  // export {
-  //   addItems, 
-  //   // itemsNumber,
-  // }
-  
-  
-  const id = nanoid() // test
-  export let itemsNumber = 0 // test
   
   // (pass only 1 of these)
   // non-reactive
   export let items: Item[] = []
-  // store, can be passed as prop or w/ context
-  export let items$: Writable<typeof items> | undefined = 
-    getContext("items$")
+  // store
+  export let items$: Writable<typeof items> | undefined
   const unsub_items$: Unsubscriber | undefined = 
     items$?.subscribe((value) => {
       items = value
     })
   ;
   
-  // all good
-  export let popoverCtrl = <Writable$<PopoverCtrl> | null>null
-  // svelte warns: "prop not passed" (when cmp is created in HTML)
-  // export let popoverCtrl: CustomStore<PopoverCtrl> | undefined
+  let popoverCtrl: PopoverCtrl | undefined
+  export let popoverCtrls: Writable$<PopoverCtrls> | undefined = undefined
+  export let popoverCtrls_key: PopoverCtrls_key | undefined = undefined
   
   let selectedItem: Item | undefined
   
   
-  // tests
-  $: { 
-    // needed to make this expr reactive
-    // console.log(`itemsNumber`, itemsNumber)
-    
-    itemsNumber > 0 && createItems()
-  }
-  
-  // moved below createItems() so this triggers when it triggers
   $: {
-    // these 2 log the same result
-    // console.log(`items`, items)
-    // console.log(`$items$`, $items$)
+    if ($popoverCtrls && popoverCtrls_key) {
+      popoverCtrl = $popoverCtrls[popoverCtrls_key]
+    }
   }
   
   
   // * lifecycle
   
-  afterUpdate(() => {
-		console.log(`afterUpdate `, )
-    
-	})
   onDestroy(() => {
-		console.log(`onDestroy `, )
+		// console.log(`onDestroy `, )
     unsub_items$?.()
-	})
-  onMount(() => {
-		console.log(`onMount `, )
-    
 	})
   
   
@@ -102,16 +76,10 @@
     // console.log(`selectItem() `, item)
     
     selectedItem = item
-    // popoverCtrls.sync()
-    popoverCtrl?.sync()
+    popoverCtrls?.sync()
+    // popoverCtrl?.sync()
     
-    // tooltip?.hide()
-    // popoverCtrl?.tooltip.hide()
-    $popoverCtrl?.tooltip.hide()
-    // (<any>$popoverCtrl)?.tooltip.hide()
-    // $popoverCtrl?.
-    // $popoverCtrls[ctrlId].tooltip.hide()
-    // $popoverCtrls["regrge"].tooltip.hide()
+    popoverCtrl?.tooltip.hide()
     
     // TODO destroy cmp (?)
     
@@ -123,49 +91,16 @@
   
   /**
    * reactivity test
+   * works! o.o
+   * also tried w/out export by making this func trigger from here
    */
   export function alterMenuItems() {
-    
     items.push(<Item>{
       lbl: "4444",
     })
     items = items
     
     console.log(`items`, items)
-    
-    
-    // items.update((val: any) => {
-    //   val.push({
-    //     lbl: "4444",
-    //   })
-    //   return val
-    // })
-    
-    // console.log(`$items`, $items)
-    
-  }
-  
-  
-  function createItems() {
-    // console.log(`itemsNumber`, itemsNumber)
-    
-    items = []
-    for (let i = 0; i < itemsNumber; i++) {
-      items.push(<Item>{
-        lbl: i + "00000000000000000000000000000000000",
-        // lbl: i + id,
-        // lbl: i + id + "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-        // lbl: i + id + "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-      })
-    }
-    items = items
-  }
-  
-  export function addItems(addendum: number = 10) {
-    itemsNumber += addendum
-  }
-  export function removeItems(addendum: number = 10) {
-    itemsNumber -= addendum
   }
   
   

@@ -84,13 +84,11 @@ const applyMaxSize = {
   }
 }
 
-
 // ? doesn't work: thinks the type is "{}"
 // const controllers = createWritable$({})
 // ? both work
 const controllers = createWritable$<Controllers>({})
 // const controllers = createWritable$(<Controllers>{})
-
 
 
 
@@ -290,13 +288,13 @@ function popover(htmlEl: HTMLElement, args: Args) {
   // let ctrl$: Writable$<Controller> | undefined
   
   if (ctrlId/*  && cmpInstance */) {
+    // ctrl = {
     const ctrl: Controller = {
-      // ctrl = {
       cmp: <Controller["cmp"]>cmpInstance,
       tooltip,
     }
     
-    const ctrl$ = createWritable$(ctrl)
+    // const ctrl$ = createWritable$(ctrl)
     // ctrl$ = createWritable$(ctrl)
     
     
@@ -305,8 +303,8 @@ function popover(htmlEl: HTMLElement, args: Args) {
     
     controllers.update(val => ({
         ...val,
-        // [ctrlId]: ctrl,
-        [ctrlId]: ctrl$,
+        [ctrlId]: ctrl,
+        // [ctrlId]: ctrl$,
       })
     )
     
@@ -317,8 +315,7 @@ function popover(htmlEl: HTMLElement, args: Args) {
     }
     cmpInstance.$set({ 
       // popoverCtrl: ctrl,
-      popoverCtrl: ctrl$,
-      
+      // popoverCtrl: ctrl$,
       popoverCtrls: controllers,
       popoverCtrls_key: ctrlId,
     })
@@ -360,13 +357,13 @@ function popover(htmlEl: HTMLElement, args: Args) {
       tooltip.destroy()
       
       
-      // ? not sure whether I should do the following
+      // ? not sure whether I should do the following part
       /* 
         and even so, where? svelte also has start & stop callbacks
         maybe I should do this there?
         
         --
-        docs: start & stop callbacks
+        docs: store's start & stop callbacks
         
         "If a function is passed as the second argument..."
         https://svelte.dev/docs#run-time-svelte-store
@@ -384,13 +381,18 @@ function popover(htmlEl: HTMLElement, args: Args) {
           return val
         })
         
+        
         // ? needed? maybe if I remove the reference to this obj 
         // I can rely on the garbage collector to actually remove it
+        
+        // nullify the entry itself
+        
         // broken btw
         /* ctrl$?.update(val => {
           val = null
           return val
         }) */
+        
       }
       
     },
