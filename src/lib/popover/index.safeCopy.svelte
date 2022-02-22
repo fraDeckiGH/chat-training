@@ -1,5 +1,4 @@
 
-<!-- this was a .ts file -->
 <script lang="ts" context=module>
 // * a tooltip w/ a chosen component inside of it, as it's content
 // client side module
@@ -10,7 +9,7 @@
   REPL (corrected 1) https://svelte.dev/repl/ffd2b212ae9e48e4b0279e72c1c7cb21?version=3.17.3
 */
 
-// import './_popover.scss'
+import './_popover.scss'
 import type { 
   Args, 
   Controller, 
@@ -25,16 +24,12 @@ import type {
   Content as TooltipContent,
   Instance as TooltipInstance, 
   Props as TooltipProps,
-  // {target}
-  MultipleTargets as TooltipTargets,
-  SingleTarget as TooltipTarget,
-  
 } from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 
 
 export {
-  // popover,
+  popover,
   controllers as popoverCtrls,
   
 }
@@ -81,31 +76,6 @@ const controllers = createWritable$<Controllers>({})
 // const controllers = createWritable$(<Controllers>{})
 
 
-</script>
-
-<script lang="ts">
-import { onMount } from "svelte"
-
-export {
-  args,
-  popover,
-  // tooltipTarget,
-  // tooltipTargets,
-  
-}
-
-
-let args: Args
-// let tooltipTarget: TooltipTarget
-// let tooltipTargets: TooltipTargets
-
-
-
-
-onMount(() => {
-  console.log(`onMount()`, )
-})
-
 
 /**
  * usage: svelte's use:action
@@ -116,6 +86,7 @@ onMount(() => {
  * content: for static as content
  */
 function popover(htmlEl: HTMLElement, args: Args) {
+  console.log(`log svelte`, )
   const {
     cmp, 
     cmpProps = {}, 
@@ -127,16 +98,17 @@ function popover(htmlEl: HTMLElement, args: Args) {
   
   // * content
   
-  let cmpInstance: InstanceType<typeof cmp> | undefined
+  let cmpInstance: 
+    InstanceType<
+      // NonNullable<
+        typeof cmp
+      // >
+    > | undefined
   
   if (cmp) {
     tooltipOpts.onCreate = (instance: TooltipInstance) => {
       // console.log(`onCreate`, instance)
-      
       instance.popper.classList.add("tippy-root")
-      const i = htmlEl.classList.length - 1
-      instance.popper.classList.add(htmlEl.classList[i])
-      instance.popper.style.setProperty('$prova', htmlEl.classList[i])
       
       cmpInstance = new cmp({ 
         target: instance.popper.querySelector('.tippy-content'),
@@ -156,9 +128,8 @@ function popover(htmlEl: HTMLElement, args: Args) {
   
   // * tooltip
   
-  const tooltip = tippy(/* tooltipTarget ??  */htmlEl.parentElement!, {
+  const tooltip = tippy(htmlEl, {
     
-    appendTo: htmlEl,
     arrow: false,
     interactive: true,
     maxWidth: 'none',
@@ -275,7 +246,6 @@ function popover(htmlEl: HTMLElement, args: Args) {
     
     ...tooltipOpts
   })
-  console.log(`tooltip`, tooltip)
   
   
   // * controller
@@ -361,13 +331,21 @@ function popover(htmlEl: HTMLElement, args: Args) {
 </script>
 
 
-<div
-  class="logic-only"
-  use:popover={args}
-></div>
+<script lang="ts">
+  // import { onMount } from "svelte";
+  // let tooltippy
+  // onMount(() => {
+  //   console.log(`onMount`, )
+  // })
+  
+</script>
 
 
-<style lang="scss">
+<!-- <div class="container" id="container1" 
+  bind:this={tooltippy}></div> -->
+
+
+<!-- <style lang="scss">
 // @use './_popover.scss';
 
 // ? a possible way to apply custom css 
@@ -432,51 +410,39 @@ function popover(htmlEl: HTMLElement, args: Args) {
 */
 
 
-// .logic-only {
-  // display: contents;
-  // display: none;
-// }
-
-.tippy-box/* [data-theme~='popover'] */ {
-  max-height: inherit;
+.tippy-root {
   
-  // * resets
-  // ? 'inherit' inherits from my globals
-  // ? 'initial' sets html's default
-  // ? 'revert' used w/in the user agent's default styles == 'unset'
-  
-  // border-radius: 15px; // test
-  border-radius: inherit;
-  
-  background-color: inherit;
-  color: inherit;
-  
-  font-size: inherit;
-  line-height: inherit;
-  // white-space: inherit;
-  
-  .tippy-content {
-    // overflow-y: auto;
+  .tippy-box/* [data-theme~='popover'] */ {
     max-height: inherit;
     
     // * resets
-    padding: inherit;
-  }
-  
-}
-
-div:global(.logic-only .tippy-root) {
-  background-color: aqua;
-  // .tippy-root {
-    // background: red;
-    // background: var(--cmp-id);
+    // ? 'inherit' inherits from my globals
+    // ? 'initial' sets html's default
+    // ? 'revert' used w/in the user agent's default styles == 'unset'
     
-    @extend .tippy-box;
-  // }
+    // border-radius: 15px; // test
+    border-radius: inherit;
+    
+    background-color: inherit;
+    color: inherit;
+    
+    font-size: inherit;
+    line-height: inherit;
+    // white-space: inherit;
+    
+    .tippy-content {
+      // overflow-y: auto;
+      max-height: inherit;
+      
+      // * resets
+      padding: inherit;
+    }
+    
+  }
 }
 
 
-</style>
+</style> -->
 
 
 

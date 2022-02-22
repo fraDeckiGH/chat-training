@@ -7,6 +7,7 @@ import { htmlElems } from "$lib/misc"
 // import { default as Component } from "$lib/modal/modal.svelte"
 import Component from "./modal.svelte"
 
+
 export {
   // create,
   create as createModal,
@@ -15,6 +16,7 @@ export {
 //   // ? meant to be used in <component>.svelte file only
 //   Component as default,
 // }
+
 
 function create() {
   if (!document) {

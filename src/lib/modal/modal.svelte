@@ -4,7 +4,7 @@
   import ProgressCircular from "$lib/progress-circular.svelte";
   import type Component from "./modal.svelte"
   // import type Component from "./modal"
-  import { /* onDestroy,  */onMount } from "svelte";
+  import { /* onDestroy,  */onMount } from "svelte"
   // import { blur, fade, fly, scale } from "svelte/transition";
   import { fade, fly } from "svelte/transition";
   

@@ -115,12 +115,12 @@
     <ul class="list-items">
     
       {#each items as item}
-        <li
+        <button 
           class="li"
           on:click={() => selectItem(item)}
         >
           {item.lbl}
-        </li>
+        </button>
       {/each}
     
     </ul>
