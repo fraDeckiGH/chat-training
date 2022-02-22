@@ -100,8 +100,7 @@ function popover(htmlEl: HTMLElement, args: Args) {
   
   tooltipOpts.onCreate = (instance: TooltipInstance) => {
     // console.log(`onCreate`, instance)
-    
-    instance.popper.classList.add("tippy-root")
+    instance.popper.className += "popover tippy-root"
     
     cmpInstance = new cmp({ 
       target: instance.popper.querySelector('.tippy-content'),

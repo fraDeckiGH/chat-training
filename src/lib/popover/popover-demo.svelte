@@ -33,6 +33,78 @@
       lbl: "ccc",
     },
     
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
+    {
+      lbl: "bbb",
+    },
+    {
+      lbl: "aaa",
+    },
+    {
+      lbl: "ccc",
+    },
   ])
   
   
@@ -77,7 +149,7 @@
   $: console.log(`$items `, $items)
   $: {
     console.log(`item selected `, 
-      $popoverCtrls[ctrlId]?.cmp.get_selectedItem()
+      $popoverCtrls[ctrlId]?.cmp?.get_selectedItem()
     )
   }
   
@@ -123,7 +195,7 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    // $popoverCtrls[ctrlId].cmp.addItems()
+    $popoverCtrls[ctrlId].cmp.alterMenuItems()
     // $popoverCtrls[ctrlId].cmp.$set({ itemsNumber: 50 })
     
     

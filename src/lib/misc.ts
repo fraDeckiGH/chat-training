@@ -14,6 +14,7 @@ const htmlElems: {
 
 /**
  * zIndexes throughout the app
+ * <cmpName>: value
  */
 const stackingContext: Readonly<{
   [key: string]: number
