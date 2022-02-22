@@ -10,10 +10,14 @@
   import Menu from "$lib/menu/menu.svelte"
   import type { MenuItem } from "$lib/menu/menu.svelte"
   
-  import type { PopoverArgs } from "$lib/popover"
+  import type { PopoverArgs, PopoverCtrl } from "$lib/popover"
   import { 
     popoverCtrls,
+    popoverEvents,
   } from "$lib/popover"
+  
+  import type { Writable$ } from "$lib/store"
+  import type { Maybe } from "$lib/type"
   import { writable } from "svelte/store"
   
   
@@ -70,17 +74,26 @@
     
   }
   
+  let popoverCtrl: Maybe<Writable$<PopoverCtrl>>
   let showReferenceElem = true
   
   
   // $: console.log(`items `, items)
   $: console.log(`$items `, $items)
+  
+  $: {
+    // console.log(`log`, $popoverEvents)
+    $popoverEvents;
+    popoverCtrl = popoverCtrls[ctrlId]
+  }
   $: {
     console.log(
-      `$popoverCtrls[ctrlId]?.cmp.get_selectedItem() `, 
-      $popoverCtrls[ctrlId]?.cmp.get_selectedItem()
+      `selected item`, 
+      // popoverCtrls[ctrlId]?.cmp.get_selectedItem()
+      $popoverCtrl?.cmp.get_selectedItem()
     )
   }
+  
   
   
   /**
@@ -124,7 +137,8 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    $popoverCtrls[ctrlId].cmp.alterMenuItems()
+    $popoverCtrl?.cmp.alterMenuItems()
+    // $popoverCtrls[ctrlId].cmp.alterMenuItems()
     // $popoverCtrls[ctrlId].cmp.$set({ itemsNumber: 50 })
     
     

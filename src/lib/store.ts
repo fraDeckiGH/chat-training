@@ -55,7 +55,7 @@ function createWritable$<T>({
       
       // "It must return a stop function"
       if (stopCb) {
-        return stopCb()
+        return stopCb
       } else {
         return () => {
           console.log('no more subscribers')

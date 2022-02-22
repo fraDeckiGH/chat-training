@@ -27,10 +27,9 @@
   */
   import type { 
     PopoverCtrl, 
-    PopoverCtrls, 
-    PopoverCtrls_key, 
   } from "$lib/popover"
   import type { Writable$ } from "$lib/store"
+import type { Maybe } from "$lib/type";
   import { onDestroy } from "svelte"
   import type { Unsubscriber, Writable } from "svelte/store"
   
@@ -39,25 +38,18 @@
   // non-reactive
   export let items: Item[] = []
   // store
-  export let items$: Writable<typeof items> | undefined
-  const unsub_items$: Unsubscriber | undefined = 
+  export let items$: Maybe<Writable<typeof items>> = null
+  const unsub_items$: Maybe<Unsubscriber> = 
     items$?.subscribe((value) => {
       items = value
     })
   ;
   
-  let popoverCtrl: PopoverCtrl | undefined
-  export let popoverCtrls: Writable$<PopoverCtrls> | undefined = undefined
-  export let popoverCtrls_key: PopoverCtrls_key | undefined = undefined
+  export let popoverCtrl = <Maybe<Writable$<PopoverCtrl>>>null
+  // BUG svelte "$popoverCtrl.prop not possible on type never"
+  // export let popoverCtrl: Maybe<Writable$<PopoverCtrl>> = null
   
   let selectedItem: Item | undefined
-  
-  
-  $: {
-    if ($popoverCtrls && popoverCtrls_key) {
-      popoverCtrl = $popoverCtrls[popoverCtrls_key]
-    }
-  }
   
   
   // * lifecycle
@@ -74,13 +66,12 @@
   
   function selectItem(item: Item) {
     // console.log(`selectItem() `, item)
-    
     selectedItem = item
-    popoverCtrls?.sync()
     
-    popoverCtrl?.tooltip.hide()
-    
-    // TODO destroy cmp (?)
+    if (popoverCtrl && $popoverCtrl) {
+      popoverCtrl.sync()
+      $popoverCtrl.tooltip.hide()
+    }
     
     return item
 	}

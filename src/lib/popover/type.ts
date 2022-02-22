@@ -56,7 +56,7 @@ type Args<T = Content> = {
    */
   // content?: TooltipContent
   
-  ctrlId: Controllers_key
+  ctrlId?: Controllers_key
   
   /**
    * tooltip options
@@ -78,9 +78,6 @@ type Controller = {
         // >
       >
     >
-  ;
-  
-  ctrlId: Controllers_key
   
   /**
    * meant to be used like: '_tippy' property
@@ -90,7 +87,8 @@ type Controller = {
 }
 
 type Controllers = {
-  [key: number | string | symbol]: Controller
+  // [key: number | string | symbol]: Controller
+  [key: number | string | symbol]: Writable$<Controller>
 }
 
 /**
@@ -100,7 +98,7 @@ type Controllers = {
  * 
  * recommended: Symbol(); cuz unique
  */
-type Controllers_key = Readonly<keyof Controllers> | undefined
+type Controllers_key = Readonly<keyof Controllers>
 
 
 /**
