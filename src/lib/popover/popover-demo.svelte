@@ -13,7 +13,7 @@
   import type { PopoverArgs } from "$lib/popover"
   import { 
     popoverCtrls,
-  } from "$lib/popover/index.svelte"
+  } from "$lib/popover"
   import { writable } from "svelte/store"
   
   

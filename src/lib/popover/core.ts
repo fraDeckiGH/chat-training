@@ -1,5 +1,4 @@
 
-<script lang="ts" context=module>
 // * a tooltip w/ a chosen component inside of it, as it's content
 // client side module
 
@@ -9,7 +8,7 @@
   REPL (corrected 1) https://svelte.dev/repl/ffd2b212ae9e48e4b0279e72c1c7cb21?version=3.17.3
 */
 
-import './_popover.scss'
+import './_core.scss'
 import type { 
   Args, 
   Controller, 
@@ -21,9 +20,13 @@ import maxSize from 'popper-max-size-modifier'
 
 import tippy from 'tippy.js'
 import type { 
-  Content as TooltipContent,
+  // Content as TooltipContent,
   Instance as TooltipInstance, 
-  Props as TooltipProps,
+  // Props as TooltipProps,
+  // {target}
+  // MultipleTargets as TooltipTargets,
+  // SingleTarget as TooltipTarget,
+  
 } from 'tippy.js'
 import 'tippy.js/dist/tippy.css'
 
@@ -77,16 +80,11 @@ const controllers = createWritable$<Controllers>({})
 
 
 
+
 /**
  * usage: svelte's use:action
- * 
- * req. args
- * either pass cmp || content 
- * cmp: to a component as content
- * content: for static as content
  */
 function popover(htmlEl: HTMLElement, args: Args) {
-  console.log(`log svelte`, )
   const {
     cmp, 
     cmpProps = {}, 
@@ -98,31 +96,24 @@ function popover(htmlEl: HTMLElement, args: Args) {
   
   // * content
   
-  let cmpInstance: 
-    InstanceType<
-      // NonNullable<
-        typeof cmp
-      // >
-    > | undefined
+  let cmpInstance: InstanceType<typeof cmp> | undefined
   
-  if (cmp) {
-    tooltipOpts.onCreate = (instance: TooltipInstance) => {
-      // console.log(`onCreate`, instance)
-      instance.popper.classList.add("tippy-root")
-      
-      cmpInstance = new cmp({ 
-        target: instance.popper.querySelector('.tippy-content'),
-        
-        ...cmpOpts,
-        
-        // ? {pinned down} so that cmpProps overwrites cmpOpts.props
-        props: {
-          // defaults here (valid for every component)
-          ...cmpProps,
-        },
-      })
-    }
+  tooltipOpts.onCreate = (instance: TooltipInstance) => {
+    // console.log(`onCreate`, instance)
     
+    instance.popper.classList.add("tippy-root")
+    
+    cmpInstance = new cmp({ 
+      target: instance.popper.querySelector('.tippy-content'),
+      
+      ...cmpOpts,
+      
+      // ? {pinned down} so that cmpProps overwrites cmpOpts.props
+      props: {
+        // defaults here (valid for every component)
+        ...cmpProps,
+      },
+    })
   }
   
   
@@ -130,6 +121,7 @@ function popover(htmlEl: HTMLElement, args: Args) {
   
   const tooltip = tippy(htmlEl, {
     
+    // appendTo: htmlEl,
     arrow: false,
     interactive: true,
     maxWidth: 'none',
@@ -285,6 +277,7 @@ function popover(htmlEl: HTMLElement, args: Args) {
         in case the reference htmlEl is removed from the DOM
         I'll destroy these instances manually
         ? needed
+        ? wanted
       */
       cmpInstance?.$destroy()
       tooltip.destroy()
@@ -326,123 +319,6 @@ function popover(htmlEl: HTMLElement, args: Args) {
   return useActionReturn
   
 }
-
-
-</script>
-
-
-<script lang="ts">
-  // import { onMount } from "svelte";
-  // let tooltippy
-  // onMount(() => {
-  //   console.log(`onMount`, )
-  // })
-  
-</script>
-
-
-<!-- <div class="container" id="container1" 
-  bind:this={tooltippy}></div> -->
-
-
-<!-- <style lang="scss">
-// @use './_popover.scss';
-
-// ? a possible way to apply custom css 
-// https://atomiks.github.io/tippyjs/v6/themes/
-
-
-// * bugs
-
-
-// * defaults
-/* 
-  main excerpts
-  
-  .tippy-box {
-    position: relative;
-    background-color: #333;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 14px;
-    line-height: 1.4;
-    white-space: normal;
-    outline: 0;
-    transition-property: transform,visibility,opacity;
-  }
-  .tippy-content {
-    position: relative;
-    padding: 5px 9px;
-    z-index: 1;
-  }
-*/
-
-// * theme additional styles
-/* 
-  arrow not taken into consideration
-  but for the rest of the tooltip, what follows is 
-  all the customization there is
-  
-  .tippy-box[data-theme~=light] {
-    color: #26323d;
-    ? VERY weak(/pointless) shadow
-    box-shadow: 0 0 20px 4px rgb(154 161 177 / 15%), 0 4px 80px -8px rgb(36 40 47 / 25%), 0 4px 4px -2px rgb(91 94 105 / 15%);
-    background-color: #fff;
-  }
-  
-  .tippy-box[data-theme~=light-border] {
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(0,8,16,.15);
-    color: #333;
-    ? VERY weak(/pointless) shadow
-    box-shadow: 0 4px 14px -2px rgb(0 8 16 / 8%);
-  }
-  
-  .tippy-box[data-theme~=material] {
-    background-color: #505355;
-    font-weight: 600;
-  }
-  
-	.tippy-box[data-theme~=translucent] {
-    background-color: rgba(0,0,0,.7);
-  }
-*/
-
-
-.tippy-root {
-  
-  .tippy-box/* [data-theme~='popover'] */ {
-    max-height: inherit;
-    
-    // * resets
-    // ? 'inherit' inherits from my globals
-    // ? 'initial' sets html's default
-    // ? 'revert' used w/in the user agent's default styles == 'unset'
-    
-    // border-radius: 15px; // test
-    border-radius: inherit;
-    
-    background-color: inherit;
-    color: inherit;
-    
-    font-size: inherit;
-    line-height: inherit;
-    // white-space: inherit;
-    
-    .tippy-content {
-      // overflow-y: auto;
-      max-height: inherit;
-      
-      // * resets
-      padding: inherit;
-    }
-    
-  }
-}
-
-
-</style> -->
 
 
 

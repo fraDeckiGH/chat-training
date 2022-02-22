@@ -1,8 +1,7 @@
 
 // * barrel
 
-export * from "./index.svelte"
-// export * from "./popover"
+export * from "./core"
 
 
 // ? use these internally, w/in other modules(sheets) of this very cmp

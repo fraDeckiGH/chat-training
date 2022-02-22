@@ -34,6 +34,34 @@
     return args.popover(htmlEl.parentElement, popoverArgs)
   }
   
+  /* async  */function myfunc(htmlEl: HTMLElement, args: any) {
+    // const cmp = (await import("$lib/popover/index.svelte")).default
+    
+    const cmpInstance = new args.default({
+      props: {
+        args: popoverArgs,
+      },
+      
+      // I'm going to show a tippy inside a svelte component;
+      // by default...
+      // svelte creates the html by appending to(/nesting inside) the target
+      // tippy creates a sibling after it's target
+      target: htmlEl.parentElement?.parentElement,
+      
+    })
+    
+    // return cmpInstance.popover(htmlEl.parentElement, popoverArgs)
+    
+    // I can do this directly inside the component, 
+    // is that more comfortable during usage tho?
+    return {
+      destroy: () => {
+        cmpInstance.$destroy()
+      }
+    }
+    
+  }
+  
 </script>
 
 
@@ -55,10 +83,14 @@
       <slot></slot>
       
       {#if popoverArgs}
-        {#await import("$lib/popover") then value}
-          <div 
+        {#await import("$lib/popover/index.svelte") then value}
+          <!-- <div 
             class="logic-only"
             use:popover={value}
+          ></div> -->
+          <div 
+            class="logic-only"
+            use:myfunc={value}
           ></div>
         {/await}
       {/if}
