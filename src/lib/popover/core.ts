@@ -16,6 +16,7 @@ import type {
 } from "./type"
 import { stackingContext } from "$lib/misc"
 import { createWritable$ } from "$lib/store"
+import type { Maybe } from '$lib/type'
 import maxSize from 'popper-max-size-modifier'
 
 import tippy from 'tippy.js'
@@ -80,11 +81,10 @@ const controllers = createWritable$<Controllers>({})
 
 
 
-
 /**
  * usage: svelte's use:action
  */
-function popover(htmlEl: HTMLElement, args: Args) {
+function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
   const {
     cmp, 
     cmpProps = {}, 
@@ -94,26 +94,37 @@ function popover(htmlEl: HTMLElement, args: Args) {
   } = args
   
   
-  // * content
+  // * controller
   
-  let cmpInstance: InstanceType<typeof cmp> | undefined
-  
-  tooltipOpts.onCreate = (instance: TooltipInstance) => {
-    // console.log(`onCreate`, instance)
-    instance.popper.className += "popover tippy-root"
+  const createController = () => {
+    if (!(ctrlId && cmpInstance && tooltip)) {
+      // console.log(`return: !(ctrlId && cmpInstance && tooltip)`, )
+      // console.log(!!ctrlId, !!cmpInstance, !!tooltip)
+      return
+    }
+    // console.log(`createController executing`, )
     
-    cmpInstance = new cmp({ 
-      target: instance.popper.querySelector('.tippy-content'),
-      
-      ...cmpOpts,
-      
-      // ? {pinned down} so that cmpProps overwrites cmpOpts.props
-      props: {
-        // defaults here (valid for every component)
-        ...cmpProps,
-      },
+    const ctrl: Controller = {
+      cmp: cmpInstance,
+      tooltip,
+    }
+    
+    controllers.update(val => ({
+        ...val,
+        [ctrlId]: ctrl,
+      })
+    )
+    
+    cmpInstance.$set({ 
+      popoverCtrls: controllers,
+      popoverCtrls_key: ctrlId,
     })
   }
+  
+  
+  // * content
+  
+  let cmpInstance: Maybe<InstanceType<typeof cmp>>
   
   
   // * tooltip
@@ -137,9 +148,10 @@ function popover(htmlEl: HTMLElement, args: Args) {
     // onCreate(instance) {
     //   console.log(`onCreate instance`, instance)
     // },
-    // onDestroy(instance) {
-    //   console.log(`onDestroy instance`, instance)
-    // },
+    onDestroy(instance) {
+      console.log(`onDestroy instance`, instance)
+      cmpInstance?.$destroy()
+    },
     // onHidden(instance) {
     //   console.log(`onHidden instance`, instance)
     // },
@@ -149,17 +161,42 @@ function popover(htmlEl: HTMLElement, args: Args) {
     // onMount(instance) {
     //   console.log(`onMount instance`, instance)
     // },
+    
     // onShow(instance) {
     //   console.log(`onShow instance`, instance)
     // },
+    onShow(instance: TooltipInstance) {
+      // console.log(`onShow instance`, instance)
+      if (cmpInstance) {
+        console.log(`return: cmpInstance exists already`, )
+        return
+      }
+      
+      instance.popper.className += "popover tippy-root"
+      
+      cmpInstance = new cmp({ 
+        target: instance.popper.querySelector('.tippy-content'),
+        
+        ...cmpOpts,
+        
+        // ? {pinned down} so that cmpProps overwrites cmpOpts.props
+        props: {
+          // defaults here (valid for every component)
+          ...cmpProps,
+        },
+      })
+      
+      createController()
+    },
+    
     // onShown(instance) {
     //   console.log(`onShown instance`, instance)
     // },
     // onTrigger(instance, event) {
-    //   console.log(`onTrigger instance`, instance, event)
+    //   console.log(`onTrigger`, instance, event)
     // },
     // onUntrigger(instance, event) {
-    //   console.log(`onUntrigger instance`, instance, event)
+    //   console.log(`onUntrigger`, instance, event)
     // },
     
     placement: "bottom",
@@ -237,33 +274,7 @@ function popover(htmlEl: HTMLElement, args: Args) {
     
     ...tooltipOpts
   })
-  
-  
-  // * controller
-  
-  if (ctrlId/*  && cmpInstance */) {
-    const ctrl: Controller = {
-      cmp: <Controller["cmp"]>cmpInstance,
-      tooltip,
-    }
-    
-    controllers.update(val => ({
-        ...val,
-        [ctrlId]: ctrl,
-      })
-    )
-    
-    
-    if (!cmpInstance) {
-      console.log(`return: !cmpInstance`, )
-      return
-    }
-    cmpInstance.$set({ 
-      popoverCtrls: controllers,
-      popoverCtrls_key: ctrlId,
-    })
-    
-  }
+  createController()
   
   
   // * use:action return
@@ -274,15 +285,14 @@ function popover(htmlEl: HTMLElement, args: Args) {
       
       /*
         in case the reference htmlEl is removed from the DOM
-        I'll destroy these instances manually
         ? needed
         ? wanted
       */
-      cmpInstance?.$destroy()
       tooltip.destroy()
       
       
       // ? not sure whether I should do the following part
+      // (it ought be reliant on the number of subscribers)
       /* 
         and even so, where? svelte also has start & stop callbacks
         maybe I should do this there?
@@ -303,13 +313,11 @@ function popover(htmlEl: HTMLElement, args: Args) {
           return val
         })
         
-        
         // ? needed? maybe if I remove the reference to this obj 
         // I can rely on the garbage collector to actually remove it
         
         // nullify the entry itself
         // controllers[ctrlId] = null
-        
       }
       
     },

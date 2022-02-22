@@ -148,8 +148,9 @@
   // $: console.log(`items `, items)
   $: console.log(`$items `, $items)
   $: {
-    console.log(`item selected `, 
-      $popoverCtrls[ctrlId]?.cmp?.get_selectedItem()
+    console.log(
+      `$popoverCtrls[ctrlId]?.cmp.get_selectedItem() `, 
+      $popoverCtrls[ctrlId]?.cmp.get_selectedItem()
     )
   }
   

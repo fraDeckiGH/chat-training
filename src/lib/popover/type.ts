@@ -31,7 +31,7 @@ export type {
    * a component to use as the tooltip's content
    * see related: 'Popover.cmp'
    */
-  cmp/* ? */: new (...args: any) => T
+  cmp/* ? */: new (...args: any) => (T & Svelte2TsxComponent)
   
   cmpProps?: any
   // reminder  cmpProps?: Content // proposes all
