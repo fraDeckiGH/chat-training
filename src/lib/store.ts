@@ -1,5 +1,8 @@
 
 // * extended svelte stores
+/*
+  ? https://svelte.dev/tutorial/custom-stores
+*/
 
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
@@ -35,11 +38,32 @@ type Writable$<T> = SvelteStore<T> & {
 }
 
 
-
-function createWritable$<T>(initialVal: T): Writable$<T> {
-  // ? https://svelte.dev/tutorial/custom-stores
-  // const { set, subscribe, update } = writable<Controllers>({})
-  const { set, subscribe, update } = writable/* <T> */(initialVal)
+function createWritable$<T>({
+  initialVal,
+  stopCb,
+}: {
+  initialVal: T, 
+  stopCb?: () => void
+}): Writable$<T> {
+  // ? https://svelte.dev/docs#run-time-svelte-store-writable
+  const { set, subscribe, update } = writable/* <T> */(
+    initialVal,
+    
+    // StartStopNotifier<T>
+    () => {
+      console.log('got a subscriber')
+      
+      // "It must return a stop function"
+      if (stopCb) {
+        return stopCb()
+      } else {
+        return () => {
+          console.log('no more subscribers')
+        }
+      }
+    }
+    
+  )
 
   const store = {
     subscribe,

@@ -73,11 +73,19 @@ const applyMaxSize = {
   }
 }
 
-// ? doesn't work: thinks the type is "{}"
-// const controllers = createWritable$({})
-// ? both work
-const controllers = createWritable$<Controllers>({})
-// const controllers = createWritable$(<Controllers>{})
+const controllers = createWritable$<Controllers>({
+  initialVal: {}, 
+  stopCb() {
+    console.log('no more subs')
+    
+    controllers.update(val => {
+      if (val.ctrlId) {
+        delete val[val.ctrlId]
+      }
+      return val
+    })
+  },
+})
 
 
 

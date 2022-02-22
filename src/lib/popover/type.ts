@@ -23,10 +23,7 @@ export type {
 }
 
 
-/**
- * either pass cmp || content
- */
- type Args<T = Content> = {
+type Args<T = Content> = {
   /**
    * a component to use as the tooltip's content
    * see related: 'Popover.cmp'
@@ -59,14 +56,7 @@ export type {
    */
   // content?: TooltipContent
   
-  /**
-   * a key (id), to navigate available controllers and use 1
-   * like this: " controllers[<<key/id>>].doSth() ";
-   * allowing to further manipulate the popover once generated
-   * 
-   * recommended: Symbol(); cuz unique
-   */
-  ctrlId?: Controllers_key
+  ctrlId: Controllers_key
   
   /**
    * tooltip options
@@ -77,7 +67,7 @@ export type {
 
 type Controller = {
   /**
-   * component (within tooltip content)
+   * component (w/in tooltip content)
    * ? work around: interesection over union, to fix a very subtle usage bug
    */
   cmp/* ? */: 
@@ -88,6 +78,9 @@ type Controller = {
         // >
       >
     >
+  ;
+  
+  ctrlId: Controllers_key
   
   /**
    * meant to be used like: '_tippy' property
@@ -98,10 +91,16 @@ type Controller = {
 
 type Controllers = {
   [key: number | string | symbol]: Controller
-  // [key: number | string | symbol]: Writable$<Controller>
 }
 
-type Controllers_key = Readonly<keyof Controllers>
+/**
+ * a key (id), to navigate available controllers and use 1
+ * like this: " controllers[<<key/id>>].doSth() ";
+ * allowing to further manipulate the popover once generated
+ * 
+ * recommended: Symbol(); cuz unique
+ */
+type Controllers_key = Readonly<keyof Controllers> | undefined
 
 
 /**
