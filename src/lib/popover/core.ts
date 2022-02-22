@@ -149,7 +149,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     //   console.log(`onCreate instance`, instance)
     // },
     onDestroy(instance) {
-      console.log(`onDestroy instance`, instance)
+      // console.log(`onDestroy instance`, instance)
       cmpInstance?.$destroy()
     },
     // onHidden(instance) {
