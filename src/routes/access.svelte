@@ -77,7 +77,7 @@
     console.log(`btn not disabled anymore`, )
   }
   
-  let popoverDemo = true
+  
 </script>
 
 
@@ -123,18 +123,7 @@
       </button>
     {/if}
     
-    <div class=""
-    on:click="{() => {
-      popoverDemo = !popoverDemo
-      popoverDemo=popoverDemo
-    }}"
-    >
-      toggle PopoverDemo
-    </div>
-    {#if popoverDemo}
-      
     <PopoverDemo></PopoverDemo>
-    {/if}
     
   </div>
   
