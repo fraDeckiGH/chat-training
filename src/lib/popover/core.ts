@@ -11,8 +11,12 @@
 import './_core.scss'
 import type { 
   Args, 
+  Cmp, 
   Controller, 
   Controllers, 
+  // Controllers_key, 
+  // Controllers_val, 
+  
 } from "./type"
 import { stackingContext } from "$lib/misc"
 import { createWritable$ } from "$lib/store"
@@ -88,7 +92,7 @@ const dispatchEvent = writable(0)
  */
 function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
   const {
-    cmp: CmpType, 
+    cmp: cmpClass, 
     cmpProps = {}, 
     cmpOpts,
     ctrlId,
@@ -126,11 +130,12 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     // if (controllers[ctrlId] ?? false) {
     //   // controller exists
       
-    //   cmp.$set({ 
+    //   cmp.$set(<T>{ 
     //     popoverCtrl: controllers[ctrlId],
     //   })
       
     // } else {
+    
     const ctrl = createWritable$<Controller>({
       initialVal: {
         cmp,
@@ -139,18 +144,18 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       stopCb() {
         /*
           removing the ref from containingObj should be enough 
-          for the garbage collector to do its job,
-          but I must be sure the entry's instance isn't referenced(used)
-          anywhere when I do this.
+          for the garbage collector to do its job
+          (entry's instance must not referenced(used) anywhere)
           
           nullifying the entry itself creates overhead 
           (for me in the code/types)
         */
-        ctrlId && delete controllers[ctrlId]
+        delete controllers[ctrlId]
       },
     })
     
-    cmp.$set({ 
+    // ? TIL https://stackoverflow.com/questions/56505560/how-to-fix-ts2322-could-be-instantiated-with-a-different-subtype-of-constraint
+    cmp.$set(<Cmp<T>>{ 
       popoverCtrl: ctrl,
     })
     
@@ -164,7 +169,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
   
   // * content
   
-  let cmp: Maybe<InstanceType<typeof CmpType>>
+  let cmp: Maybe<Cmp<T>>
   
   const createCmp = (instance: TooltipInstance) => {
     // console.log(`onShow instance`, instance)
@@ -174,7 +179,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     }
     instance.popper.className += "popover tippy-root"
     
-    cmp = new CmpType({ 
+    cmp = new cmpClass({ 
       target: instance.popper.querySelector('.tippy-content'),
       
       ...cmpOpts,
@@ -324,43 +329,8 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     destroy: () => {
       console.log(`use:action.destroy()`, )
       
-      /*
-        in case the reference htmlEl is removed from the DOM
-        ? needed
-        ? wanted
-      */
+      // in case the reference htmlEl is removed from the DOM
       tooltip.destroy()
-      
-      
-      // ? not sure whether I should do the following part
-      // (it ought be reliant on the number of subscribers)
-      /* 
-        and even so, where? svelte also has start & stop callbacks
-        maybe I should do this there?
-        
-        --
-        docs: store's start & stop callbacks
-        
-        "If a function is passed as the second argument..."
-        https://svelte.dev/docs#run-time-svelte-store
-        
-        a simple example
-        https://svelte.dev/tutorial/readable-stores
-      */
-      
-      if (ctrlId) {
-        // controllers.update(val => {
-        //   delete val[ctrlId]
-        //   return val
-        // })
-        
-        // ? needed? maybe if I remove the reference to this obj 
-        // I can rely on the garbage collector to actually remove it
-        
-        // nullify the entry itself
-        // controllers[ctrlId] = null
-      }
-      
     },
   }
   

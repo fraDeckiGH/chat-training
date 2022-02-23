@@ -27,6 +27,7 @@
   */
   import type { 
     PopoverCtrl, 
+    PopoverCtrls_val, 
   } from "$lib/popover"
   import type { Writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type"
@@ -45,9 +46,9 @@
     })
   ;
   
-  export let popoverCtrl = <Maybe<Writable$<PopoverCtrl>>>null
+  export let popoverCtrl = <Maybe<PopoverCtrls_val>>null
   // BUG svelte "$popoverCtrl.prop not possible on type never"
-  // export let popoverCtrl: Maybe<Writable$<PopoverCtrl>> = null
+  // export let popoverCtrl: Maybe<PopoverCtrls_val>> = null
   
   let selectedItem: Item | undefined
   

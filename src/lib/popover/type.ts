@@ -2,7 +2,7 @@
 // * 
 
 import type { Writable$ } from '$lib/store'
-import type { UnionToIntersection } from '$lib/type'
+import type { Maybe, UnionToIntersection } from '$lib/type'
 import type { 
   Content as TooltipContent,
   Instance as TooltipInstance, 
@@ -16,9 +16,11 @@ import type Menu_1 from "$lib/menu/_4ref/menu-1.test.svelte" // test
 
 export type {
   Args,
+  Cmp,
   Controller,
   Controllers,
   Controllers_key,
+  Controllers_val,
   
 }
 
@@ -28,7 +30,8 @@ type Args<T = Content> = {
    * a component to use as the tooltip's content
    * see related: 'Popover.cmp'
    */
-  cmp/* ? */: new (...args: any) => (T & Svelte2TsxComponent)
+  // cmp/* ? */: new (...args: any) => (T & Svelte2TsxComponent)
+  cmp: CmpClass<T>
   
   cmpProps?: any
   // reminder  cmpProps?: Content // proposes all
@@ -56,7 +59,11 @@ type Args<T = Content> = {
    */
   // content?: TooltipContent
   
-  ctrlId?: Controllers_key
+  /**
+   * 
+   */
+  // FIXME readonly doesn't seem to do its job
+  ctrlId?: Readonly<Controllers_key>
   
   /**
    * tooltip options
@@ -65,19 +72,27 @@ type Args<T = Content> = {
 }
 
 
+
+// type Cmp = InstanceType<Args["cmp"]>
+type Cmp<T = Content> = InstanceType<CmpClass<T>>
+
+type CmpClass<T> = new (...args: any) => (
+  & T 
+  & Svelte2TsxComponent 
+  & {
+    popoverCtrl?: Controllers_val
+  }
+)
+
+
+
 type Controller = {
   /**
    * component (w/in tooltip content)
    * ? work around: interesection over union, to fix a very subtle usage bug
    */
-  cmp/* ? */: 
-    UnionToIntersection<
-      InstanceType<
-        // NonNullable<
-          Args["cmp"]
-        // >
-      >
-    >
+  cmp: UnionToIntersection<Cmp>
+  // cmp: Cmp<T>
   
   /**
    * meant to be used like: '_tippy' property
@@ -87,7 +102,14 @@ type Controller = {
 }
 
 type Controllers = {
+  /**
+    limitation
+    can't tell how many users(utilizers) there are in a given moment
+    and that's needed to clean up a controller when its users go 
+    from 1 to 0
+  */
   // [key: number | string | symbol]: Controller
+  
   [key: number | string | symbol]: Writable$<Controller>
 }
 
@@ -98,7 +120,11 @@ type Controllers = {
  * 
  * recommended: Symbol(); cuz unique
  */
-type Controllers_key = Readonly<keyof Controllers>
+// type Controllers_key = Readonly<keyof Controllers>
+type Controllers_key = keyof Controllers
+
+type Controllers_val = Controllers[Controllers_key]
+
 
 
 /**

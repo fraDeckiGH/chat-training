@@ -82,14 +82,12 @@
   $: console.log(`$items `, $items)
   
   $: {
-    // console.log(`log`, $popoverEvents)
     $popoverEvents;
     popoverCtrl = popoverCtrls[ctrlId]
   }
   $: {
     console.log(
       `selected item`, 
-      // popoverCtrls[ctrlId]?.cmp.get_selectedItem()
       $popoverCtrl?.cmp.get_selectedItem()
     )
   }
@@ -138,13 +136,13 @@
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
     $popoverCtrl?.cmp.alterMenuItems()
-    // $popoverCtrls[ctrlId].cmp.alterMenuItems()
-    // $popoverCtrls[ctrlId].cmp.$set({ itemsNumber: 50 })
+    // $popoverCtrl.cmp.alterMenuItems()
+    // $popoverCtrl.cmp.$set({ itemsNumber: 50 })
     
     
     // * ways of changing tippy instance's props
     
-    // $popoverCtrls[ctrlId].tooltip.setProps({
+    // $popoverCtrl.tooltip.setProps({
     //   placement: "left",
     // })
     
@@ -152,9 +150,9 @@
   
   function testHelper() {
     
-    // $popoverCtrls[ctrlId].cmp.$set({itemsNumber: 2})
+    // $popoverCtrl.cmp.$set({itemsNumber: 2})
     
-    // $popoverCtrls[ctrlId].tooltip.setProps({
+    // $popoverCtrl.tooltip.setProps({
     //   placement: "right",
     // })
     

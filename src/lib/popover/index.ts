@@ -11,9 +11,12 @@ export * from "./type"
 // ? use these outside
 export type {
   Args as PopoverArgs,
+  Cmp as PopoverCmp,
+  // Cmp as PopoverContentCmp,
   Controller as PopoverCtrl,
   Controllers as PopoverCtrls,
   Controllers_key as PopoverCtrls_key,
+  Controllers_val as PopoverCtrls_val,
   
 } from "./type"
 
