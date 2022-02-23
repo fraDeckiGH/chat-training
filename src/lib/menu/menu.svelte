@@ -29,7 +29,7 @@
     PopoverCtrl, 
   } from "$lib/popover"
   import type { Writable$ } from "$lib/store"
-import type { Maybe } from "$lib/type";
+  import type { Maybe } from "$lib/type"
   import { onDestroy } from "svelte"
   import type { Unsubscriber, Writable } from "svelte/store"
   

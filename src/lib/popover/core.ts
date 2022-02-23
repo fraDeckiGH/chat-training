@@ -137,6 +137,15 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
         tooltip,
       },
       stopCb() {
+        /*
+          removing the ref from containingObj should be enough 
+          for the garbage collector to do its job,
+          but I must be sure the entry's instance isn't referenced(used)
+          anywhere when I do this.
+          
+          nullifying the entry itself creates overhead 
+          (for me in the code/types)
+        */
         ctrlId && delete controllers[ctrlId]
       },
     })
