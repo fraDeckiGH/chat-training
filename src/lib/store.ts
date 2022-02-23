@@ -4,7 +4,8 @@
   ? https://svelte.dev/tutorial/custom-stores
 */
 
-import { writable } from 'svelte/store'
+import { writable } from "svelte/store"
+import type { StartStopNotifier } from "svelte/store"
 import type { Writable } from 'svelte/store'
 import type { 
   Subscriber, Updater, Unsubscriber, 
@@ -19,6 +20,11 @@ export type {
   
 }
 
+
+/**
+ * stop callback
+ */
+type StopCb = () => void
 
 /**
  * the minimal/simplest version of a custom store
@@ -38,20 +44,35 @@ type Writable$<T> = SvelteStore<T> & {
 }
 
 
+
+/**
+ * statement: Svelte has initialVal as optional
+ * ? https://svelte.dev/docs#run-time-svelte-store-writable
+ */
 function createWritable$<T>({
   initialVal,
+  startCb,
   stopCb,
 }: {
-  initialVal: T, 
-  stopCb?: () => void
+  initialVal/* ? */: T, 
+  
+  // ? svelte ~default
+  // startCb?: (set?: ((value: T) => void)) => StopCb
+  // ? I want to pass StopCb separately
+  startCb?: (set?: ((value: T) => void)) => void
+  
+  stopCb?: StopCb
 }): Writable$<T> {
-  // ? https://svelte.dev/docs#run-time-svelte-store-writable
-  const { set, subscribe, update } = writable/* <T> */(
-    initialVal,
-    
-    // StartStopNotifier<T>
-    () => {
-      console.log('got a subscriber')
+  
+  // * startStopNotifier
+  
+  let startStopNotifier: StartStopNotifier<T> | undefined
+  
+  if (startCb) {
+    startStopNotifier = () => {
+      // TODO startCb: test: await, (long) loop
+      // TODO set: test
+      startCb(set)
       
       // "It must return a stop function"
       if (stopCb) {
@@ -62,7 +83,21 @@ function createWritable$<T>({
         }
       }
     }
-    
+  } else if (stopCb) {
+    startStopNotifier = () => {
+      console.log('got a subscriber')
+      
+      // "It must return a stop function"
+      return stopCb
+    }
+  }
+  
+  
+  // * store
+  
+  const { set, subscribe, update } = writable/* <T> */(
+    initialVal,
+    startStopNotifier
   )
 
   const store = {

@@ -99,23 +99,45 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
   // * controller
   
   const createController = () => {
+    // ? all true? execute
     if (!(ctrlId && cmp && tooltip)) {
       // console.log(`return: !(ctrlId && cmpInstance && tooltip)`, )
-      // console.log(!!ctrlId, !!cmpInstance, !!tooltip)
+      // console.log(!!ctrlId, !!cmp, !!tooltip)
       return
     }
     // console.log(`createController executing`, )
     
+    // ! memory leak (according to tippy)
+    /*
+      toggle popover's ref/target elem (usually it's the triggerEl)
+      I'll start seeing errors when interacting w/ the tippy or 
+      it's content
+    */
+    //#region 
+    /*
+      val ?? true
+      check is passed if 'val' === (null || undefined)
+      doesn't pass if it is 1 of the other falsies
+      
+      val ?? false
+      'val' === (null || undefined) ? else : then
+    */
+    //#endregion
+    // if (controllers[ctrlId] ?? false) {
+    //   // controller exists
+      
+    //   cmp.$set({ 
+    //     popoverCtrl: controllers[ctrlId],
+    //   })
+      
+    // } else {
     const ctrl = createWritable$<Controller>({
       initialVal: {
         cmp,
         tooltip,
       },
       stopCb() {
-        console.log(`from 1 to 0 subs`, )
-        console.log(`controllers`, JSON.parse(JSON.stringify(controllers)))
         ctrlId && delete controllers[ctrlId]
-        console.log(`controllers2`, JSON.parse(JSON.stringify(controllers)))
       },
     })
     
@@ -125,6 +147,9 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     
     controllers[ctrlId] = ctrl
     dispatchEvent.update(val => val + 1)
+    // }
+    
+    // console.log(`controllers[ctrlId]`, controllers[ctrlId])
   }
   
   
@@ -331,7 +356,6 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
   }
   
   return useActionReturn
-  
 }
 
 
