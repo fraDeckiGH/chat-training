@@ -62,7 +62,7 @@ type Args<T = Content> = {
   /**
    * 
    */
-  // FIXME readonly doesn't seem to do its job
+  // FIXME Readonly<> is for objs
   ctrlId?: Readonly<Controllers_key>
   
   /**
@@ -101,17 +101,19 @@ type Controller = {
   tooltip: TooltipInstance
 }
 
-type Controllers = {
+type Controllers = Record<
+  number | string | symbol,
   /**
     limitation
     can't tell how many users(utilizers) there are in a given moment
     and that's needed to clean up a controller when its users go 
     from 1 to 0
   */
-  // [key: number | string | symbol]: Controller
+  // Controller
   
-  [key: number | string | symbol]: Writable$<Controller>
-}
+  /** */
+  Writable$<Controller>
+>
 
 /**
  * a key (id), to navigate available controllers and use 1

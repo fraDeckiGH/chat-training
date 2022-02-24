@@ -1,19 +1,24 @@
 
 // * extended svelte stores
-/*
+/**  
   ? https://svelte.dev/tutorial/custom-stores
+  
+  see also
+  @type SvelteStore
 */
 
 import { writable } from "svelte/store"
 import type { StartStopNotifier } from "svelte/store"
-import type { Writable } from 'svelte/store'
+import type { Readable, Writable } from 'svelte/store'
 import type { 
   Subscriber, Updater, Unsubscriber, 
 } from 'svelte/store'
+import type { Func } from "./type"
+
 
 export {
-  createWritable$,
-  
+  changes,
+  writable$,
 }
 export type {
   Writable$,
@@ -26,35 +31,52 @@ export type {
  */
 type StopCb = () => void
 
-/**
- * the minimal/simplest version of a custom store
- */
+
 // ? BUG during usage. somewhere T is lost (and 'unknown' is returned in its place)
-// type Writable$<T> = ReturnType<typeof createWritable$<T>>
+// type Writable$<T> = ReturnType<typeof writable$<T>>
 
-// all good
-type Writable$<T> = SvelteStore<T> & {
-  update: (this: void, updater: Updater<T>) => void
-  /**
-   * alert/notify subscribers of potential changes
-   * (doesn't make any changes itself)
-   * think of this like hitting a refresh btn, but for stores
-   */
-  sync: () => void
-}
+type Writable$<T> = 
+  // Writable<T> 
+  & Omit<Writable<T>, "set"> 
+  & {
+    /**
+     * alert/notify subscribers of potential changes
+     * (doesn't make any changes itself)
+     * think of this like hitting a refresh btn, but for stores
+     */
+    sync: Func
+    
+    [key: string]: any
+  }
+;
 
 
 
 /**
- * statement: Svelte has initialVal as optional
- * ? https://svelte.dev/docs#run-time-svelte-store-writable
+  help syncing changes
+  
+  --
+  usage
+  
+  emit sender (eg. $lib/popover/core)
+    changes.sync()
+  
+  receiver (eg. $lib/popover/popover-demo)
+    $changes 
  */
-function createWritable$<T>({
-  initialVal,
-  startCb,
-  stopCb,
-}: {
-  initialVal/* ? */: T, 
+const changes = writable$({
+  initVal: 0,
+  updaters: {
+    sync: val => val + 1,
+  }
+})
+
+
+type Writable$Args<T> = T | {
+  /**
+   * initial value
+   */
+  initVal/* ? */: T, 
   
   // ? svelte ~default
   // startCb?: (set?: ((value: T) => void)) => StopCb
@@ -62,7 +84,36 @@ function createWritable$<T>({
   startCb?: (set?: ((value: T) => void)) => void
   
   stopCb?: StopCb
-}): Writable$<T> {
+  
+  /**
+   * set methods
+   * same rules of "update methods" apply
+   */
+  // sets?: TBA
+  
+  /**
+   * update methods
+   * as extra/additional or to override existing ones
+   */
+  updaters?: Record<string, Updater<T>>
+}
+
+/**
+ * statement: Svelte has initialVal as optional
+ * ? https://svelte.dev/docs#run-time-svelte-store-writable
+ */
+function writable$<T>(args: Writable$Args<T>): Writable$<T> {
+  
+  if (typeof args === "object") {
+    
+  }
+  const {
+    initVal,
+    startCb,
+    stopCb,
+    updaters = {},
+  } = args
+  
   
   // * startStopNotifier
   
@@ -79,13 +130,13 @@ function createWritable$<T>({
         return stopCb
       } else {
         return () => {
-          console.log('no more subscribers')
+          // console.log('no more subscribers')
         }
       }
     }
   } else if (stopCb) {
     startStopNotifier = () => {
-      console.log('got a subscriber')
+      // console.log('got a subscriber')
       
       // "It must return a stop function"
       return stopCb
@@ -96,21 +147,33 @@ function createWritable$<T>({
   // * store
   
   const { set, subscribe, update } = writable/* <T> */(
-    initialVal,
+    initVal,
     startStopNotifier
   )
-
-  const store = {
+  
+  
+  const updateMethods: Record<string, Writable<T>["update"]> = {}
+  
+  Object.entries(updaters).forEach(([key, val]) => {
+    updateMethods[key] = () => update(val)
+  })
+  
+  
+  const retStore = {
+    // set,
     subscribe,
     update,
     
     sync: () => update(val => val),
     
     // decrement: () => update(n => n - 1),
-    // reset: () => set(0)
+    // reset: () => set(0),
+    
+    // ...setMethods,
+    ...updateMethods,
   }
   
-  return store
+  return retStore
 }
 
 

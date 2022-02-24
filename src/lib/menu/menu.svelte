@@ -39,7 +39,7 @@
   // non-reactive
   export let items: Item[] = []
   // store
-  export let items$: Maybe<Writable<typeof items>> = null
+  export let items$: Maybe<Writable$<typeof items>> = null
   const unsub_items$: Maybe<Unsubscriber> = 
     items$?.subscribe((value) => {
       items = value

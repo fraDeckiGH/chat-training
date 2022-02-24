@@ -13,12 +13,11 @@
   import type { PopoverArgs, PopoverCtrl } from "$lib/popover"
   import { 
     popoverCtrls,
-    popoverEvents,
   } from "$lib/popover"
   
-  import type { Writable$ } from "$lib/store"
+  import { changes, writable$, Writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type"
-  import { writable } from "svelte/store"
+  import { get, writable } from "svelte/store"
   
   
   // const ctrlId = 5308
@@ -26,7 +25,7 @@
   const ctrlId = Symbol()
   
   // let items: MenuItem[] = (<MenuItem[]>[
-  const items = writable([
+  /* const items = writable([
     {
       lbl: "bbb",
     },
@@ -37,7 +36,21 @@
       lbl: "ccc",
     },
     
-  ])
+  ]) */
+  const items = writable$({
+    initVal: [
+      {
+        lbl: "bbb",
+      },
+      {
+        lbl: "aaa",
+      },
+      {
+        lbl: "ccc",
+      },
+      
+    ],
+  })
   
   
   // may also be a simple literal in the HTML
@@ -82,7 +95,7 @@
   $: console.log(`$items `, $items)
   
   $: {
-    $popoverEvents;
+    $changes;
     popoverCtrl = popoverCtrls[ctrlId]
   }
   $: {

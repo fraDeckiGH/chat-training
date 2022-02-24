@@ -19,7 +19,7 @@ import type {
   
 } from "./type"
 import { stackingContext } from "$lib/misc"
-import { createWritable$ } from "$lib/store"
+import { changes, writable$ } from "$lib/store"
 import type { Maybe } from '$lib/type'
 import maxSize from 'popper-max-size-modifier'
 import { writable } from 'svelte/store'
@@ -39,7 +39,6 @@ import 'tippy.js/dist/tippy.css'
 
 export {
   controllers as popoverCtrls,
-  dispatchEvent as popoverEvents,
   popover,
 }
 
@@ -79,11 +78,6 @@ const applyMaxSize = {
 }
 
 const controllers: Controllers = {}
-
-/**
- * dispatched events
- */
-const dispatchEvent = writable(0)
 
 
 
@@ -130,14 +124,14 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     // if (controllers[ctrlId] ?? false) {
     //   // controller exists
       
-    //   cmp.$set(<T>{ 
+    //   cmp.$set(<Cmp<T>>{ 
     //     popoverCtrl: controllers[ctrlId],
     //   })
       
     // } else {
     
-    const ctrl = createWritable$<Controller>({
-      initialVal: {
+    const ctrl = writable$<Controller>({
+      initVal: {
         cmp,
         tooltip,
       },
@@ -154,13 +148,12 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       },
     })
     
-    // ? TIL https://stackoverflow.com/questions/56505560/how-to-fix-ts2322-could-be-instantiated-with-a-different-subtype-of-constraint
     cmp.$set(<Cmp<T>>{ 
       popoverCtrl: ctrl,
     })
     
     controllers[ctrlId] = ctrl
-    dispatchEvent.update(val => val + 1)
+    changes.sync()
     // }
     
     // console.log(`controllers[ctrlId]`, controllers[ctrlId])
