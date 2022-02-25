@@ -2,16 +2,12 @@
 // * 
 
 import type { Writable$ } from '$lib/store'
-import type { Maybe, UnionToIntersection } from '$lib/type'
+import type { ObjLiteralKey } from '$lib/type'
 import type { 
   Content as TooltipContent,
   Instance as TooltipInstance, 
   Props as TooltipProps,
 } from 'tippy.js'
-
-// {pinned down}
-import type Menu from "$lib/menu/menu.svelte"
-import type Menu_1 from "$lib/menu/_4ref/menu-1.test.svelte" // test
 
 
 export type {
@@ -19,18 +15,17 @@ export type {
   Cmp,
   Controller,
   Controllers,
-  Controllers_key,
+  // Controllers_key,
   Controllers_val,
   
 }
 
 
-type Args<T = Content> = {
+type Args<T> = {
   /**
    * a component to use as the tooltip's content
    * see related: 'Popover.cmp'
    */
-  // cmp/* ? */: new (...args: any) => (T & Svelte2TsxComponent)
   cmp: CmpClass<T>
   
   cmpProps?: any
@@ -60,10 +55,10 @@ type Args<T = Content> = {
   // content?: TooltipContent
   
   /**
-   * 
+   * gen controller's id
    */
-  // FIXME Readonly<> is for objs
-  ctrlId?: Readonly<Controllers_key>
+  // FIXME Readonly<> works only on objs
+  ctrlId?: ObjLiteralKey
   
   /**
    * tooltip options
@@ -73,26 +68,24 @@ type Args<T = Content> = {
 
 
 
-// type Cmp = InstanceType<Args["cmp"]>
-type Cmp<T = Content> = InstanceType<CmpClass<T>>
+type Cmp<T> = InstanceType<CmpClass<T>>
 
 type CmpClass<T> = new (...args: any) => (
   & T 
   & Svelte2TsxComponent 
   & {
-    popoverCtrl?: Controllers_val
+    popoverCtrl?: Controllers_val<T>
   }
 )
 
 
 
-type Controller = {
+type Controller<T> = {
   /**
    * component (w/in tooltip content)
    * ? work around: interesection over union, to fix a very subtle usage bug
    */
-  cmp: UnionToIntersection<Cmp>
-  // cmp: Cmp<T>
+  cmp: Cmp<T>
   
   /**
    * meant to be used like: '_tippy' property
@@ -101,42 +94,20 @@ type Controller = {
   tooltip: TooltipInstance
 }
 
-type Controllers = Record<
-  number | string | symbol,
+type Controllers<T> = Record<ObjLiteralKey, Controllers_val<T>>
+// type Controllers_key = ObjLiteralKey
+type Controllers_val<T> = 
   /**
     limitation
     can't tell how many users(utilizers) there are in a given moment
     and that's needed to clean up a controller when its users go 
     from 1 to 0
   */
-  // Controller
+  // Controller<T>
   
   /** */
-  Writable$<Controller>
->
-
-/**
- * a key (id), to navigate available controllers and use 1
- * like this: " controllers[<<key/id>>].doSth() ";
- * allowing to further manipulate the popover once generated
- * 
- * recommended: Symbol(); cuz unique
- */
-// type Controllers_key = Readonly<keyof Controllers>
-type Controllers_key = keyof Controllers
-
-type Controllers_val = Controllers[Controllers_key]
-
-
-
-/**
- * ? possible content types for the popup
- */
-type Content = 
-  | Menu 
-  | Menu_1 // test
+  Writable$<Controller<T>>
 ;
-
 
 
 

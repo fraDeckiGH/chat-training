@@ -1,5 +1,10 @@
 
 
+@mixin logic-only {
+  display: none;
+}
+
+
 /**
  * usage eg
  * remove that annoying ~3px space at the bottom of images 

@@ -25,6 +25,7 @@
     here? shouldn't I keep things simple?
     --
   */
+  import type Cmp from "$lib/menu/menu.svelte"
   import type { 
     PopoverCtrl, 
     PopoverCtrls_val, 
@@ -32,7 +33,7 @@
   import type { Writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type"
   import { onDestroy } from "svelte"
-  import type { Unsubscriber, Writable } from "svelte/store"
+  import type { Unsubscriber } from "svelte/store"
   
   
   // (pass only 1 of these)
@@ -46,7 +47,7 @@
     })
   ;
   
-  export let popoverCtrl = <Maybe<PopoverCtrls_val>>null
+  export let popoverCtrl = <Maybe<PopoverCtrls_val<Cmp>>>null
   // BUG svelte "$popoverCtrl.prop not possible on type never"
   // export let popoverCtrl: Maybe<PopoverCtrls_val>> = null
   

@@ -76,7 +76,7 @@ const applyMaxSize = {
   }
 }
 
-const controllers: Controllers = {}
+const controllers: Controllers<any> = {}
 
 
 
@@ -129,7 +129,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       
     // } else {
     
-    const ctrl = writable$<Controller>({ 
+    const ctrl = writable$<Controller<T>>({ 
         cmp,
         tooltip,
       }, { 

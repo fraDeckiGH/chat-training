@@ -8,6 +8,7 @@
 export type {
   Func,
   Maybe,
+  ObjLiteralKey,
   UnionToIntersection,
 }
 
@@ -18,6 +19,11 @@ type Func<T = void> = () => T
 
 
 type Maybe<T> = T | null | undefined
+
+/**
+ * all object literal possible keys
+ */
+type ObjLiteralKey = number | string | symbol
 
 // type OneOrMany<T> = T | T[]
 

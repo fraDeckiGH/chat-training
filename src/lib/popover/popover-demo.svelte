@@ -8,12 +8,12 @@
   import Btn from "$lib/btn/btn.svelte"
   
   import Menu from "$lib/menu/menu.svelte"
-  import type { MenuItem } from "$lib/menu/menu.svelte"
+  import type { MenuItem } from "$lib/menu"
   
-  import type { PopoverArgs, PopoverCtrl } from "$lib/popover"
   import { 
     popoverCtrls,
   } from "$lib/popover"
+  import type { PopoverArgs, PopoverCtrl } from "$lib/popover"
   
   import { changes, writable$, Writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type"
@@ -23,8 +23,8 @@
   // const ctrlId = "randId"
   const ctrlId = Symbol()
   
-  let items: MenuItem[] = (<MenuItem[]>[
-  // const items = writable$([
+  // let items: MenuItem[] = (<MenuItem[]>[
+  const items = writable$([
     {
       lbl: "bbb",
     },
@@ -44,8 +44,8 @@
     
     // cmpProps: {},
     cmpProps: {
-      items,
-      // items$: items,
+      // items,
+      items$: items,
       
     },
     
@@ -72,12 +72,12 @@
     
   }
   
-  let popoverCtrl: Maybe<Writable$<PopoverCtrl>>
+  let popoverCtrl: Maybe<Writable$<PopoverCtrl<Menu>>>
   let showReferenceElem = true
   
   
-  $: console.log(`items `, items)
-  // $: console.log(`$items `, $items)
+  // $: console.log(`items `, items)
+  $: console.log(`$items `, $items)
   
   $: {
     $changes;
@@ -99,41 +99,48 @@
     
     // 1
     
-    items.push(<MenuItem>{
-      lbl: "4444",
-    })
-    items = items
+    // items.push(<MenuItem>{
+    //   lbl: "4444",
+    // })
+    // items = items
     
     // console.log(`items`, items)
     
     
     // 2
     
-    // items.update((val) => {
-    //   val.push(<MenuItem>{
-    //     lbl: "4444",
-    //   })
-    //   return val
-    // })
+    items.update((val) => {
+      val.push(<MenuItem>{
+        lbl: "4444",
+      })
+      return val
+    })
     
     // console.log(`$items`, $items)
     
   }
   
-  /**
-   * worked even when popoverCtrls wasn't a store
-   * w/ the following limitation: 
-   * parent/utilizer of popoverCtrls.cmp (eg. this cmp), 
-   * could not be notified of changes. no reactivity event 
-   * was fired when changes happened);
-   * could still retrieve the updated value(s) tho, 
-   * (problem is when to?)
-   */
+  
   function addMenuItems() {
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    $popoverCtrl?.cmp.alterMenuItems()
+    console.log(`log`, 
+    // $popoverCtrl?.cmp.alterMenuItems
+    )
+    // $popoverCtrl?.cmp.alterMenuItems?.()
+    
+    // ? all 3 work
+    // $popoverCtrl?.cmp.alterMenuItems()
+    
+    // popoverCtrl?.update((val) => {
+    // no intellisense cuz type is Controllers<any>
+    // popoverCtrls[ctrlId].update((val) => { 
+    //   val.cmp.alterMenuItems()
+    //   return val
+    // })
+    // ------------
+    
     // $popoverCtrl.cmp.alterMenuItems()
     // $popoverCtrl.cmp.$set({ itemsNumber: 50 })
     
@@ -142,16 +149,6 @@
     
     // $popoverCtrl.tooltip.setProps({
     //   placement: "left",
-    // })
-    
-  }
-  
-  function testHelper() {
-    
-    // $popoverCtrl.cmp.$set({itemsNumber: 2})
-    
-    // $popoverCtrl.tooltip.setProps({
-    //   placement: "right",
     // })
     
   }
@@ -177,12 +174,6 @@
   on:click="{addMenuItems}"
 >
   add items
-</Btn>
-
-<Btn 
-  on:click="{testHelper}"
->
-  testHelper
 </Btn>
 
 <Btn 

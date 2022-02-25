@@ -1,4 +1,12 @@
 
+<script lang="ts" context=module>
+  export type {
+    // Item as MenuItem,
+  }
+  
+  type Popover = typeof import("$lib/popover")
+  
+</script>
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
   import type { Maybe } from "$lib/type"
@@ -16,7 +24,7 @@
   
   // svelte warns: "prop not passed" (when cmp is created in HTML)
   // export let popoverArgs: PopoverArgs | undefined
-  export let popoverArgs: Maybe<PopoverArgs> = null
+  export let popoverArgs: Maybe<PopoverArgs<any>> = null
   
   
   onMount(() => {
@@ -25,13 +33,17 @@
 	})
   
   
-  function popover(htmlEl: HTMLElement, args: any) {
+  // function popover(htmlEl: HTMLElement, args: any) {
+  function popover(htmlEl: HTMLElement, args: Popover) {
     if (!args) {
       // console.log(`return: !args`, args)
       return
     }
+    if (!popoverArgs) {
+      return
+    }
     
-    return args.popover(htmlEl.parentElement, popoverArgs)
+    return args.popover(htmlEl.parentElement!, popoverArgs)
   }
   
 </script>
@@ -70,6 +82,8 @@
 
 <style lang=scss>
   
+  @use "../../lib/util";
+  
   .btn-wrap {
     display: inline-block; // default for <button>
     .btn {
@@ -78,7 +92,8 @@
   }
   
   .logic-only {
-    display: none;
+    // @extend util.%logic-only;
+    @include util.logic-only;
   }
   
 </style>

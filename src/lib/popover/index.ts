@@ -15,7 +15,7 @@ export type {
   // Cmp as PopoverContentCmp,
   Controller as PopoverCtrl,
   Controllers as PopoverCtrls,
-  Controllers_key as PopoverCtrls_key,
+  // Controllers_key as PopoverCtrls_key,
   Controllers_val as PopoverCtrls_val,
   
 } from "./type"
