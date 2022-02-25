@@ -45,39 +45,17 @@ type Writable$<T> =
      * think of this like hitting a refresh btn, but for stores
      */
     sync: Func
-    
-    [key: string]: any
   }
+  // ? additional keys not there by default but added by users(utilizers)
+  & Record<
+    string,
+    
+    // | Writable<T>["set"]
+    | Writable<T>["update"]
+  >
 ;
 
-
-
-/**
-  help syncing changes
-  
-  --
-  usage
-  
-  emit sender (eg. $lib/popover/core)
-    changes.sync()
-  
-  receiver (eg. $lib/popover/popover-demo)
-    $changes 
- */
-const changes = writable$({
-  initVal: 0,
-  updaters: {
-    sync: val => val + 1,
-  }
-})
-
-
-type Writable$Args<T> = T | {
-  /**
-   * initial value
-   */
-  initVal/* ? */: T, 
-  
+type Writable$Args<T> = {
   // ? svelte ~default
   // startCb?: (set?: ((value: T) => void)) => StopCb
   // ? I want to pass StopCb separately
@@ -98,17 +76,41 @@ type Writable$Args<T> = T | {
   updaters?: Record<string, Updater<T>>
 }
 
+
+
 /**
- * statement: Svelte has initialVal as optional
+  help syncing changes
+  
+  --
+  usage
+  
+  emit sender (eg. $lib/popover/core)
+    changes.sync()
+  
+  receiver (eg. $lib/popover/popover-demo)
+    $changes 
+ */
+const changes = writable$(0, {
+  updaters: {
+    sync: val => val + 1,
+  },
+})
+
+
+
+/**
+ * statement: Svelte has 'initial value' as optional
  * ? https://svelte.dev/docs#run-time-svelte-store-writable
  */
-function writable$<T>(args: Writable$Args<T>): Writable$<T> {
+function writable$<T>(
+  /**
+   * initial value
+   */
+  initVal/* ? */: T, 
+  args: Writable$Args<T> = {}
+): Writable$<T> {
   
-  if (typeof args === "object") {
-    
-  }
   const {
-    initVal,
     startCb,
     stopCb,
     updaters = {},

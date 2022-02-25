@@ -22,7 +22,6 @@ import { stackingContext } from "$lib/misc"
 import { changes, writable$ } from "$lib/store"
 import type { Maybe } from '$lib/type'
 import maxSize from 'popper-max-size-modifier'
-import { writable } from 'svelte/store'
 
 import tippy from 'tippy.js'
 import type { 
@@ -130,23 +129,22 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       
     // } else {
     
-    const ctrl = writable$<Controller>({
-      initVal: {
+    const ctrl = writable$<Controller>({ 
         cmp,
         tooltip,
-      },
-      stopCb() {
-        /*
-          removing the ref from containingObj should be enough 
-          for the garbage collector to do its job
-          (entry's instance must not referenced(used) anywhere)
-          
-          nullifying the entry itself creates overhead 
-          (for me in the code/types)
-        */
-        delete controllers[ctrlId]
-      },
-    })
+      }, { 
+        stopCb() {
+          /*
+            removing the ref from containingObj should be enough 
+            for the garbage collector to do its job
+            (entry's instance must not referenced(used) anywhere)
+            
+            nullifying the entry itself creates overhead 
+            (for me in the code/types)
+          */
+          delete controllers[ctrlId]
+        },
+      })
     
     cmp.$set(<Cmp<T>>{ 
       popoverCtrl: ctrl,

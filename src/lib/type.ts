@@ -12,7 +12,10 @@ export type {
 }
 
 
+// ? are these equal? if so, which is more correct?
 type Func<T = void> = () => T
+// type Func<T = void> = (val: T) => T
+
 
 type Maybe<T> = T | null | undefined
 

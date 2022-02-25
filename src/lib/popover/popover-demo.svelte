@@ -17,15 +17,14 @@
   
   import { changes, writable$, Writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type"
-  import { get, writable } from "svelte/store"
   
   
   // const ctrlId = 5308
   // const ctrlId = "randId"
   const ctrlId = Symbol()
   
-  // let items: MenuItem[] = (<MenuItem[]>[
-  /* const items = writable([
+  let items: MenuItem[] = (<MenuItem[]>[
+  // const items = writable$([
     {
       lbl: "bbb",
     },
@@ -36,21 +35,7 @@
       lbl: "ccc",
     },
     
-  ]) */
-  const items = writable$({
-    initVal: [
-      {
-        lbl: "bbb",
-      },
-      {
-        lbl: "aaa",
-      },
-      {
-        lbl: "ccc",
-      },
-      
-    ],
-  })
+  ])
   
   
   // may also be a simple literal in the HTML
@@ -59,8 +44,8 @@
     
     // cmpProps: {},
     cmpProps: {
-      // items,
-      items$: items,
+      items,
+      // items$: items,
       
     },
     
@@ -91,8 +76,8 @@
   let showReferenceElem = true
   
   
-  // $: console.log(`items `, items)
-  $: console.log(`$items `, $items)
+  $: console.log(`items `, items)
+  // $: console.log(`$items `, $items)
   
   $: {
     $changes;
@@ -114,22 +99,22 @@
     
     // 1
     
-    // items.push(<MenuItem>{
-    //   lbl: "4444",
-    // })
-    // items = items
+    items.push(<MenuItem>{
+      lbl: "4444",
+    })
+    items = items
     
     // console.log(`items`, items)
     
     
     // 2
     
-    items.update((val) => {
-      val.push(<MenuItem>{
-        lbl: "4444",
-      })
-      return val
-    })
+    // items.update((val) => {
+    //   val.push(<MenuItem>{
+    //     lbl: "4444",
+    //   })
+    //   return val
+    // })
     
     // console.log(`$items`, $items)
     
