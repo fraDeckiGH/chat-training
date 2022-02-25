@@ -83,7 +83,6 @@ type CmpClass<T> = new (...args: any) => (
 type Controller<T> = {
   /**
    * component (w/in tooltip content)
-   * ? work around: interesection over union, to fix a very subtle usage bug
    */
   cmp: Cmp<T>
   
