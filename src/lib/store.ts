@@ -36,8 +36,8 @@ type StopCb = () => void
 // type Writable$<T> = ReturnType<typeof writable$<T>>
 
 type Writable$<T> = 
-  // Writable<T> 
-  & Omit<Writable<T>, "set"> 
+  & Writable<T> 
+  // & Omit<Writable<T>, "set"> 
   & {
     /**
      * alert/notify subscribers of potential changes
@@ -46,12 +46,13 @@ type Writable$<T> =
      */
     sync: Func
   }
-  // ? additional keys not there by default but added by users(utilizers)
+  // ? additional entries not there by default but added by users(utilizers)
   & Record<
     string,
     
+    Func<Unsubscriber | void>
     // | Writable<T>["set"]
-    | Writable<T>["update"]
+    // | Writable<T>["update"]
   >
 ;
 
@@ -154,7 +155,8 @@ function writable$<T>(
   )
   
   
-  const updateMethods: Record<string, Writable<T>["update"]> = {}
+  // const updateMethods: Record<string, Writable<T>["update"]> = {}
+  const updateMethods: Record<string, any> = {}
   
   Object.entries(updaters).forEach(([key, val]) => {
     updateMethods[key] = () => update(val)
@@ -162,7 +164,7 @@ function writable$<T>(
   
   
   const retStore = {
-    // set,
+    set,
     subscribe,
     update,
     

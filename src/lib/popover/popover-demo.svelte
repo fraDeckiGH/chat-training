@@ -11,9 +11,9 @@
   import type { MenuItem } from "$lib/menu"
   
   import { 
-    popoverCtrls,
+    popoverCtrls, 
   } from "$lib/popover"
-  import type { PopoverArgs, PopoverCtrl } from "$lib/popover"
+  import type { PopoverArgs, PopoverCtrls_val } from "$lib/popover"
   
   import { changes, writable$, Writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type"
@@ -49,7 +49,7 @@
       
     },
     
-    // cmpOpts: { props: {}, },
+    cmpOpts: { props: {items$: items, trete: "ewrie"}, },
     /* cmpOpts: {
       context: new Map(
         Object.entries({
@@ -72,7 +72,7 @@
     
   }
   
-  let popoverCtrl: Maybe<Writable$<PopoverCtrl<Menu>>>
+  let popoverCtrl: Maybe< PopoverCtrls_val<Menu> >
   let showReferenceElem = true
   
   
@@ -125,13 +125,12 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    console.log(`log`, 
-    // $popoverCtrl?.cmp.alterMenuItems
-    )
+    console.log(`$popoverCtrl`, $popoverCtrl)
+    console.log(`$popoverCtrl?.cmp`, $popoverCtrl?.cmp)
     // $popoverCtrl?.cmp.alterMenuItems?.()
     
     // ? all 3 work
-    // $popoverCtrl?.cmp.alterMenuItems()
+    $popoverCtrl?.cmp.alterMenuItems()
     
     // popoverCtrl?.update((val) => {
     // no intellisense cuz type is Controllers<any>
@@ -141,8 +140,7 @@
     // })
     // ------------
     
-    // $popoverCtrl.cmp.alterMenuItems()
-    // $popoverCtrl.cmp.$set({ itemsNumber: 50 })
+    // $popoverCtrl.cmp.$set({ items:  })
     
     
     // * ways of changing tippy instance's props
@@ -151,6 +149,16 @@
     //   placement: "left",
     // })
     
+  }
+  
+  function testHelper() {
+    // $popoverCtrl.tooltip.setProps({
+    //   placement: "left",
+    // })
+    
+    console.log(`$popoverCtrl`, $popoverCtrl)
+    console.log(`$popoverCtrl?.tooltip`, $popoverCtrl?.tooltip)
+    $popoverCtrl?.tooltip.show()
   }
   
   
@@ -174,6 +182,12 @@
   on:click="{addMenuItems}"
 >
   add items
+</Btn>
+
+<Btn 
+  on:click="{testHelper}"
+>
+  testHelper
 </Btn>
 
 <Btn 

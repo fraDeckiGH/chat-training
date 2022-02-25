@@ -8,14 +8,11 @@
 export type {
   Func,
   Maybe,
-  ObjLiteralKey,
   UnionToIntersection,
 }
 
 
-// ? are these equal? if so, which is more correct?
-type Func<T = void> = () => T
-// type Func<T = void> = (val: T) => T
+type Func<T = | void> = (...args: any) => T
 
 
 type Maybe<T> = T | null | undefined
@@ -23,7 +20,8 @@ type Maybe<T> = T | null | undefined
 /**
  * all object literal possible keys
  */
-type ObjLiteralKey = number | string | symbol
+// type ObjLiteralKey = number | string | symbol
+/** @type PropertyKey */
 
 // type OneOrMany<T> = T | T[]
 

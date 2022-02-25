@@ -11,7 +11,6 @@
   }
   
 </script>
-
 <script lang="ts">
   /*
     todo
@@ -27,7 +26,6 @@
   */
   import type Cmp from "$lib/menu/menu.svelte"
   import type { 
-    PopoverCtrl, 
     PopoverCtrls_val, 
   } from "$lib/popover"
   import type { Writable$ } from "$lib/store"
@@ -47,9 +45,9 @@
     })
   ;
   
-  export let popoverCtrl = <Maybe<PopoverCtrls_val<Cmp>>>null
+  export let popoverCtrl = <Maybe< PopoverCtrls_val<Cmp> >>null
   // BUG svelte "$popoverCtrl.prop not possible on type never"
-  // export let popoverCtrl: Maybe<PopoverCtrls_val>> = null
+  // export let popoverCtrl: Maybe< PopoverCtrls_val<Cmp> > = null
   
   let selectedItem: Item | undefined
   
@@ -60,6 +58,11 @@
 		// console.log(`onDestroy `, )
     unsub_items$?.()
 	})
+  
+  // onMount(() => {
+	// 	console.log(`onMount `, )
+    
+	// })
   
   
   export function get_selectedItem() {

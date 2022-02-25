@@ -2,7 +2,6 @@
 // * 
 
 import type { Writable$ } from '$lib/store'
-import type { ObjLiteralKey } from '$lib/type'
 import type { 
   Content as TooltipContent,
   Instance as TooltipInstance, 
@@ -24,30 +23,36 @@ export type {
 type Args<T> = {
   /**
    * a component to use as the tooltip's content
-   * see related: 'Popover.cmp'
    */
   cmp: CmpClass<T>
   
-  cmpProps?: any
-  // reminder  cmpProps?: Content // proposes all
-  // ? only exported funcs are getting suggested
-  // cmpProps?: Partial<T>
-  // ? works like above, also same limitations
-  // cmpProps?: Partial<
-  //   InstanceType<
-  //     NonNullable<
-  //       Args<T>["cmp"]
-  //     >
-  //   >
-  // >
+  // BUG not all props intellisensed
+  cmpProps?: 
+    Partial<
+      Svelte2TsxComponentConstructorParameters<
+        // T (-1 props)
+        Cmp<T>
+      >["props"]
+    > 
+    // work around
+    & Record<string, any>
+  ;
   
-  cmpOpts?: Partial<
-    Svelte2TsxComponentConstructorParameters<
-      // NonNullable<
-        Args<T>["cmpProps"]
-      // >
+  // BUG not all props intellisensed
+  cmpOpts?: 
+    Partial< 
+      Svelte2TsxComponentConstructorParameters<
+        
+        // * 'props'
+        Partial<
+          // T (-1 props)
+          Cmp<T>
+          & Record<string, any>
+        >
+        
+      >
     >
-  >
+  ;
   
   /**
    * static content
@@ -58,7 +63,7 @@ type Args<T> = {
    * gen controller's id
    */
   // FIXME Readonly<> works only on objs
-  ctrlId?: ObjLiteralKey
+  ctrlId?: PropertyKey
   
   /**
    * tooltip options
@@ -70,7 +75,9 @@ type Args<T> = {
 
 type Cmp<T> = InstanceType<CmpClass<T>>
 
-type CmpClass<T> = new (...args: any) => (
+type CmpClass<T> = new (
+  ...args: Svelte2TsxComponentConstructorParameters<T>[]
+) => (
   & T 
   & Svelte2TsxComponent 
   & {
@@ -80,7 +87,7 @@ type CmpClass<T> = new (...args: any) => (
 
 
 
-type Controller<T> = {
+type Controller<T> = null | {
   /**
    * component (w/in tooltip content)
    */
@@ -93,8 +100,8 @@ type Controller<T> = {
   tooltip: TooltipInstance
 }
 
-type Controllers<T> = Record<ObjLiteralKey, Controllers_val<T>>
-// type Controllers_key = ObjLiteralKey
+type Controllers<T> = Record<PropertyKey, Controllers_val<T>>
+// type Controllers_key = PropertyKey
 type Controllers_val<T> = 
   /**
     limitation

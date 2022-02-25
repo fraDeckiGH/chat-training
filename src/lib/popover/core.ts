@@ -15,12 +15,13 @@ import type {
   Controller, 
   Controllers, 
   // Controllers_key, 
-  // Controllers_val, 
+  Controllers_val, 
   
 } from "./type"
 import { stackingContext } from "$lib/misc"
 import { changes, writable$ } from "$lib/store"
 import type { Maybe } from '$lib/type'
+
 import maxSize from 'popper-max-size-modifier'
 
 import tippy from 'tippy.js'
@@ -95,6 +96,8 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
   
   // * controller
   
+  let ctrl: Maybe< Controllers_val<T> >
+  
   const createController = () => {
     // ? all true? execute
     if (!(ctrlId && cmp && tooltip)) {
@@ -105,12 +108,12 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     // console.log(`createController executing`, )
     
     // ! memory leak (according to tippy)
+    //#region 
     /*
       toggle popover's ref/target elem (usually it's the triggerEl)
       I'll start seeing errors when interacting w/ the tippy or 
       it's content
     */
-    //#region 
     /*
       val ?? true
       check is passed if 'val' === (null || undefined)
@@ -119,7 +122,6 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       val ?? false
       'val' === (null || undefined) ? else : then
     */
-    //#endregion
     // if (controllers[ctrlId] ?? false) {
     //   // controller exists
       
@@ -128,23 +130,24 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     //   })
       
     // } else {
+    //#endregion
     
-    const ctrl = writable$<Controller<T>>({ 
-        cmp,
-        tooltip,
-      }, { 
-        stopCb() {
-          /*
-            removing the ref from containingObj should be enough 
-            for the garbage collector to do its job
-            (entry's instance must not referenced(used) anywhere)
-            
-            nullifying the entry itself creates overhead 
-            (for me in the code/types)
-          */
-          delete controllers[ctrlId]
-        },
-      })
+    ctrl = writable$<Controller<T>>({ 
+      cmp,
+      tooltip,
+    }, { 
+      stopCb() {
+        /*
+          ? this comment might be outdated
+          removing the ref from containingObj should be enough 
+          for the garbage collector to do its job
+          (entry's instance must not referenced(used) anywhere)
+          
+          nullifying the entry itself might create overhead
+        */
+        delete controllers[ctrlId]
+      },
+    })
     
     cmp.$set(<Cmp<T>>{ 
       popoverCtrl: ctrl,
@@ -171,7 +174,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     instance.popper.className += "popover tippy-root"
     
     cmp = new cmpClass({ 
-      target: instance.popper.querySelector('.tippy-content'),
+      target: instance.popper.querySelector('.tippy-content')!,
       
       ...cmpOpts,
       
@@ -209,7 +212,9 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     // },
     onDestroy(instance) {
       // console.log(`onDestroy instance`, instance)
+      
       cmp?.$destroy()
+      ctrl?.set(null)
     },
     // onHidden(instance) {
     //   console.log(`onHidden instance`, instance)
@@ -318,7 +323,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
   
   const useActionReturn: SvelteActionReturnType = {
     destroy: () => {
-      console.log(`use:action.destroy()`, )
+      // console.log(`use:action.destroy()`, )
       
       // in case the reference htmlEl is removed from the DOM
       tooltip.destroy()
