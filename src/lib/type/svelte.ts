@@ -1,54 +1,47 @@
 
 export type {
-  Cmp,
-  CmpClass,
-  CmpProps,
-  CmpOpts,
+  Cmp as SvelteCmp,
+  CmpClass as SvelteCmpClass,
+  CmpProps as SvelteCmpProps,
+  CmpOpts as SvelteCmpOpts,
   
 }
 
 
 
-type Cmp<T> = InstanceType<CmpClass<T>>
-
-type CmpClass<T> = new (
-  ...args: Svelte2TsxComponentConstructorParameters<T>[]
-) => (
+type Cmp<T> = 
   & T 
   & Svelte2TsxComponent 
-  & {
-    popoverCtrl?: Controllers_val<T>
-  }
-)
+;
+
+type CmpClass<T, CmpInstance = Cmp<T>> = new (
+  ...args: CmpOpts<T, CmpInstance>[]
+) => CmpInstance
+
 
 
 // BUG not all props intellisensed
-type CmpProps<T> = 
+type CmpProps<T, CmpInstance = Cmp<T>> = 
   Partial<
     Svelte2TsxComponentConstructorParameters<
       // T (-1 props (during tests))
-      Cmp<T>
+      CmpInstance
     >["props"]
   > 
   // work around
   & Record<string, any>
 ;
 
-// BUG not all props intellisensed
-type CmpOpts<T> = 
-  Partial< 
-    Svelte2TsxComponentConstructorParameters<
-      
-      // * 'props'
-      Partial<
-        // T (-1 props (during tests))
-        Cmp<T>
-      >
-      // work around
-      & Record<string, any>
-      
-    >
+type CmpOpts<T, CmpInstance = Cmp<T>> = 
+  Svelte2TsxComponentConstructorParameters<
+    CmpProps<T, CmpInstance>
   >
 ;
+
+
+
+
+
+
 
 

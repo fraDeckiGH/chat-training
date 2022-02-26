@@ -15,7 +15,7 @@
   } from "$lib/popover"
   import type { PopoverArgs, PopoverCtrls_val } from "$lib/popover"
   
-  import { changes, writable$, Writable$ } from "$lib/store"
+  import { changes, writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type/util"
   
   
@@ -49,7 +49,7 @@
       
     },
     
-    cmpOpts: { props: {items$: items, trete: "ewrie"}, },
+    // cmpOpts: { props: {items$: items, trete: "ewrie"}, },
     /* cmpOpts: {
       context: new Map(
         Object.entries({
@@ -125,10 +125,6 @@
     
     // * ways of changing cmp instance (inside tippy tooltip)'s props
     
-    console.log(`$popoverCtrl`, $popoverCtrl)
-    console.log(`$popoverCtrl?.cmp`, $popoverCtrl?.cmp)
-    // $popoverCtrl?.cmp.alterMenuItems?.()
-    
     // ? all 3 work
     $popoverCtrl?.cmp.alterMenuItems()
     
@@ -152,13 +148,11 @@
   }
   
   function testHelper() {
+    
     // $popoverCtrl.tooltip.setProps({
     //   placement: "left",
     // })
     
-    console.log(`$popoverCtrl`, $popoverCtrl)
-    console.log(`$popoverCtrl?.tooltip`, $popoverCtrl?.tooltip)
-    $popoverCtrl?.tooltip.show()
   }
   
   
@@ -184,11 +178,11 @@
   add items
 </Btn>
 
-<Btn 
+<!-- <Btn 
   on:click="{testHelper}"
 >
   testHelper
-</Btn>
+</Btn> -->
 
 <Btn 
   on:click="{() => {

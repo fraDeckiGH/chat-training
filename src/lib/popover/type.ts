@@ -3,6 +3,12 @@
 
 import type { Writable$ } from '$lib/store'
 import type { 
+  SvelteCmp, 
+  SvelteCmpClass, 
+  SvelteCmpOpts,
+  SvelteCmpProps, 
+} from '$lib/type/svelte'
+import type { 
   Content as TooltipContent,
   Instance as TooltipInstance, 
   Props as TooltipProps,
@@ -24,37 +30,13 @@ type Args<T> = {
   /**
    * a component to use as the tooltip's content
    */
-  cmp: CmpClass<T>
+  cmp: SvelteCmpClass<T, Cmp<T>>
   
-  // cmpProps?: any
-  // BUG not all props intellisensed
-  cmpProps?: 
-    Partial<
-      Svelte2TsxComponentConstructorParameters<
-        // T // (-1 props (during tests))
-        Cmp<T>
-      >["props"]
-    >
-    // work around
-    & Record<string, any>
-  ;
+  cmpProps?: SvelteCmpProps<T, Cmp<T>>
   
-  // BUG not all props intellisensed
-  cmpOpts?: 
-    Partial< 
-      Svelte2TsxComponentConstructorParameters<
-        
-        // * 'props'
-        Partial<
-          // T // (-1 props (during tests))
-          Cmp<T>
-        >
-        // work around
-        & Record<string, any>
-        
-      >
-    >
-  ;
+  cmpOpts?: Partial< 
+    SvelteCmpOpts<T, Cmp<T>> 
+  >
   
   /**
    * static content
@@ -64,8 +46,8 @@ type Args<T> = {
   /**
    * gen controller's id
    */
-  // FIXME Readonly<> works only on objs
-  ctrlId?: PropertyKey
+  // ? destructuring makes 'readonly' useless
+  readonly ctrlId?: PropertyKey
   
   /**
    * tooltip options
@@ -75,17 +57,12 @@ type Args<T> = {
 
 
 
-type Cmp<T> = InstanceType<CmpClass<T>>
-
-type CmpClass<T> = new (
-  ...args: Svelte2TsxComponentConstructorParameters<T>[]
-) => (
-  & T 
-  & Svelte2TsxComponent 
+type Cmp<T> = 
+  & SvelteCmp<T>
   & {
     popoverCtrl?: Controllers_val<T>
   }
-)
+;
 
 
 

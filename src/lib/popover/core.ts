@@ -182,7 +182,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       props: {
         // defaults here (valid for every component)
         
-        ...<T>cmpProps,
+        ...cmpProps,
       },
     })
     

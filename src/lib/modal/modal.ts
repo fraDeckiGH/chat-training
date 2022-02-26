@@ -34,6 +34,7 @@ function create() {
     intro: true,
     props: {
       component: <Component><unknown>null,
+      
     },
     // target: document.body,
     target,
