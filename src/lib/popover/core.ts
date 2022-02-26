@@ -20,7 +20,7 @@ import type {
 } from "./type"
 import { stackingContext } from "$lib/misc"
 import { changes, writable$ } from "$lib/store"
-import type { Maybe } from '$lib/type'
+import type { Maybe } from "$lib/type/util"
 
 import maxSize from 'popper-max-size-modifier'
 
@@ -178,10 +178,11 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       
       ...cmpOpts,
       
-      // ? {pinned down} so that cmpProps overwrites cmpOpts.props
+      // ? {moved downward} so that cmpProps overwrites cmpOpts.props
       props: {
         // defaults here (valid for every component)
-        ...cmpProps,
+        
+        ...<T>cmpProps,
       },
     })
     

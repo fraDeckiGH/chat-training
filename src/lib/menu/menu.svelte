@@ -27,10 +27,10 @@
   import type Cmp from "$lib/menu/menu.svelte"
   import type { 
     PopoverCtrls_val, 
-  } from "$lib/popover"
-  import type { Writable$ } from "$lib/store"
-  import type { Maybe } from "$lib/type"
-  import { onDestroy } from "svelte"
+  } from "$lib/popover";
+  import type { Writable$ } from "$lib/store";
+  import type { Maybe } from "$lib/type/util";
+  import { onDestroy } from "svelte";
   import type { Unsubscriber } from "svelte/store"
   
   

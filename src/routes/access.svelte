@@ -4,7 +4,7 @@
   import { createModal } from "$lib/modal/modal"
   import PopoverDemo from "$lib/popover/popover-demo.svelte"
   import type ToastHandler from "$lib/toast-handler/toast-handler.svelte"
-  import type { Maybe } from "$lib/type"
+  import type { Maybe } from "$lib/type/util"
   import { onMount } from "svelte"
   
   

@@ -16,7 +16,7 @@
   import type { PopoverArgs, PopoverCtrls_val } from "$lib/popover"
   
   import { changes, writable$, Writable$ } from "$lib/store"
-  import type { Maybe } from "$lib/type"
+  import type { Maybe } from "$lib/type/util"
   
   
   // const ctrlId = 5308

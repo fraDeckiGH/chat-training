@@ -13,7 +13,7 @@ import type { Readable, Writable } from 'svelte/store'
 import type { 
   Subscriber, Updater, Unsubscriber, 
 } from 'svelte/store'
-import type { Func } from "./type"
+import type { Func } from "$lib/type/util"
 
 
 export {

@@ -26,14 +26,15 @@ type Args<T> = {
    */
   cmp: CmpClass<T>
   
+  // cmpProps?: any
   // BUG not all props intellisensed
   cmpProps?: 
     Partial<
       Svelte2TsxComponentConstructorParameters<
-        // T (-1 props)
+        // T // (-1 props (during tests))
         Cmp<T>
       >["props"]
-    > 
+    >
     // work around
     & Record<string, any>
   ;
@@ -45,10 +46,11 @@ type Args<T> = {
         
         // * 'props'
         Partial<
-          // T (-1 props)
+          // T // (-1 props (during tests))
           Cmp<T>
-          & Record<string, any>
         >
+        // work around
+        & Record<string, any>
         
       >
     >

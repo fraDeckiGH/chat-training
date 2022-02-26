@@ -1,7 +1,7 @@
 
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
-  import type { Maybe } from "$lib/type"
+  import type { Maybe } from "$lib/type/util"
   import { onMount } from "svelte"
   
   
