@@ -1,9 +1,11 @@
 
 <script lang=ts>
   import type { Auth } from "$lib/auth"
+  import Btn from "$lib/btn/btn.svelte";
+  import BtnDemo from "$lib/btn/btn-demo.svelte";
   import { createModal } from "$lib/modal/modal"
   import PopoverDemo from "$lib/popover/popover-demo.svelte"
-  import type ToastHandler from "$lib/toast-handler/toast-handler.svelte"
+  import ToastHandlerDemo from "$lib/toast-handler/toast-handler-demo.svelte";
   import type { Maybe } from "$lib/type/util"
   import { onMount } from "svelte"
   
@@ -12,7 +14,6 @@
   let auth: Auth | undefined
   let psw_autocomplete = "new-password"
   let submittingForm = false
-  let toast: ToastHandler | undefined
   let userHasAccount: Maybe<string>
   
   
@@ -21,7 +22,6 @@
   onMount(async () => {
     auth = (await import("$lib/auth")).create()
     // console.log(`auth`, auth)
-    toast = (await import("$lib/toast-handler/toast-handler")).singleton
     
     // localStorage.item might change while user is using the app
     userHasAccount = window.localStorage.getItem("userHasAccount")
@@ -77,7 +77,7 @@
     console.log(`btn not disabled anymore`, )
   }
   
-  let popoverDemo = true
+  
 </script>
 
 
@@ -88,55 +88,26 @@
   </h4>
   
   <div class="actions">
-    <button 
-      class=""
+    <Btn 
       on:click={() => auth?.signOut()}
     >
       sign out
-    </button>
-    
-    <button 
-      class=""
+    </Btn>
+    <Btn 
     >
       see password
-    </button>
+    </Btn>
     
-    <button 
-      id="myButton"
+    <Btn 
       on:click="{createModal}"
     >
       see modal
-    </button>
+    </Btn>
     
-    {#if toast}
-      <button 
-        id="myButton"
-        on:click="{toast.add}"
-      >
-        add toast
-      </button>
-      
-      <button 
-        on:click="{toast.remove}"
-      >
-        remove toast
-      </button>
-    {/if}
-    
-    <div class=""
-    on:click="{() => {
-      popoverDemo = !popoverDemo
-      popoverDemo=popoverDemo
-    }}"
-    >
-      toggle PopoverDemo
-    </div>
-    {#if popoverDemo}
-      
+    <ToastHandlerDemo></ToastHandlerDemo>
     <PopoverDemo></PopoverDemo>
-    {/if}
-    
   </div>
+  
   
   {#if auth}
   <!-- on:submit|preventDefault={() => {
@@ -164,19 +135,19 @@
       >
       <!-- TODO eye icon to see the psw -->
 
-      <button 
-        class="btn-submit"
-        disabled={submittingForm}
-        type="submit"
-        style="height: 2000px;"
+      <Btn 
+        attr={{
+          class: "btn-submit",
+          disabled: submittingForm,
+          style: "height: 2000px;",
+          type: "submit",
+        }}
       >
         Enter
-      </button>
+      </Btn>
         
     </form>
   {/if}
-  
-  
     
 </main>
 

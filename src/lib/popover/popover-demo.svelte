@@ -15,7 +15,7 @@
   } from "$lib/popover"
   import type { PopoverArgs, PopoverCtrls_val } from "$lib/popover"
   
-  import { changes, writable$ } from "$lib/store"
+  import { changes, Writable$, writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type/util"
   
   
@@ -24,12 +24,14 @@
   const ctrlId = Symbol()
   
   // let items: MenuItem[] = (<MenuItem[]>[
-  const items = writable$([
+  const items: Writable$<MenuItem[]> = writable$(<MenuItem[]>[
+    // ? coercion is for tests
     {
       lbl: "bbb",
     },
     {
       lbl: "aaa",
+      link: "4354543534543543543",
     },
     {
       lbl: "ccc",
@@ -158,6 +160,28 @@
   
 </script>
 
+<!-- use the following outside for additional tests
+  
+  script
+  
+  let popoverDemo = true
+  
+  
+  html
+  
+  <div class=""
+    on:click="{() => {
+      popoverDemo = !popoverDemo
+      popoverDemo=popoverDemo
+    }}"
+  >
+    toggle PopoverDemo
+  </div>
+  {#if popoverDemo}
+    <PopoverDemo></PopoverDemo>
+  {/if}
+  
+-->
 
 <Btn
   btnEl={showReferenceElem}

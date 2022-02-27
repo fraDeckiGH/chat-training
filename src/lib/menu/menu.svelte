@@ -8,6 +8,11 @@
     // icon: 
     id: string
     lbl: string
+    
+    /**
+     * when a redirect is desired
+     */
+    link?: string
   }
   
 </script>
@@ -24,6 +29,7 @@
     here? shouldn't I keep things simple?
     --
   */
+  import Btn from "$lib/btn/btn.svelte";
   import type Cmp from "$lib/menu/menu.svelte"
   import type { 
     PopoverCtrls_val, 
@@ -36,9 +42,9 @@
   
   // (pass only 1 of these)
   // non-reactive
-  export let items: Item[] = []
+  export let items = <Item[]>[]
   // store
-  export let items$: Maybe<Writable$<typeof items>> = null
+  export let items$ = < Maybe<Writable$<typeof items>> >null
   const unsub_items$: Maybe<Unsubscriber> = 
     items$?.subscribe((value) => {
       items = value
@@ -107,20 +113,26 @@
 >
   <!-- <div class="rug"></div> -->
   
-  <div class="scroller">
+  <nav class="scroller">
     <ul class="list-items">
     
       {#each items as item}
         <li 
           class="li"
-          on:click={() => selectItem(item)}
+          
         >
-          {item.lbl}
+          <Btn 
+            link={item.link}
+            look="menuItem"
+            on:click={() => selectItem(item)}
+          >
+            {item.lbl}
+          </Btn>
         </li>
       {/each}
     
     </ul>
-  </div>
+  </nav>
   
 </div>
 
@@ -153,16 +165,13 @@
       // max-width: 500ch; // test
       // max-width: 40ch; // best choice is w/out
       
-      // display: flex;
-      // flex-direction: column;
-      
       .li {
-        border-radius: var(--border-radius);
-        padding: .4em .7em;
+        // border-radius: var(--border-radius);
+        // padding: .4em .7em;
         
-        &:hover {
-          background-color: tomato;
-        }
+        // &:hover {
+        //   background-color: tomato;
+        // }
       }
       
     }

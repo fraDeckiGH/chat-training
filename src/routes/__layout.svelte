@@ -1,21 +1,13 @@
 
 <script lang=ts>
   import "../app.scss"
+  import Btn from "$lib/btn/btn.svelte";
   import { htmlElems } from "$lib/misc";
   import type { Theme } from "$lib/theme/theme"
-  import type ToastHandler  from "$lib/toast-handler/toast-handler.svelte"
+  import ToastHandlerDemo from "$lib/toast-handler/toast-handler-demo.svelte";
   import { onMount } from "svelte"
   
   let theme: Theme | undefined
-  let toast: ToastHandler | undefined
-  
-  $: {
-    if (htmlElems.appScrollable) {
-      ;(async () => {
-        toast = (await import("$lib/toast-handler/toast-handler")).singleton
-      })()
-    }
-  }
   
   
   onMount(async () => {
@@ -65,8 +57,7 @@
     
     <div class="actions">
       {#if theme}
-        <button
-          class=""
+        <Btn
           on:click={() => {
             if (theme) {
               theme/* ? */.switch()
@@ -75,23 +66,10 @@
           }}
         >
           currentTheme: {theme.switcher}
-        </button>
+        </Btn>
       {/if}
-    
-      {#if toast}
-        <button
-          id="myButton"
-          on:click="{toast.add}"
-        >
-          add toast
-        </button>
-    
-        <button
-          on:click="{toast.remove}"
-        >
-          remove toast
-        </button>
-      {/if}
+      
+      <ToastHandlerDemo></ToastHandlerDemo>
     </div>
     
     <slot></slot>

@@ -20,7 +20,9 @@ type CmpClass<T, CmpInstance = Cmp<T>> = new (
 
 
 
-// BUG not all props intellisensed
+/* BUG not all props intellisensed
+  not sure the bug is here might be on the users(utilizers)
+*/
 type CmpProps<T, CmpInstance = Cmp<T>> = 
   Partial<
     // T (-1 props (during tests))
