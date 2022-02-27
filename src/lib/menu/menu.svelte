@@ -59,10 +59,10 @@
     unsub_items$?.()
 	})
   
-  // onMount(() => {
-	// 	console.log(`onMount `, )
+  /* onMount(() => {
+		console.log(`onMount `, )
     
-	// })
+	}) */
   
   
   export function get_selectedItem() {
@@ -152,6 +152,9 @@
     .list-items {
       // max-width: 500ch; // test
       // max-width: 40ch; // best choice is w/out
+      
+      // display: flex;
+      // flex-direction: column;
       
       .li {
         border-radius: var(--border-radius);

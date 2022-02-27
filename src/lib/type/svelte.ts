@@ -23,10 +23,8 @@ type CmpClass<T, CmpInstance = Cmp<T>> = new (
 // BUG not all props intellisensed
 type CmpProps<T, CmpInstance = Cmp<T>> = 
   Partial<
-    Svelte2TsxComponentConstructorParameters<
-      // T (-1 props (during tests))
-      CmpInstance
-    >["props"]
+    // T (-1 props (during tests))
+    CmpInstance
   > 
   // work around
   & Record<string, any>
