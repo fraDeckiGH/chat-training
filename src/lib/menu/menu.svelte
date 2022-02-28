@@ -119,7 +119,6 @@
       {#each items as item}
         <li 
           class="li"
-          
         >
           <Btn 
             link={item.link}
@@ -165,14 +164,7 @@
       // max-width: 500ch; // test
       // max-width: 40ch; // best choice is w/out
       
-      .li {
-        // border-radius: var(--border-radius);
-        // padding: .4em .7em;
-        
-        // &:hover {
-        //   background-color: tomato;
-        // }
-      }
+      .li {}
       
     }
     

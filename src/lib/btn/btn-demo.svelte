@@ -1,7 +1,12 @@
+
 <script lang=ts>
   import Btn from "./btn.svelte";
   
   let submittingForm = false
+  
+  function click() {
+    console.log(`click`, )
+  }
   
 </script>
 
@@ -10,6 +15,10 @@
   attr={{
     // will be overwritten (hint: look into the cmp)
     class: "btn-submit",
+    
+    // noop (no-operation)
+    // click,
+    // onclick: click,
     
     disabled: submittingForm,
     style: `

@@ -137,7 +137,7 @@
 
       <Btn 
         attr={{
-          class: "btn-submit",
+          // class: "btn-submit",
           disabled: submittingForm,
           style: "height: 2000px;",
           type: "submit",
@@ -148,7 +148,7 @@
         
     </form>
   {/if}
-    
+  
 </main>
 
 

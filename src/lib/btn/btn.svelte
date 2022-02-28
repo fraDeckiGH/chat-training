@@ -39,6 +39,9 @@
    */
   export let link = <Maybe<string>>null
   
+  /**
+   * aka 'skin'
+   */
   export let look = <Maybe<Look>>null
   
   export let popoverArgs = < Maybe<PopoverArgs<any>> >null
@@ -94,11 +97,12 @@
 >
   {#if btnEl}
     
+    <!-- passed attributes('attr') will overwrite -->
     <button 
-      {...attr}
       class="btn btn--{extraStyling()}"
       class:w-link={link}
       on:click|trusted
+      {...attr}
     >
       <!-- 
         possible content ideas (ie untested):
@@ -131,7 +135,11 @@
 
 <style lang=scss>
   
+  @use "sass:map";
+  @use "../../lib/color";
+  @use "../../lib/palette" as plt;
   @use "../../lib/util";
+  
   
   .btn-wrap {
     display: inline-block; // default for <button>
@@ -171,6 +179,17 @@
         border-radius: var(--border-radius);
         color: var(--plt-1);
         font-weight: 500;
+        
+        .theme-dark & {
+          // background-color: hsla(var(--plt-1-hsl), .1);
+          // $bg: color.scale(
+          //   map.get(plt.$dark, "1"), 
+          //   $lightness: 0%,
+          // );
+          
+          background-color: hsla(var(--plt-1-hsl), 5%);
+        }
+        
       }
       &--menu-item {
         border-radius: var(--border-radius);
