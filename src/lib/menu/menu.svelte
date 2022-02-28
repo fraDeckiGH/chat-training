@@ -165,16 +165,9 @@
       // max-width: 40ch; // best choice is w/out
       
       .li {}
-      
     }
     
-    
-  
-  }
-  
-  :global(html.theme-dark) {
-    
-    .cmp {
+    :global(html.theme-dark) & {
       $bg: color.scale(
         map.get(plt.$dark, "base"), 
         $lightness: 5%,
@@ -187,12 +180,7 @@
       // lightness 3 to 5
       // box-shadow: 0em .2em 1em .2em hsla(0 0% 0% / .1);
     }
-    
-  }
-  
-  :global(html.theme-light) {
-    
-    .cmp {
+    :global(html.theme-light) & {
       // background-color: var(--plt-base);
       background-color: hsla(var(--plt-base-hsl), .3);
       backdrop-filter: blur(.2em);
@@ -200,7 +188,11 @@
       // ? colored shadow = good idea?
       box-shadow: 0em .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
     }
-    
   }
   
+  
 </style>
+
+
+
+

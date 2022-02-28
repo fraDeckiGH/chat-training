@@ -268,10 +268,37 @@
     
     .backdrop {
       position: absolute;
-      // z-index: -1;
       height: 100%;
       width: 100%;
+      
+      html.theme-dark & {
+        background-color: hsla(0 0% 0% / .45);
+        
+        & + .modal {
+          background-color: var(--plt-base);
+          
+          transition: box-shadow 1s;
+          // transition-property: ;
+          // transition-duration: ;
+          // transition-timing-function: ease;
+          // transition-delay: 0s;
+          
+          &.shadow-on-backdrop--theme-dark {
+            // (lightness 1 to 3)
+            // ? shadow itself it's too little
+            // box-shadow: 0em .2em .5em .1em hsla(0 0% 0% / .3);
+            
+            // (lightness 3 to 5)
+            box-shadow: 0em .3em 1.2em .6em hsla(0 0% 0% / .25);
+          }
+        }
+        
+      }
+      html.theme-light & {
+        background-color: hsla(0 0% 0% / .3);
+      }
     }
+    
     .modal {
       // test (can be left as is)
       pointer-events: initial;
@@ -283,85 +310,39 @@
       // TODO actual values must be decided still
       height: 45%;
       width: 45%;
-    }
-  }
-  
-  
-  :global(html.theme-dark) {
-    
-    .backdrop {
-      background-color: hsla(0 0% 0% / .45);
       
-      & + .modal {
-        background-color: var(--plt-base);
+      html.theme-dark & {
+        background-color: color.scale(
+          map.get(plt.$dark, "base"), 
+          $lightness: 3%,
+        );
         
-        transition: box-shadow 1s;
-        // transition-property: ;
-        // transition-duration: 0s;
-        // transition-timing-function: ease;
-        // transition-delay: 0s;
-        
-        &.shadow-on-backdrop--theme-dark {
-          // (lightness 1 to 3)
-          // ? shadow itself it's too little
-          // box-shadow: 0em .2em .5em .1em hsla(0 0% 0% / .3);
-          
-          // (lightness 3 to 5)
-          // .3 alpha = slightly more noticeable
-          // box-shadow: 0em .2em 1em .2em hsla(0 0% 0% / .2);
-          // box-shadow: 0em .2em 1em .2em hsla(0 0% 0% / .3);
-        
-          box-shadow: 0em .3em 1.2em .6em hsla(0 0% 0% / .25);
-          
-          // test
-          // box-shadow: 0em .2em .5em .1em red;
-          // box-shadow: 0em .2em 1em .2em red;
-          // box-shadow: 0em .3em 1.2em .6em red;
-        }
+        // lightness 1 to 3
+        // box-shadow: 0em .2em .5em .1em hsla(0 0% 0% / .1);
+        // lightness 3 to 5
+        box-shadow: 0em .2em 1em .2em hsla(0 0% 0% / .1);
       }
+      html.theme-light & {
+        background-color: var(--plt-base);
       
-    }
-    
-    .modal {
-      background-color: color.scale(
-        map.get(plt.$dark, "base"), 
-        $lightness: 3%,
-      );
-      
-      // lightness 1 to 3
-      // box-shadow: 0em .2em .5em .1em hsla(0 0% 0% / .1);
-      // lightness 3 to 5
-      box-shadow: 0em .2em 1em .2em hsla(0 0% 0% / .1);
-    }
-    
-  }
-  
-  :global(html.theme-light) {
-    
-    .backdrop {
-      background-color: hsla(0 0% 0% / .3);
-    }
-    
-    .modal {
-      background-color: var(--plt-base);
-      
-      // v1.0
-      // ? add slightly more blur?
-      // box-shadow: 0px 2px 7px 1px hsla(var(--plt-cover-hsl), .1);
-      
-      // ? colored shadow = good idea?
-      box-shadow: 0em .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
-      
-      // BUG could not make this work
-      /* box-shadow: 0 0 5px 5px hsla(
-        #{color.get-hsl(
-          map.get(plt.$light, "cover")
-        )} 
-        / .1
-      ); */
+        // ? colored shadow = good idea?
+        box-shadow: 0em .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
+        
+        // BUG could not make this work
+        /* box-shadow: 0 0 5px 5px hsla(
+          #{color.get-hsl(
+            map.get(plt.$light, "cover")
+          )} 
+          / .1
+        ); */
+      }
     }
     
   }
   
   
 </style>
+
+
+
+

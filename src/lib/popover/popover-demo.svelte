@@ -183,6 +183,11 @@
   
 -->
 
+<!-- simple usage -->
+<!-- <Menu
+  items$={items}
+></Menu> -->
+
 <Btn
   btnEl={showReferenceElem}
   {popoverArgs}

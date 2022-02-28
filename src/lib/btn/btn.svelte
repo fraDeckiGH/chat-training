@@ -180,7 +180,7 @@
         color: var(--plt-1);
         font-weight: 500;
         
-        .theme-dark & {
+        html.theme-dark & {
           // background-color: hsla(var(--plt-1-hsl), .1);
           // $bg: color.scale(
           //   map.get(plt.$dark, "1"), 
