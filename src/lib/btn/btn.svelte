@@ -189,6 +189,20 @@
           
           background-color: hsla(var(--plt-1-hsl), 5%);
         }
+        html.theme-light & {
+          // background-color: hsla(var(--plt-1-hsl), .1);
+          // $bg: color.scale(
+          //   map.get(plt.$light, "1"), 
+          //   $lightness: 0%,
+          // );
+          
+          // background-color: hsla(var(--plt-1-hsl), 8%);
+          background-color: hsla(154, 87%, 40%, 8%);
+          
+          // background-color: hsl(132deg 87% 40% / 8%);
+          // alternative
+          // filter: hue-rotate(338deg); // rotates even the 'color'
+        }
         
       }
       &--menu-item {

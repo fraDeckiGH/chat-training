@@ -22,12 +22,17 @@ accent - accent (NOT secondary)
 
 */
 
+@use "sass:map";
+@use "sass:string";
 
 $dark: (
   "base": hsl(215deg 30% 9%),
   "cover": hsl(154deg, 20%, 82%),
   
   "1": hsl(154, 87%, 50%),
+  // "1": hsl(map.get($dark, "1-hsl")),
+  "1-hsl": #{154, 87%, 50%},
+  
   "accent": hsl(53, 88%, 50%),
 );
 $light: (

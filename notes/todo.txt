@@ -19,11 +19,6 @@ underway
 
 - sending email verification
 
-- trying to add loadings & modals w/ tippy
-  I might not need tippy to do these
-  search for:
-  svelte snackbar/toast
-
 - i need an already made toastHandler solution
 
 

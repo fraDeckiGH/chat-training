@@ -137,9 +137,8 @@
 
       <Btn 
         attr={{
-          // class: "btn-submit",
           disabled: submittingForm,
-          style: "height: 2000px;",
+          // style: "height: 2000px;",
           type: "submit",
         }}
       >
@@ -174,12 +173,7 @@
       // border: initial;
     }
     
-    .btn-submit {
-      // border: 0;
-      // cursor: pointer;
-      
-      // font-weight: 500;
-    }
+    
   }
   
 </style>
