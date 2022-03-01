@@ -13,9 +13,15 @@
 
 
 @function get-hsl($color) {
+  // @return #{ 
+  //   color.hue($color),
+  //   color.saturation($color),
+  //   color.lightness($color)
+  // };
+  // ? testing w/out the commas
   @return #{ 
-    color.hue($color),
-    color.saturation($color),
+    color.hue($color)
+    color.saturation($color)
     color.lightness($color)
   };
 }

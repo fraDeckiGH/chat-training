@@ -22,32 +22,55 @@ accent - accent (NOT secondary)
 
 */
 
-@use "sass:map";
-@use "sass:string";
+
+// @use "sass:map";
+// @use "sass:string";
+
+// @use "color";
+
+// ? there are different ways of writing the colors
+// https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl()
+
 
 $dark: (
   "base": hsl(215deg 30% 9%),
-  "cover": hsl(154deg, 20%, 82%),
+  "cover": hsl(154deg 20% 82%),
   
-  "1": hsl(154, 87%, 50%),
-  // "1": hsl(map.get($dark, "1-hsl")),
-  "1-hsl": #{154, 87%, 50%},
-  
-  "accent": hsl(53, 88%, 50%),
+  "1": hsl(154deg 87% 50%),
+  "accent": hsl(53deg 88% 50%),
 );
 $light: (
   "base": hsl(215deg 100% 98%),
   "cover": hsl(215deg 50% 20%),
   
-  "1": hsl(154, 87%, 40%),
-  "accent": hsl(53, 88%, 50%),
+  "1": hsl(154deg 87% 40%),
+  "accent": hsl(53deg 88% 50%),
 );
 
 
+// ? might be useful in the future
+/*
+  to gen a palette where value are like "215deg 100% 98%"
+  notice the "-hsl" in the name
+*/
+/* @function gen-subpalette($palette) {
+  $new-map: ();
+  
+  @each $key, $value in $palette {
+    $new-map: map.set(
+      $new-map, 
+      $key, 
+      
+      ""+ color.get-hsl($value)
+    );
+    
+    @debug $new-map;
+  }
+  
+  @return $new-map;
+} */
 
-
-
-
+// $dark-hsl: gen-subpalette($dark);
 
 
 

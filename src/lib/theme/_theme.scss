@@ -77,7 +77,7 @@ html {
     // // --plt-cover: #d8d4cf;
     // --plt-cover: hsl(154deg, 20%, 82%);
     
-    @include gen-palette(plt.$dark)
+    @include gen-palette(plt.$dark);
     
   }
   @include theme-light {
@@ -100,7 +100,7 @@ html {
     // // --plt-cover: hsl(154deg 50% 20%);
     // --plt-cover: hsl(215deg 50% 20%);
     
-    @include gen-palette(plt.$light)
+    @include gen-palette(plt.$light);
     
   }
   

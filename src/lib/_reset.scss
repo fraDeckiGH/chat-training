@@ -9,13 +9,25 @@
 // ? importing the needed rules little by little
 // TODO merge the content of this file w/ global stylesheet?
 
-ul {
-  margin: 0;
-  padding: 0;
+button {
+  // 'auto' Permits the user agent to render a custom outline style
+  // outline-style: auto;
+  outline-style: none;
+  
+  // trying to recreate 'auto' feel, mdn was useful
+  // outline-color: currentColor;
+  // outline-offset: 0;
+  // outline-style: solid;
+  // outline-width: medium;
 }
+
 ol, ul {
 	// list-style: none;
 	list-style-type: none;
+}
+ul {
+  margin: 0;
+  padding: 0;
 }
 
 

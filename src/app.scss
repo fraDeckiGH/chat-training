@@ -4,7 +4,7 @@
 
 // * {pinned} misc
 @use "lib/page";
-@use "lib/reset";
+// @use "lib/reset";
 @use "lib/theme/theme";
 
 // * font
@@ -71,23 +71,6 @@ html {
 
 
 // * tag
-
-/* button {
-  border: 0;
-  border-radius: var(--border-radius);
-  
-  // background-color: var(--plt-1);
-  color: var(--plt-1);
-  
-  font-weight: 500;
-  
-  &:disabled {
-    opacity: 0.7;
-  }
-  &:not(:disabled) {
-    cursor: pointer;
-  }
-} */
 
 h1 {
   font-size: 170%; // def 2em

@@ -173,20 +173,21 @@
         $lightness: 5%,
       );
       background-color: rgba($bg, .7);
-      backdrop-filter: blur(.1em);
+      backdrop-filter: blur(.2em);
       
       // lightness 1 to 3
-      box-shadow: 0em .2em .5em .1em hsla(0 0% 0% / .1);
+      box-shadow: 0em .2em .5em .1em hsl(0 0% 0% / 10%);
       // lightness 3 to 5
-      // box-shadow: 0em .2em 1em .2em hsla(0 0% 0% / .1);
+      // box-shadow: 0em .2em 1em .2em hsl(0 0% 0% / 10%);
     }
+    
     :global(html.theme-light) & {
       // background-color: var(--plt-base);
-      background-color: hsla(var(--plt-base-hsl), .3);
+      background-color: hsl(var(--plt-base-hsl) / 70%);
       backdrop-filter: blur(.2em);
       
       // ? colored shadow = good idea?
-      box-shadow: 0em .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
+      box-shadow: 0em .2em .5em .1em hsl(var(--plt-cover-hsl) / 10%);
     }
     
   }

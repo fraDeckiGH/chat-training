@@ -152,9 +152,30 @@
       
       width: 100%; // always fit wrapper
       
-      
+      // represents an el that is BEING activated
+      &:active {
+        background-color: blue;
+      }
       &:disabled {
         opacity: 0.7;
+      }
+      &:focus {
+        background-color: red;
+      }
+      &:focus-visible {
+        // box-shadow: 0 0 .3em currentColor; // cool but hard to see
+        // box-shadow: 0 0 .1em .05em currentColor;
+        box-shadow: 0 0 .2em .05em currentColor;
+        
+        // Permits the user agent to render a custom outline style
+        // outline-style: auto;
+        // outline-style: none;
+        
+        // trying to recreate 'auto' feel, mdn was useful
+        // outline-color: currentColor;
+        // outline-offset: 0;
+        // outline-style: solid;
+        // outline-width: medium;
       }
       &:not(:disabled) {
         cursor: pointer;
@@ -181,27 +202,92 @@
         font-weight: 500;
         
         html.theme-dark & {
-          // background-color: hsla(var(--plt-1-hsl), .1);
-          // $bg: color.scale(
-          //   map.get(plt.$dark, "1"), 
-          //   $lightness: 0%,
+          $bg: map.get(plt.$dark, "1");
+          $alpha: -100%; // 100% == transparent
+          
+          $bg1: color.scale(
+            $bg, 
+            $lightness: -65%,
+            // $alpha: $alpha,
+          );
+          $bg2: color.scale(
+            $bg, 
+            $lightness: -85%,
+            // $alpha: $alpha,
+          );
+          
+          background-image: linear-gradient(60deg, 
+            $bg1 , 
+            $bg2 35% 65%, 
+            $bg1 ,
+          );
+          // background-image: linear-gradient(60deg, 
+          //   transparent , 
+          //   $bg2 35% 65%, 
+          //   transparent ,
           // );
           
-          background-color: hsla(var(--plt-1-hsl), 5%);
+          // #region
+          /* $bg: map.get(plt.$dark, "1");
+          
+          $bg1: color.scale(
+            $bg, 
+            $lightness: -65%,
+          );
+          $bg2: color.scale(
+            $bg, 
+            $lightness: -85%,
+          );
+          
+          background-image: linear-gradient(60deg, 
+            $bg1 , 
+            $bg2 35% 65%, 
+            $bg1 ,
+          ); */
+          // background-image: linear-gradient(60deg, 
+          //   $bg1 , 
+          //   $bg2 40% 60%, 
+          //   $bg1 ,
+          // );
+          // background-image: linear-gradient(60deg, 
+          //   $bg1 40%, 
+          //   $bg2 , 
+          //   $bg1 60%,
+          // );
+          // background-image: linear-gradient(60deg, 
+          //   $bg1 20%, 
+          //   $bg2 , 
+          //   $bg1 80%,
+          // );
+          // background-image: linear-gradient(60deg, 
+          //   $bg1 30%, 
+          //   $bg2 30% 70%, 
+          //   $bg1 70%,
+          // );
+          // #endregion
+          
         }
         html.theme-light & {
-          // background-color: hsla(var(--plt-1-hsl), .1);
-          // $bg: color.scale(
-          //   map.get(plt.$light, "1"), 
-          //   $lightness: 0%,
-          // );
+          $bg: color.adjust(
+            map.get(plt.$light, "1"), 
+            $hue: -20,
+          );
           
-          // background-color: hsla(var(--plt-1-hsl), 8%);
-          background-color: hsla(154, 87%, 40%, 8%);
+          $bg1: color.scale(
+            $bg, 
+            $lightness: 80%,
+          );
+          $bg2: color.scale(
+            $bg, 
+            $lightness: 92%,
+          );
           
-          // background-color: hsl(132deg 87% 40% / 8%);
-          // alternative
-          // filter: hue-rotate(338deg); // rotates even the 'color'
+          background-image: linear-gradient(60deg, 
+            $bg1 , 
+            $bg2 35% 65%, 
+            $bg1 ,
+          );
+          
         }
         
       }

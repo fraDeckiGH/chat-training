@@ -272,7 +272,7 @@
       width: 100%;
       
       html.theme-dark & {
-        background-color: hsla(0 0% 0% / .45);
+        background-color: hsl(0 0% 0% / 45%);
         
         & + .modal {
           background-color: var(--plt-base);
@@ -286,16 +286,16 @@
           &.shadow-on-backdrop--theme-dark {
             // (lightness 1 to 3)
             // ? shadow itself it's too little
-            // box-shadow: 0em .2em .5em .1em hsla(0 0% 0% / .3);
+            // box-shadow: 0em .2em .5em .1em hsl(0 0% 0% / 30%);
             
             // (lightness 3 to 5)
-            box-shadow: 0em .3em 1.2em .6em hsla(0 0% 0% / .25);
+            box-shadow: 0em .3em 1.2em .6em hsl(0 0% 0% / 25%);
           }
         }
         
       }
       html.theme-light & {
-        background-color: hsla(0 0% 0% / .3);
+        background-color: hsl(0 0% 0% / 30%);
       }
     }
     
@@ -318,15 +318,15 @@
         );
         
         // lightness 1 to 3
-        // box-shadow: 0em .2em .5em .1em hsla(0 0% 0% / .1);
+        // box-shadow: 0em .2em .5em .1em hsl(0 0% 0% / 10%);
         // lightness 3 to 5
-        box-shadow: 0em .2em 1em .2em hsla(0 0% 0% / .1);
+        box-shadow: 0em .2em 1em .2em hsl(0 0% 0% / 10%);
       }
       html.theme-light & {
         background-color: var(--plt-base);
       
         // ? colored shadow = good idea?
-        box-shadow: 0em .2em .5em .1em hsla(var(--plt-cover-hsl), .1);
+        box-shadow: 0em .2em .5em .1em hsl(var(--plt-cover-hsl) / 10%);
         
         // BUG could not make this work
         /* box-shadow: 0 0 5px 5px hsla(
