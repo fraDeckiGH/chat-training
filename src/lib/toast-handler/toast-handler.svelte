@@ -226,10 +226,13 @@
 </div>
 
 
-
 <style lang=scss>
   
   @use "../../lib/page";
+  @use "../../lib/reset";
+  
+  @include reset.list(ul);
+  
   
   .component {
     position: absolute;

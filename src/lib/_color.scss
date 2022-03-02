@@ -13,12 +13,13 @@
 
 
 @function get-hsl($color) {
+  // ? testing w/out the commas
+  // TODO remove when I'm sure things don't break
   // @return #{ 
   //   color.hue($color),
   //   color.saturation($color),
   //   color.lightness($color)
   // };
-  // ? testing w/out the commas
   @return #{ 
     color.hue($color)
     color.saturation($color)

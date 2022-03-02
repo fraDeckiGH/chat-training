@@ -52,6 +52,7 @@
   
   async function submitForm() {
     console.log(`submitForm() `, )
+    return
     
     if (!auth) {
       console.log(`return: !auth`, auth)

@@ -112,6 +112,7 @@
        -->
       <slot></slot>
       
+      <!-- disable tabindex? -->
       {#if link}
         <!-- svelte-ignore a11y-missing-content -->
         <a 
@@ -138,7 +139,10 @@
   @use "sass:map";
   @use "../../lib/color";
   @use "../../lib/palette" as plt;
+  @use "../../lib/reset";
   @use "../../lib/util";
+  
+  // @include reset.button;
   
   
   .btn-wrap {
@@ -152,31 +156,17 @@
       
       width: 100%; // always fit wrapper
       
-      // represents an el that is BEING activated
-      &:active {
-        background-color: blue;
-      }
+      // represents an el while is being activated
+      // &:active {}
+      
       &:disabled {
-        opacity: 0.7;
+        // opacity: 0.7;
+        opacity: 70%;
       }
-      &:focus {
-        background-color: red;
-      }
-      &:focus-visible {
-        // box-shadow: 0 0 .3em currentColor; // cool but hard to see
-        // box-shadow: 0 0 .1em .05em currentColor;
-        box-shadow: 0 0 .2em .05em currentColor;
-        
-        // Permits the user agent to render a custom outline style
-        // outline-style: auto;
-        // outline-style: none;
-        
-        // trying to recreate 'auto' feel, mdn was useful
-        // outline-color: currentColor;
-        // outline-offset: 0;
-        // outline-style: solid;
-        // outline-width: medium;
-      }
+      
+      // &:focus {}
+      // &:focus-visible {}
+      
       &:not(:disabled) {
         cursor: pointer;
       }
@@ -201,71 +191,68 @@
         color: var(--plt-1);
         font-weight: 500;
         
-        html.theme-dark & {
-          $bg: map.get(plt.$dark, "1");
-          $alpha: -100%; // 100% == transparent
-          
-          $bg1: color.scale(
-            $bg, 
-            $lightness: -65%,
-            // $alpha: $alpha,
-          );
-          $bg2: color.scale(
-            $bg, 
-            $lightness: -85%,
-            // $alpha: $alpha,
-          );
-          
-          background-image: linear-gradient(60deg, 
-            $bg1 , 
-            $bg2 35% 65%, 
-            $bg1 ,
-          );
-          // background-image: linear-gradient(60deg, 
-          //   transparent , 
-          //   $bg2 35% 65%, 
-          //   transparent ,
-          // );
-          
-          // #region
-          /* $bg: map.get(plt.$dark, "1");
-          
-          $bg1: color.scale(
-            $bg, 
-            $lightness: -65%,
-          );
-          $bg2: color.scale(
-            $bg, 
-            $lightness: -85%,
-          );
-          
-          background-image: linear-gradient(60deg, 
-            $bg1 , 
-            $bg2 35% 65%, 
-            $bg1 ,
-          ); */
-          // background-image: linear-gradient(60deg, 
-          //   $bg1 , 
-          //   $bg2 40% 60%, 
-          //   $bg1 ,
-          // );
-          // background-image: linear-gradient(60deg, 
-          //   $bg1 40%, 
-          //   $bg2 , 
-          //   $bg1 60%,
-          // );
-          // background-image: linear-gradient(60deg, 
-          //   $bg1 20%, 
-          //   $bg2 , 
-          //   $bg1 80%,
-          // );
-          // background-image: linear-gradient(60deg, 
-          //   $bg1 30%, 
-          //   $bg2 30% 70%, 
-          //   $bg1 70%,
-          // );
-          // #endregion
-          
+        &:not(:focus-visible) {
+          html.theme-dark & {
+            $bg: map.get(plt.$dark, "1");
+            
+            // about the $alpha: do I want to see through?
+            $bg2: color.scale(
+              $bg, 
+              $lightness: -85%,
+              // $alpha: -50%,
+            );
+            
+            // background-color: aqua; // visible when $bg1 is transparent
+            // background-color: red; // visible when $bg1 is transparent
+            // background-color: white; // visible when $bg1 is transparent
+            
+            background-image: linear-gradient(60deg, 
+              transparent , 
+              $bg2 35% 65%, 
+              transparent ,
+            );
+            
+            // valid aesthetics (save these somewhere)
+            // #region
+            /* $bg: map.get(plt.$dark, "1");
+            
+            $bg1: color.scale(
+              $bg, 
+              $lightness: -65%,
+            );
+            $bg2: color.scale(
+              $bg, 
+              $lightness: -85%,
+            );
+            
+            background-image: linear-gradient(60deg, 
+              $bg1 , 
+              $bg2 35% 65%, 
+              $bg1 ,
+            ); */
+            // background-image: linear-gradient(60deg, 
+            //   $bg1 , 
+            //   $bg2 40% 60%, 
+            //   $bg1 ,
+            // );
+            // background-image: linear-gradient(60deg, 
+            //   $bg1 40%, 
+            //   $bg2 , 
+            //   $bg1 60%,
+            // );
+            // background-image: linear-gradient(60deg, 
+            //   $bg1 20%, 
+            //   $bg2 , 
+            //   $bg1 80%,
+            // );
+            // background-image: linear-gradient(60deg, 
+            //   $bg1 30%, 
+            //   $bg2 30% 70%, 
+            //   $bg1 70%,
+            // );
+            // #endregion
+            
+          }
         }
         html.theme-light & {
           $bg: color.adjust(
@@ -273,24 +260,82 @@
             $hue: -20,
           );
           
-          $bg1: color.scale(
-            $bg, 
-            $lightness: 80%,
-          );
           $bg2: color.scale(
             $bg, 
-            $lightness: 92%,
+            $lightness: 90%,
           );
           
+          // background-color: $bg2; // looks good! (less in dark mode)
           background-image: linear-gradient(60deg, 
-            $bg1 , 
+            transparent , 
             $bg2 35% 65%, 
-            $bg1 ,
+            transparent ,
           );
           
         }
         
-      }
+        
+        &:focus:not(:focus-visible) {
+          html.theme-dark & {
+            $bg: map.get(plt.$dark, "1");
+            
+            $bg1: color.scale(
+              $bg, 
+              $lightness: -65%,
+            );
+            $bg2: color.scale(
+              $bg, 
+              $lightness: -85%,
+            );
+            
+            background-image: linear-gradient(60deg, 
+              $bg1 , 
+              $bg2 35% 65%, 
+              $bg1 ,
+            );
+            
+          }
+          html.theme-light & {
+            $bg: color.adjust(
+              map.get(plt.$light, "1"), 
+              $hue: -20,
+            );
+            
+            $bg1: color.scale(
+              $bg, 
+              $lightness: 75%,
+            );
+            $bg2: color.scale(
+              $bg, 
+              $lightness: 90%,
+            );
+            
+            background-image: linear-gradient(60deg, 
+              $bg1 , 
+              $bg2 35% 65%, 
+              $bg1 ,
+            );
+            
+          }
+        }//&:focus
+        
+        /*
+          justifying the existance of what follows: 
+          the "focus-ring" uses currentColor and I don't like
+          the light-scheme's currentColor.
+          In fact, I kinda like the focus-ring in dark mode.
+        */
+        &:focus-visible {
+          outline-style: none; // no focus-ring
+          
+          // coolest (slightly harder to see tho)
+          box-shadow: 0 0 .3em currentColor;
+          
+          // box-shadow: 0 0 .1em .05em currentColor;
+          // box-shadow: 0 0 .2em .05em currentColor; // 2nd place
+        }
+        
+      }//&--default-skin
       &--menu-item {
         border-radius: var(--border-radius);
         padding: .4em .7em;

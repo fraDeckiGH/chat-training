@@ -142,6 +142,9 @@
   
   @use "../../lib/color";
   @use "../../lib/palette" as plt;
+  @use "../../lib/reset";
+  
+  @include reset.list(ul);
   
   
   .cmp {

@@ -1,33 +1,53 @@
 
+// * resets for html tags
+// those which I want to share between multiple components
+
 // https://github.com/csstools/sanitize.css#differences
-
 /* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
+  v2.0 | 20110126
+  License: none (public domain)
 */
-
 // ? importing the needed rules little by little
-// TODO merge the content of this file w/ global stylesheet?
 
-button {
-  // 'auto' Permits the user agent to render a custom outline style
-  // outline-style: auto;
-  outline-style: none;
-  
-  // trying to recreate 'auto' feel, mdn was useful
-  // outline-color: currentColor;
-  // outline-offset: 0;
-  // outline-style: solid;
-  // outline-width: medium;
-}
 
-ol, ul {
-	// list-style: none;
-	list-style-type: none;
-}
-ul {
-  margin: 0;
-  padding: 0;
+// too early for this one to be useful
+// #region @mixin button
+// @mixin button {
+//   button {
+//     border: 0;
+    
+//     &:focus-visible {
+//       // 'auto' Permits the user agent to render a custom outline style
+//       // outline-style: auto;
+//       outline-style: none; // no focus-ring
+      
+//       /* trying to recreate 'auto' feel
+//         it has priority over the other setters making them useless
+//       */
+//       // outline-color: currentColor;
+//       // outline-offset: 0;
+//       // outline-style: solid;
+//       // outline-width: medium;
+//     }
+    
+//   }
+// }
+// #endregion
+
+/**
+ * arg example
+ * ol
+ * ul
+ * "ol, ul"
+ */
+@mixin list($selectors: ul) {
+  #{$selectors} {
+    margin: 0;
+    padding: 0;
+    
+    // list-style: none;
+    list-style-type: none;
+  }
 }
 
 
