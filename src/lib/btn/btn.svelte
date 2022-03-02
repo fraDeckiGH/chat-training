@@ -35,6 +35,16 @@
   // let isCta
   
   /**
+   * emphasized/emphasised, highlighted, marked
+   * very different from a CTA
+   * 
+   * usage eg
+   * when there are more options and I want to emphasise 
+   * the default/prioritary one
+   */
+  export let highlighted = <Maybe<boolean>>null
+  
+  /**
    * purpose navigation? pass the link
    */
   export let link = <Maybe<string>>null
@@ -55,10 +65,12 @@
 	})
   
   
+  // * default functionalities, usually loaded no matter what
+  
   /**
    * additional styling
    */
-  function extraStyling(/* baseClass: string */) {
+  function btnStyling(/* baseClass: string */) {
     // console.log(`extraStyling`, )
     
     let addendum = ""
@@ -69,12 +81,28 @@
         break;
     
       default:
+        // addendum += `plain`
         addendum += `default-skin`
         break;
     }
     
     return addendum
   }
+  
+  function btnStyling2() {
+    let addendum = ""
+    
+    if (highlighted) {
+      addendum += `highlighted`
+    } else {
+      addendum += `ordinary`
+    }
+    
+    return addendum
+  }
+  
+  
+  // * extra/opt-in features, usually lazy-loaded (on-need basis)
   
   function popover(htmlEl: HTMLElement, args: Popover) {
     if (!args) {
@@ -99,7 +127,7 @@
     
     <!-- passed attributes('attr') will overwrite -->
     <button 
-      class="btn btn--{extraStyling()}"
+      class="btn btn--{btnStyling()} {btnStyling2()}"
       class:w-link={link}
       on:click|trusted
       {...attr}
@@ -146,7 +174,79 @@
   
   
   .btn-wrap {
-    display: inline-block; // default for <button>
+    display: inline-block; // default for 'button' tag
+    
+    %btn_focus {
+      &:focus {
+        html.theme-dark & {
+          $bg: map.get(plt.$dark, "1");
+          
+          $bg1: color.scale(
+            $bg, 
+            $lightness: -65%,
+          );
+          $bg2: color.scale(
+            $bg, 
+            $lightness: -85%,
+          );
+          
+          background-image: linear-gradient(60deg, 
+            $bg1 , 
+            $bg2 35% 65%, 
+            $bg1 ,
+          );
+        }
+        html.theme-light & {
+          $bg: color.adjust(
+            map.get(plt.$light, "1"), 
+            $hue: -20,
+          );
+          
+          $bg1: color.scale(
+            $bg, 
+            $lightness: 75%,
+          );
+          $bg2: color.scale(
+            $bg, 
+            $lightness: 90%,
+          );
+          
+          background-image: linear-gradient(60deg, 
+            $bg1 , 
+            $bg2 35% 65%, 
+            $bg1 ,
+          );
+        }
+      }//&:focus
+    }
+    %btn_focus-visible {
+      &:focus-visible {
+        html.theme-dark & {
+          $shadow-color: color.scale(
+            map.get(plt.$dark, "1"),
+            $lightness: 75%,
+          );
+          
+          outline-color: $shadow-color;
+          // outline-offset: 0;
+          outline-style: solid;
+          outline-width: .2em;
+        }
+        html.theme-light & {
+          outline-style: none; // no focus-ring
+          
+          $shadow-color: color.scale(
+            map.get(plt.$light, "1"),
+            $lightness: 50%,
+          );
+          // coolest (but harder to see)
+          box-shadow: 0 0 .3em $shadow-color;
+          
+          // box-shadow: 0 0 .1em .05em $shadow-color;
+          // box-shadow: 0 0 .2em .05em $shadow-color; // 2nd place
+        }
+      }//&:focus-visible
+    }
     
     .btn {
       display: inherit;
@@ -156,11 +256,11 @@
       
       width: 100%; // always fit wrapper
       
+      
       // represents an el while is being activated
       // &:active {}
       
       &:disabled {
-        // opacity: 0.7;
         opacity: 70%;
       }
       
@@ -184,6 +284,17 @@
         }
       }
       
+      /* reminders about interaction
+        (chrome)
+        click applies
+        :focus, :hover (visible in :focus absence)
+        
+        keyboard selection
+        like click + :focus-visible
+        
+        when hovering (only)
+        :hover prevails on :focus
+      */
       
       &--default-skin {
         // ? put here styles I may not want in other skins
@@ -191,7 +302,9 @@
         color: var(--plt-1);
         font-weight: 500;
         
-        &:not(:focus-visible) {
+        // {pinned}
+        &.ordinary {
+          
           html.theme-dark & {
             $bg: map.get(plt.$dark, "1");
             
@@ -253,47 +366,71 @@
             // #endregion
             
           }
+          html.theme-light & {
+            $bg: color.adjust(
+              map.get(plt.$light, "1"), 
+              $hue: -20,
+            );
+            
+            $bg2: color.scale(
+              $bg, 
+              $lightness: 90%,
+            );
+            
+            background-image: linear-gradient(60deg, 
+              transparent , 
+              $bg2 35% 65%, 
+              transparent ,
+            );
+          }
+          
+          &:hover {
+            html.theme-dark & {
+              $bg: color.scale(
+                map.get(plt.$dark, "1"), 
+                $lightness: -83%,
+              );
+              
+              background-color: $bg;
+            }
+            html.theme-light & {
+              // TODO do the followings for dark mode as well
+              
+              // TODO get this color from outside (from standard bg eg. when el isnt hovered)
+              $bg: color.adjust(
+                map.get(plt.$light, "1"), 
+                $hue: -20,
+              );
+              // scale from lightness more dynamically (from standard bg eg. when el isnt hovered)
+              $bg2: color.scale(
+                $bg, 
+                $lightness: 88%,
+              );
+              // ? for the future (read above)
+              // $bg2: color.scale(
+              //   , 
+              //   $lightness: -2%,
+              // );
+              
+              background-color: $bg2;
+            }
+          }//&:hover
+          
+          @extend %btn_focus;
+          @extend %btn_focus-visible;
+          
         }
-        html.theme-light & {
-          $bg: color.adjust(
-            map.get(plt.$light, "1"), 
-            $hue: -20,
-          );
+        &.highlighted {
           
-          $bg2: color.scale(
-            $bg, 
-            $lightness: 90%,
-          );
-          
-          // background-color: $bg2; // looks good! (less in dark mode)
-          background-image: linear-gradient(60deg, 
-            transparent , 
-            $bg2 35% 65%, 
-            transparent ,
-          );
-          
-        }
-        
-        
-        &:focus:not(:focus-visible) {
           html.theme-dark & {
             $bg: map.get(plt.$dark, "1");
             
-            $bg1: color.scale(
-              $bg, 
-              $lightness: -65%,
-            );
             $bg2: color.scale(
               $bg, 
               $lightness: -85%,
             );
             
-            background-image: linear-gradient(60deg, 
-              $bg1 , 
-              $bg2 35% 65%, 
-              $bg1 ,
-            );
-            
+            background-color: $bg2;
           }
           html.theme-light & {
             $bg: color.adjust(
@@ -301,39 +438,51 @@
               $hue: -20,
             );
             
-            $bg1: color.scale(
-              $bg, 
-              $lightness: 75%,
-            );
             $bg2: color.scale(
               $bg, 
               $lightness: 90%,
             );
             
-            background-image: linear-gradient(60deg, 
-              $bg1 , 
-              $bg2 35% 65%, 
-              $bg1 ,
-            );
-            
+            background-color: $bg2;
           }
-        }//&:focus
-        
-        /*
-          justifying the existance of what follows: 
-          the "focus-ring" uses currentColor and I don't like
-          the light-scheme's currentColor.
-          In fact, I kinda like the focus-ring in dark mode.
-        */
-        &:focus-visible {
-          outline-style: none; // no focus-ring
           
-          // coolest (slightly harder to see tho)
-          box-shadow: 0 0 .3em currentColor;
+          &:hover {
+            html.theme-dark & {
+              $bg: map.get(plt.$dark, "1");
+            
+              $bg1: color.scale(
+                $bg, 
+                $lightness: -85%,
+              );
+              $bg2: color.scale(
+                $bg, 
+                $lightness: -90%,
+              );
+              
+              background-image: linear-gradient(60deg, 
+                $bg1 , 
+                $bg2 35% 65%, 
+                $bg1 ,
+              );
+            }
+            html.theme-light & {
+              $bg: color.adjust(
+                map.get(plt.$light, "1"), 
+                $hue: -20,
+              );
+              $bg2: color.scale(
+                $bg, 
+                $lightness: 87%,
+              );
+              
+              background-color: $bg2;
+            }
+          }//&:hover
           
-          // box-shadow: 0 0 .1em .05em currentColor;
-          // box-shadow: 0 0 .2em .05em currentColor; // 2nd place
-        }
+          @extend %btn_focus;
+          @extend %btn_focus-visible;
+          
+        }//&.highlighted
         
       }//&--default-skin
       &--menu-item {

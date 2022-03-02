@@ -142,8 +142,18 @@
           // style: "height: 2000px;",
           type: "submit",
         }}
+        highlighted
       >
         Enter
+      </Btn>
+      
+      <Btn 
+        attr={{
+          disabled: false,
+          // style: "height: 2000px;",
+        }}
+      >
+        Ask help
       </Btn>
         
     </form>
