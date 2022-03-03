@@ -6,6 +6,7 @@
   
   type Look = 
     | "menuItem"
+  
   type Popover = typeof import("$lib/popover")
   
 </script>
@@ -176,8 +177,8 @@
   .btn-wrap {
     display: inline-block; // default for 'button' tag
     
-    %btn_focus {
-      &:focus {
+    %btn_hover {
+      &:hover {
         html.theme-dark & {
           $bg: map.get(plt.$dark, "1");
           
@@ -304,6 +305,8 @@
         
         // {pinned}
         &.ordinary {
+          @extend %btn_hover;
+          @extend %btn_focus-visible;
           
           html.theme-dark & {
             $bg: map.get(plt.$dark, "1");
@@ -384,7 +387,7 @@
             );
           }
           
-          &:hover {
+          &:focus {
             html.theme-dark & {
               $bg: color.scale(
                 map.get(plt.$dark, "1"), 
@@ -414,13 +417,12 @@
               
               background-color: $bg2;
             }
-          }//&:hover
-          
-          @extend %btn_focus;
-          @extend %btn_focus-visible;
+          }
           
         }
         &.highlighted {
+          @extend %btn_hover;
+          @extend %btn_focus-visible;
           
           html.theme-dark & {
             $bg: map.get(plt.$dark, "1");
@@ -446,7 +448,7 @@
             background-color: $bg2;
           }
           
-          &:hover {
+          &:focus {
             html.theme-dark & {
               $bg: map.get(plt.$dark, "1");
             
@@ -477,10 +479,7 @@
               
               background-color: $bg2;
             }
-          }//&:hover
-          
-          @extend %btn_focus;
-          @extend %btn_focus-visible;
+          }
           
         }//&.highlighted
         
