@@ -5,6 +5,15 @@
 }
 
 
+@mixin overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+
 /**
  * usage eg
  * remove that annoying ~3px space at the bottom of images 

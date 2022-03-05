@@ -20,8 +20,8 @@
   let componentIsLive = true
   
   /**
+   * make animation/transitions end before doing sth
    * useful: before destroying this component
-   * make animation/transitions end before destroying the cmp
    */
   const outroEnded = {
     backdrop: false,

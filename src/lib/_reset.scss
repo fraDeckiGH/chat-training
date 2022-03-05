@@ -10,8 +10,14 @@
 // ? importing the needed rules little by little
 
 
-// too early for this one to be useful
-// #region @mixin button
+@mixin a {
+  a {
+    // color: inherit;
+    text-decoration: inherit;
+  }
+}
+
+// #region @mixin button (too early for this one to be useful)
 // @mixin button {
 //   button {
 //     border: 0;

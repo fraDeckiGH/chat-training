@@ -52,6 +52,7 @@
   
   async function submitForm() {
     console.log(`submitForm() `, )
+    submittingForm = !submittingForm // test
     return
     
     if (!auth) {
@@ -138,24 +139,33 @@
 
       <Btn 
         attr={{
-          disabled: submittingForm,
+          // disabled: submittingForm,
           // style: "height: 2000px;",
           type: "submit",
         }}
         highlighted
+        loading={submittingForm}
       >
         Enter
       </Btn>
       
+      <!-- 
+        link="fwwefjo" -->
       <Btn 
         attr={{
-          disabled: false,
+          // disabled: true,
+          // disabled: submittingForm,
           // style: "height: 2000px;",
+          type: "button",
+        }}
+        link="fwwefjo"
+        on:click={() => {
+          submittingForm = !submittingForm
         }}
       >
         Ask help
       </Btn>
-        
+      
     </form>
   {/if}
   

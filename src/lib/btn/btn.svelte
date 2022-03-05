@@ -10,10 +10,13 @@
   type Popover = typeof import("$lib/popover")
   
 </script>
+
+
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
   import type { Maybe } from "$lib/type/util"
   import { onMount } from "svelte"
+  import { fade } from 'svelte/transition';
   
   
   /**
@@ -30,6 +33,11 @@
    * render <button>?
    */
   export let btnEl = <boolean>true // tests
+  
+  /**
+   * don't use this 1 for loadings
+   */
+  export let disabled = <Maybe<boolean>>null
   
   // Call To Action: bg and/or color 'accent' instead of 'primary'
   // let cta
@@ -51,6 +59,13 @@
   export let link = <Maybe<string>>null
   
   /**
+    is the cmp in a loading state?
+    unlike :disabled, removes only a part of the interaction
+    (I wanted this)
+   */
+  export let loading = <Maybe<boolean>>null
+  
+  /**
    * aka 'skin'
    */
   export let look = <Maybe<Look>>null
@@ -59,6 +74,17 @@
   // svelte warns: "prop not passed" (when cmp is created in HTML)
   // export let popoverArgs: PopoverArgs | undefined
   
+  // Im sure these can be taken from .btn's htmlEl
+  let shownInteractionLayer: {
+    focus?: boolean
+    hover?: boolean
+  } = {}
+  
+  
+  $: {
+    disabled = attr.disabled;
+  }
+  
   
   onMount(() => {
 		// console.log(`onMount `, )
@@ -66,14 +92,54 @@
 	})
   
   
-  // * default functionalities, usually loaded no matter what
+  // * basic/default features, usually loaded no matter what
+  
+  // btn styling (advanced)
   
   /**
-   * additional styling
+   * layers on which some btn styles are applied
    */
-  function btnStyling(/* baseClass: string */) {
-    // console.log(`extraStyling`, )
+  function handleInteractionLayers(htmlEl: HTMLButtonElement) {
     
+    // test
+    /* htmlEl.onclick = (ev) => {
+      console.log(`onclick`, ev)
+      
+      btnEl = !btnEl
+      setTimeout(() => {
+        btnEl = !btnEl
+      }, 1000);
+    } */
+    
+    htmlEl.onfocus = (ev) => {
+      // console.log(`onfocus`, ev)
+      shownInteractionLayer.focus = true
+    }
+    htmlEl.onblur = (ev) => {
+      // console.log(`onblur`, ev)
+      shownInteractionLayer.focus = false
+    }
+    
+    htmlEl.onpointerenter = (ev) => {
+      // console.log(`onpointerenter`, ev)
+      shownInteractionLayer.hover = true
+    }
+    htmlEl.onpointerleave = (ev) => {
+      // console.log(`onpointerleave`, ev)
+      shownInteractionLayer.hover = false
+    }
+    
+    return {
+			destroy() {
+        // console.log(`destroy()`, )
+        shownInteractionLayer = {}
+			}
+		};
+  }
+  
+  // btn styling (basic)
+  
+  function btnStyling() {
     let addendum = ""
     
     switch (look) {
@@ -129,10 +195,58 @@
     <!-- passed attributes('attr') will overwrite -->
     <button 
       class="btn btn--{btnStyling()} {btnStyling2()}"
+      class:is-loading={loading}
       class:w-link={link}
+      {disabled}
       on:click|trusted
       {...attr}
-    >
+      use:handleInteractionLayers
+    > 
+      {#if 
+        // when :disabled, the el loses :focus
+        disabled || 
+        
+        (loading && !shownInteractionLayer.focus) || 
+        
+        // every val of the obj is...
+        (Object.values(shownInteractionLayer)).every(val => !val)
+      }
+        <!-- fix flashing bug 
+          to avoid a bug which visually looks like the elem 
+          it's flashing (noticeable when focus by keyboard)
+          
+          out:fade must be equal to the longest in:fade 
+          of other layers
+        -->
+        <div 
+          class="layer layer--no-interaction"
+          out:fade={{ duration: 300 }}
+        ></div>
+      {/if}
+      <!-- BUG in&out transitions not bidirectional 
+        noticeable on long(1/2sec) durations when triggering
+        fast both in and out
+        
+        tried solving it already, don't think there's a fast way
+        to do it
+      -->
+      {#if shownInteractionLayer.focus}
+        <div 
+          class="layer layer--focus"
+          in:fade={{ duration: 300 }}
+          out:fade={{ duration: 200 }}
+        ></div>
+      {/if}
+      {#if shownInteractionLayer.hover && !loading}
+      <!-- {#if shownInteractionLayer.hover} -->
+        <div 
+          class="layer layer--hover"
+          in:fade={{ duration: 250 }}
+          out:fade={{ duration: 200 }}
+        ></div>
+      {/if}
+      
+      
       <!-- 
         possible content ideas (ie untested):
         component
@@ -141,14 +255,20 @@
        -->
       <slot></slot>
       
+      
       <!-- disable tabindex? -->
-      {#if link}
+      {#if link 
+        && !disabled
+        // ? to be safe (might remove in the future)
+        && !loading
+      }
         <!-- svelte-ignore a11y-missing-content -->
         <a 
           class="link-overlay"
           href="{link}"
         ></a>
       {/if}
+      
       {#if popoverArgs}
         {#await import("$lib/popover") then value}
           <div 
@@ -171,14 +291,47 @@
   @use "../../lib/reset";
   @use "../../lib/util";
   
+  @include reset.a;
   // @include reset.button;
   
   
   .btn-wrap {
     display: inline-block; // default for 'button' tag
     
-    %btn_hover {
-      &:hover {
+    // #region .btn--default-skin
+    
+    // * {pinned} in common
+    
+    %btn--default-skin_focus-visible {
+      &:focus-visible {
+        html.theme-dark & {
+          $shadow-color: color.scale(
+            map.get(plt.$dark, "1"),
+            $lightness: 75%,
+          );
+          
+          outline-color: $shadow-color;
+          // outline-offset: 0;
+          outline-style: solid;
+          outline-width: .2em;
+        }
+        html.theme-light & {
+          outline-style: none; // no focus-ring
+          
+          $shadow-color: color.scale(
+            map.get(plt.$light, "1"),
+            $lightness: 50%,
+          );
+          // coolest (but harder to see)
+          box-shadow: 0 0 .3em $shadow-color;
+          
+          // box-shadow: 0 0 .1em .05em $shadow-color;
+          // box-shadow: 0 0 .2em .05em $shadow-color; // 2nd place
+        }
+      }//&:focus-visible
+    }
+    %btn--default-skin_hover {
+      // &:hover {
         html.theme-dark & {
           $bg: map.get(plt.$dark, "1");
           
@@ -218,36 +371,126 @@
             $bg1 ,
           );
         }
-      }//&:focus
+      // }
     }
-    %btn_focus-visible {
-      &:focus-visible {
+    
+    // * &.ordinary
+    
+    %btn--default-skin_ordinary_focus {
+      // &:focus {
         html.theme-dark & {
-          $shadow-color: color.scale(
-            map.get(plt.$dark, "1"),
-            $lightness: 75%,
+          $bg: color.scale(
+            map.get(plt.$dark, "1"), 
+            $lightness: -83%,
           );
           
-          outline-color: $shadow-color;
-          // outline-offset: 0;
-          outline-style: solid;
-          outline-width: .2em;
+          background-color: $bg;
         }
         html.theme-light & {
-          outline-style: none; // no focus-ring
+          // TODO do the followings for dark mode as well
           
-          $shadow-color: color.scale(
-            map.get(plt.$light, "1"),
-            $lightness: 50%,
+          // TODO get this color from outside (from standard bg eg. when el isnt hovered)
+          $bg: color.adjust(
+            map.get(plt.$light, "1"), 
+            $hue: -20,
           );
-          // coolest (but harder to see)
-          box-shadow: 0 0 .3em $shadow-color;
+          // scale from lightness more dynamically (from standard bg eg. when el isnt hovered)
+          $bg2: color.scale(
+            $bg, 
+            $lightness: 88%,
+          );
+          // ? for the future (read above)
+          // $bg2: color.scale(
+          //   , 
+          //   $lightness: -2%,
+          // );
           
-          // box-shadow: 0 0 .1em .05em $shadow-color;
-          // box-shadow: 0 0 .2em .05em $shadow-color; // 2nd place
+          background-color: $bg2;
         }
-      }//&:focus-visible
+      // }
     }
+    %btn--default-skin_ordinary_no-interaction {
+      html.theme-dark & {
+        $bg: map.get(plt.$dark, "1");
+        
+        // about the $alpha: do I want to see through?
+        $bg2: color.scale(
+          $bg, 
+          $lightness: -85%,
+          // $alpha: -50%,
+        );
+        
+        // background-color: aqua; // visible when $bg1 is transparent
+        // background-color: red; // visible when $bg1 is transparent
+        // background-color: white; // visible when $bg1 is transparent
+        
+        background-image: linear-gradient(60deg, 
+          transparent , 
+          $bg2 35% 65%, 
+          transparent ,
+        );
+        
+        // valid aesthetics (save these somewhere)
+        // #region
+        /* $bg: map.get(plt.$dark, "1");
+        
+        $bg1: color.scale(
+          $bg, 
+          $lightness: -65%,
+        );
+        $bg2: color.scale(
+          $bg, 
+          $lightness: -85%,
+        );
+        
+        background-image: linear-gradient(60deg, 
+          $bg1 , 
+          $bg2 35% 65%, 
+          $bg1 ,
+        ); */
+        // background-image: linear-gradient(60deg, 
+        //   $bg1 , 
+        //   $bg2 40% 60%, 
+        //   $bg1 ,
+        // );
+        // background-image: linear-gradient(60deg, 
+        //   $bg1 40%, 
+        //   $bg2 , 
+        //   $bg1 60%,
+        // );
+        // background-image: linear-gradient(60deg, 
+        //   $bg1 20%, 
+        //   $bg2 , 
+        //   $bg1 80%,
+        // );
+        // background-image: linear-gradient(60deg, 
+        //   $bg1 30%, 
+        //   $bg2 30% 70%, 
+        //   $bg1 70%,
+        // );
+        // #endregion
+        
+      }
+      html.theme-light & {
+        $bg: color.adjust(
+          map.get(plt.$light, "1"), 
+          $hue: -20,
+        );
+        
+        $bg2: color.scale(
+          $bg, 
+          $lightness: 90%,
+        );
+        
+        background-image: linear-gradient(60deg, 
+          transparent , 
+          $bg2 35% 65%, 
+          transparent ,
+        );
+      }
+    }
+    
+    // #endregion .btn--default-skin
     
     .btn {
       display: inherit;
@@ -257,44 +500,76 @@
       
       width: 100%; // always fit wrapper
       
+      // .layer
+      position: relative;
+      
+      .layer {
+        border-radius: inherit;
+        @include util.overlay;
+        z-index: -1;
+      }
+      
       
       // represents an el while is being activated
       // &:active {}
-      
-      &:disabled {
-        opacity: 70%;
-      }
-      
-      // &:focus {}
-      // &:focus-visible {}
       
       &:not(:disabled) {
         cursor: pointer;
       }
       
-      
       &.w-link {
         position: relative;
         
         .link-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
-          width: 100%;
+          border-radius: inherit;
+          @include util.overlay;
         }
       }
       
       /* reminders about interaction
-        (chrome)
-        click applies
-        :focus, :hover (visible in :focus absence)
+        --
+        legend
         
-        keyboard selection
-        like click + :focus-visible
+        "is present"
+        means if there is the css rule w/ 
+        at least 1(any) style rule written inside
+        --
         
-        when hovering (only)
-        :hover prevails on :focus
+        chrome (many tests were made)
+        --
+        click applies 
+        :focus
+        :hover
+        
+        (after having clicked)
+        
+        :focus vs :hover (while hovering)
+        none is given priority
+        
+        :focus vs :hover (while not hovering)
+        :focus prevails
+        if :focus rule isn't present :hover is shown instead
+        --
+        
+        --
+        keyboard "focus" applies
+        :focus
+        :focus-visible
+        :hover
+        
+        (after having focused by means of keyboard)
+        in this case hovering/not hovering - doesn't change things
+        
+        :focus vs :hover
+        :focus prevails
+        
+        :focus vs :focus-visible
+        none is given priority
+        
+        :focus-visible vs :hover
+        if :focus rule is present :focus-visible prevails; 
+        otherwise none is given priority
+        --
       */
       
       &--default-skin {
@@ -303,186 +578,97 @@
         color: var(--plt-1);
         font-weight: 500;
         
+        &:disabled {
+          filter: grayscale(50%);
+          text-decoration: line-through;
+        }
+        
+        @extend %btn--default-skin_focus-visible;
+        
+        &:not(:disabled) {
+          .layer {
+            &.layer--hover {
+              @extend %btn--default-skin_hover;
+            }
+          }
+        }
+        
         // {pinned}
         &.ordinary {
-          @extend %btn_hover;
-          @extend %btn_focus-visible;
           
-          html.theme-dark & {
-            $bg: map.get(plt.$dark, "1");
-            
-            // about the $alpha: do I want to see through?
-            $bg2: color.scale(
-              $bg, 
-              $lightness: -85%,
-              // $alpha: -50%,
-            );
-            
-            // background-color: aqua; // visible when $bg1 is transparent
-            // background-color: red; // visible when $bg1 is transparent
-            // background-color: white; // visible when $bg1 is transparent
-            
-            background-image: linear-gradient(60deg, 
-              transparent , 
-              $bg2 35% 65%, 
-              transparent ,
-            );
-            
-            // valid aesthetics (save these somewhere)
-            // #region
-            /* $bg: map.get(plt.$dark, "1");
-            
-            $bg1: color.scale(
-              $bg, 
-              $lightness: -65%,
-            );
-            $bg2: color.scale(
-              $bg, 
-              $lightness: -85%,
-            );
-            
-            background-image: linear-gradient(60deg, 
-              $bg1 , 
-              $bg2 35% 65%, 
-              $bg1 ,
-            ); */
-            // background-image: linear-gradient(60deg, 
-            //   $bg1 , 
-            //   $bg2 40% 60%, 
-            //   $bg1 ,
-            // );
-            // background-image: linear-gradient(60deg, 
-            //   $bg1 40%, 
-            //   $bg2 , 
-            //   $bg1 60%,
-            // );
-            // background-image: linear-gradient(60deg, 
-            //   $bg1 20%, 
-            //   $bg2 , 
-            //   $bg1 80%,
-            // );
-            // background-image: linear-gradient(60deg, 
-            //   $bg1 30%, 
-            //   $bg2 30% 70%, 
-            //   $bg1 70%,
-            // );
-            // #endregion
-            
-          }
-          html.theme-light & {
-            $bg: color.adjust(
-              map.get(plt.$light, "1"), 
-              $hue: -20,
-            );
-            
-            $bg2: color.scale(
-              $bg, 
-              $lightness: 90%,
-            );
-            
-            background-image: linear-gradient(60deg, 
-              transparent , 
-              $bg2 35% 65%, 
-              transparent ,
-            );
-          }
-          
-          &:focus {
-            html.theme-dark & {
-              $bg: color.scale(
-                map.get(plt.$dark, "1"), 
-                $lightness: -83%,
-              );
-              
-              background-color: $bg;
+          .layer {
+            &.layer--focus {
+              @extend %btn--default-skin_ordinary_focus;
             }
-            html.theme-light & {
-              // TODO do the followings for dark mode as well
-              
-              // TODO get this color from outside (from standard bg eg. when el isnt hovered)
-              $bg: color.adjust(
-                map.get(plt.$light, "1"), 
-                $hue: -20,
-              );
-              // scale from lightness more dynamically (from standard bg eg. when el isnt hovered)
-              $bg2: color.scale(
-                $bg, 
-                $lightness: 88%,
-              );
-              // ? for the future (read above)
-              // $bg2: color.scale(
-              //   , 
-              //   $lightness: -2%,
-              // );
-              
-              background-color: $bg2;
+            &.layer--no-interaction {
+              @extend %btn--default-skin_ordinary_no-interaction;
             }
           }
           
         }
         &.highlighted {
-          @extend %btn_hover;
-          @extend %btn_focus-visible;
           
-          html.theme-dark & {
-            $bg: map.get(plt.$dark, "1");
-            
-            $bg2: color.scale(
-              $bg, 
-              $lightness: -85%,
-            );
-            
-            background-color: $bg2;
-          }
-          html.theme-light & {
-            $bg: color.adjust(
-              map.get(plt.$light, "1"), 
-              $hue: -20,
-            );
-            
-            $bg2: color.scale(
-              $bg, 
-              $lightness: 90%,
-            );
-            
-            background-color: $bg2;
-          }
-          
-          &:focus {
-            html.theme-dark & {
-              $bg: map.get(plt.$dark, "1");
-            
-              $bg1: color.scale(
-                $bg, 
-                $lightness: -85%,
-              );
-              $bg2: color.scale(
-                $bg, 
-                $lightness: -90%,
-              );
+          .layer {
+            &.layer--focus {
+              html.theme-dark & {
+                $bg: map.get(plt.$dark, "1");
               
-              background-image: linear-gradient(60deg, 
-                $bg1 , 
-                $bg2 35% 65%, 
-                $bg1 ,
-              );
+                $bg1: color.scale(
+                  $bg, 
+                  $lightness: -85%,
+                );
+                $bg2: color.scale(
+                  $bg, 
+                  $lightness: -90%,
+                );
+                
+                background-image: linear-gradient(60deg, 
+                  $bg1 , 
+                  $bg2 35% 65%, 
+                  $bg1 ,
+                );
+              }
+              html.theme-light & {
+                $bg: color.adjust(
+                  map.get(plt.$light, "1"), 
+                  $hue: -20,
+                );
+                $bg2: color.scale(
+                  $bg, 
+                  $lightness: 87%,
+                );
+                
+                background-color: $bg2;
+              }
             }
-            html.theme-light & {
-              $bg: color.adjust(
-                map.get(plt.$light, "1"), 
-                $hue: -20,
-              );
-              $bg2: color.scale(
-                $bg, 
-                $lightness: 87%,
-              );
-              
-              background-color: $bg2;
+            &.layer--no-interaction {
+              html.theme-dark & {
+                $bg: map.get(plt.$dark, "1");
+                
+                $bg2: color.scale(
+                  $bg, 
+                  $lightness: -85%,
+                );
+                
+                background-color: $bg2;
+              }
+              html.theme-light & {
+                $bg: color.adjust(
+                  map.get(plt.$light, "1"), 
+                  $hue: -20,
+                );
+                
+                $bg2: color.scale(
+                  $bg, 
+                  $lightness: 90%,
+                );
+                
+                background-color: $bg2;
+              }
             }
           }
           
         }//&.highlighted
-        
       }//&--default-skin
       &--menu-item {
         border-radius: var(--border-radius);
@@ -494,7 +680,7 @@
         }
       }
       
-    }
+    }//.btn
   }
   
   .logic-only {

@@ -286,7 +286,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
       
       focus events give keyboard focus a "mouse hover"-like behavior
       they make it so the popover shows right away when focusing the ref
-      w/ the keyboard, whereas w/out 'enter' key must be pressed
+      w/ the keyboard, whereas w/out: enter/space key must be pressed
       
       mouse events behave better than pointer's (at least w/ tippy.js)
       
