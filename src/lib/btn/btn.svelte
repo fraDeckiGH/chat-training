@@ -192,7 +192,9 @@
 >
   {#if btnEl}
     
-    <!-- passed attributes('attr') will overwrite -->
+    <!-- passed attributes("attr") will overwrite 
+      those which come before
+    -->
     <button 
       class="btn btn--{btnStyling()} {btnStyling2()}"
       class:is-loading={loading}
