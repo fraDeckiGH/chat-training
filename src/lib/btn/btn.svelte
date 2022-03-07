@@ -11,7 +11,6 @@
   
 </script>
 
-
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
   import type { Maybe } from "$lib/type/util"
@@ -99,7 +98,20 @@
   /**
    * layers on which some btn styles are applied
    */
-  function handleInteractionLayers(htmlEl: HTMLButtonElement) {
+  function handleInteractionLayers(
+    htmlEl: HTMLAnchorElement | HTMLButtonElement, 
+    args?: any
+    ) {
+    // console.log(`htmlEl`, htmlEl)
+    
+    if (
+      (htmlEl.tagName === "BUTTON" && link) 
+      // tbs (to be safe)
+      || (htmlEl.tagName === "A" && !link)
+    ) {
+      // console.log(`return`, htmlEl)
+      return
+    }
     
     // test
     /* htmlEl.onclick = (ev) => {
@@ -133,7 +145,10 @@
 			destroy() {
         // console.log(`destroy()`, )
         shownInteractionLayer = {}
-			}
+			},
+      // update(updatedArgs: typeof args) {
+      //   console.log(`handleInteractionLayers update`, )
+      // }
 		};
   }
   
@@ -201,6 +216,7 @@
       class:w-link={link}
       {disabled}
       on:click|trusted
+      tabindex={link ? -1 : 0}
       {...attr}
       use:handleInteractionLayers
     > 
@@ -221,7 +237,7 @@
           of other layers
         -->
         <div 
-          class="layer layer--no-interaction"
+          class="int-layer int-layer--no-interaction"
           out:fade={{ duration: 300 }}
         ></div>
       {/if}
@@ -234,7 +250,7 @@
       -->
       {#if shownInteractionLayer.focus}
         <div 
-          class="layer layer--focus"
+          class="int-layer int-layer--focus"
           in:fade={{ duration: 300 }}
           out:fade={{ duration: 200 }}
         ></div>
@@ -242,7 +258,7 @@
       {#if shownInteractionLayer.hover && !loading}
       <!-- {#if shownInteractionLayer.hover} -->
         <div 
-          class="layer layer--hover"
+          class="int-layer int-layer--hover"
           in:fade={{ duration: 250 }}
           out:fade={{ duration: 200 }}
         ></div>
@@ -258,16 +274,34 @@
       <slot></slot>
       
       
-      <!-- disable tabindex? -->
       {#if link 
         && !disabled
         // ? to be safe (might remove in the future)
         && !loading
       }
+        <!-- in case I need to do more than just redirecting 
+          when the link is activated.
+          here are some res/ideas which may come back useful
+          
+          modifiers: preventDefault == no redirect
+          https://svelte.dev/docs#template-syntax-element-directives-on-eventname
+          
+          https://svelte.dev/docs#run-time-svelte-createeventdispatcher
+          
+          https://kit.svelte.dev/docs/loading
+        -->
+        
+        <!-- on:click|preventDefault
+          on:click|preventDefault={() => {
+            console.log(`link activated (by either mouse, keyboard...)`, )
+          }}
+        -->
+        
         <!-- svelte-ignore a11y-missing-content -->
         <a 
           class="link-overlay"
           href="{link}"
+          use:handleInteractionLayers
         ></a>
       {/if}
       
@@ -307,28 +341,44 @@
     %btn--default-skin_focus-visible {
       &:focus-visible {
         html.theme-dark & {
-          $shadow-color: color.scale(
+          $color: color.scale(
             map.get(plt.$dark, "1"),
             $lightness: 75%,
           );
           
-          outline-color: $shadow-color;
+          outline-color: $color;
           // outline-offset: 0;
           outline-style: solid;
           outline-width: .2em;
         }
         html.theme-light & {
-          outline-style: none; // no focus-ring
-          
-          $shadow-color: color.scale(
-            map.get(plt.$light, "1"),
-            $lightness: 50%,
+          $colorAdj: color.adjust(
+            map.get(plt.$light, "1"), 
+            $hue: -20,
           );
-          // coolest (but harder to see)
-          box-shadow: 0 0 .3em $shadow-color;
+          $color: color.scale(
+            $colorAdj,
+            // $lightness: -25%,
+          );
           
-          // box-shadow: 0 0 .1em .05em $shadow-color;
-          // box-shadow: 0 0 .2em .05em $shadow-color; // 2nd place
+          outline-color: $color;
+          // outline-offset: 0;
+          outline-style: solid;
+          outline-width: .2em;
+          
+          /* shadow as focus-ring
+            outline-style: none; // no focus-ring
+            
+            $shadow-color: color.scale(
+              map.get(plt.$light, "1"),
+              $lightness: 50%,
+            );
+            // coolest (but harder to see)
+            box-shadow: 0 0 .3em $shadow-color;
+            
+            // box-shadow: 0 0 .1em .05em $shadow-color;
+            // box-shadow: 0 0 .2em .05em $shadow-color; // 2nd place
+          */
         }
       }//&:focus-visible
     }
@@ -492,6 +542,68 @@
       }
     }
     
+    // * &.highlighted
+    
+    %btn--default-skin_highlighted_focus {
+      // &:focus {
+        html.theme-dark & {
+          $bg: map.get(plt.$dark, "1");
+        
+          $bg1: color.scale(
+            $bg, 
+            $lightness: -85%,
+          );
+          $bg2: color.scale(
+            $bg, 
+            $lightness: -90%,
+          );
+          
+          background-image: linear-gradient(60deg, 
+            $bg1 , 
+            $bg2 35% 65%, 
+            $bg1 ,
+          );
+        }
+        html.theme-light & {
+          $bg: color.adjust(
+            map.get(plt.$light, "1"), 
+            $hue: -20,
+          );
+          $bg2: color.scale(
+            $bg, 
+            $lightness: 87%,
+          );
+          
+          background-color: $bg2;
+        }
+      // }
+    }
+    %btn--default-skin_highlighted_no-interaction {
+      html.theme-dark & {
+        $bg: map.get(plt.$dark, "1");
+        
+        $bg2: color.scale(
+          $bg, 
+          $lightness: -85%,
+        );
+        
+        background-color: $bg2;
+      }
+      html.theme-light & {
+        $bg: color.adjust(
+          map.get(plt.$light, "1"), 
+          $hue: -20,
+        );
+        
+        $bg2: color.scale(
+          $bg, 
+          $lightness: 90%,
+        );
+        
+        background-color: $bg2;
+      }
+    }
+    
     // #endregion .btn--default-skin
     
     .btn {
@@ -502,10 +614,10 @@
       
       width: 100%; // always fit wrapper
       
-      // .layer
+      // .int-layer
       position: relative;
       
-      .layer {
+      .int-layer {
         border-radius: inherit;
         @include util.overlay;
         z-index: -1;
@@ -574,100 +686,65 @@
         --
       */
       
+      // ? @mixin is more scalable than %placeholder-selector
+      @mixin disabled {
+        &:disabled {
+          filter: grayscale(50%);
+          text-decoration: line-through;
+        }
+      }
+      @mixin interaction-layer($modifier) {
+        .int-layer {
+          &.int-layer--#{$modifier} {
+            @content;
+          }
+        }
+      }
+      @mixin link-overlay {
+        &.w-link {
+          .link-overlay {
+            @content;
+          }
+        }
+      }
+      
       &--default-skin {
         // ? put here styles I may not want in other skins
         border-radius: var(--border-radius);
         color: var(--plt-1);
         font-weight: 500;
         
-        &:disabled {
-          filter: grayscale(50%);
-          text-decoration: line-through;
-        }
+        @include disabled;
         
         @extend %btn--default-skin_focus-visible;
+        @include link-overlay {
+          @extend %btn--default-skin_focus-visible;
+        }
         
         &:not(:disabled) {
-          .layer {
-            &.layer--hover {
-              @extend %btn--default-skin_hover;
-            }
+          @include interaction-layer(hover) {
+            @extend %btn--default-skin_hover;
           }
         }
         
         // {pinned}
         &.ordinary {
           
-          .layer {
-            &.layer--focus {
-              @extend %btn--default-skin_ordinary_focus;
-            }
-            &.layer--no-interaction {
-              @extend %btn--default-skin_ordinary_no-interaction;
-            }
+          @include interaction-layer(focus) {
+            @extend %btn--default-skin_ordinary_focus;
+          }
+          @include interaction-layer(no-interaction) {
+            @extend %btn--default-skin_ordinary_no-interaction;
           }
           
         }
         &.highlighted {
           
-          .layer {
-            &.layer--focus {
-              html.theme-dark & {
-                $bg: map.get(plt.$dark, "1");
-              
-                $bg1: color.scale(
-                  $bg, 
-                  $lightness: -85%,
-                );
-                $bg2: color.scale(
-                  $bg, 
-                  $lightness: -90%,
-                );
-                
-                background-image: linear-gradient(60deg, 
-                  $bg1 , 
-                  $bg2 35% 65%, 
-                  $bg1 ,
-                );
-              }
-              html.theme-light & {
-                $bg: color.adjust(
-                  map.get(plt.$light, "1"), 
-                  $hue: -20,
-                );
-                $bg2: color.scale(
-                  $bg, 
-                  $lightness: 87%,
-                );
-                
-                background-color: $bg2;
-              }
-            }
-            &.layer--no-interaction {
-              html.theme-dark & {
-                $bg: map.get(plt.$dark, "1");
-                
-                $bg2: color.scale(
-                  $bg, 
-                  $lightness: -85%,
-                );
-                
-                background-color: $bg2;
-              }
-              html.theme-light & {
-                $bg: color.adjust(
-                  map.get(plt.$light, "1"), 
-                  $hue: -20,
-                );
-                
-                $bg2: color.scale(
-                  $bg, 
-                  $lightness: 90%,
-                );
-                
-                background-color: $bg2;
-              }
-            }
+          @include interaction-layer(focus) {
+            @extend %btn--default-skin_highlighted_focus;
+          }
+          @include interaction-layer(no-interaction) {
+            @extend %btn--default-skin_highlighted_no-interaction;
           }
           
         }//&.highlighted
