@@ -2,25 +2,38 @@
 // * color scheme/theme
 // import this module only if the app is running in the browser
 
+import { browser } from '$app/env';
+
+
 export {
-  create,
+  // create,
+  singleton as theme,
 }
 export type {
   Theme,
 }
 
+
 type TTheme = "dark" | "light"
 type Switcher = TTheme | "system"
 
+
+
 function create() {
-  if (!document) {
-    console.log(`return: !document`, document)
+  if (!browser) {
+    console.log(`return: !browser`, )
     return
   }
+  // if (!document) {
+  //   console.log(`return: !document`, document)
+  //   return
+  // }
   
   const instance = new Theme()
   return instance
 }
+
+
 
 class Theme {
   
@@ -144,5 +157,9 @@ class Theme {
   
   
 }
+
+
+
+const singleton = create()
 
 

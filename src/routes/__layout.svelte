@@ -3,6 +3,7 @@
   import "../app.scss"
   import Btn from "$lib/btn/btn.svelte";
   import { htmlElems } from "$lib/misc";
+  // import { theme } from "$lib/theme/theme"
   import type { Theme } from "$lib/theme/theme"
   import ToastHandlerDemo from "$lib/toast-handler/toast-handler-demo.svelte";
   import { onMount } from "svelte"
@@ -25,7 +26,7 @@
     // import("sanitize.css/ui-monospace.css")
     //#endregion
     
-    theme = (await import("$lib/theme/theme")).create()
+    theme = (await import("$lib/theme/theme")).theme
     // toast = (await import("$lib/toast-handler/toast-handler")).singleton
   })
   
@@ -60,7 +61,7 @@
         <Btn
           on:click={() => {
             if (theme) {
-              theme/* ? */.switch()
+              theme.switch()
               theme = theme
             }
           }}

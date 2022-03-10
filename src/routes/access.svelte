@@ -156,11 +156,10 @@
       <Btn 
         attr={{
           // disabled: true,
-          // disabled: submittingForm,
+          disabled: submittingForm,
           // style: "height: 2000px;",
           type: "button",
         }}
-        link="fwwefjo"
         on:click={() => {
           submittingForm = !submittingForm
         }}

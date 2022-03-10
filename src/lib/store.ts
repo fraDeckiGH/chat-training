@@ -82,6 +82,10 @@ type Writable$Args<T> = {
 /**
   help syncing changes
   
+  NOTE bad use of reactivity
+  try to never use this helper as every emit triggers on ALL
+  all possible receivers
+  
   --
   usage
   
@@ -89,7 +93,7 @@ type Writable$Args<T> = {
     changes.sync()
   
   receiver (eg. $lib/popover/popover-demo)
-    $changes 
+    $changes
  */
 const changes = writable$(0, {
   updaters: {

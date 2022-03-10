@@ -246,9 +246,9 @@
   
   @use "sass:map";
   
-  @use "../../lib/color";
-  @use "../../lib/palette" as plt;
-  // @use "../../lib/theme/theme";
+  @use "src/lib/color";
+  @use "src/lib/palette" as plt;
+  // @use "src/lib/theme/theme";
   
   
   .component {

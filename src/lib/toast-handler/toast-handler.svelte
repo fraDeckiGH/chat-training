@@ -224,8 +224,8 @@
 
 <style lang=scss>
   
-  @use "../../lib/page";
-  @use "../../lib/reset";
+  @use "src/lib/page";
+  @use "src/lib/reset";
   
   @include reset.list(ul);
   

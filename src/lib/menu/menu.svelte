@@ -140,9 +140,9 @@
   
   @use "sass:map";
   
-  @use "../../lib/color";
-  @use "../../lib/palette" as plt;
-  @use "../../lib/reset";
+  @use "src/lib/color";
+  @use "src/lib/palette" as plt;
+  @use "src/lib/reset";
   
   @include reset.list(ul);
   
