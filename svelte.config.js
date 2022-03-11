@@ -1,5 +1,5 @@
 import preprocess from 'svelte-preprocess'
-import adapterNode from '@sveltejs/adapter-node'
+// import adapterNode from '@sveltejs/adapter-node'
 // const scss = preprocess
 
 /** @type {import('@sveltejs/kit').Config} */

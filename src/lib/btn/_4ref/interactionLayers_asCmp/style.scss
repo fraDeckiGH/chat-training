@@ -296,11 +296,11 @@
     // .int-layer
     position: relative;
     
-    .int-layer {
-      border-radius: inherit;
-      @include util.overlay;
-      z-index: -1;
-    }
+    // .int-layer {
+    //   border-radius: inherit;
+    //   @include util.overlay;
+    //   z-index: -1;
+    // }
     
     
     // represents an el while is being activated
@@ -390,7 +390,8 @@
     &--default-skin {
       // ? put here styles I may not want in other skins
       border-radius: var(--border-radius);
-      color: var(--plt-1);
+      // color: var(--plt-1);
+      color: tomato;
       font-weight: 500;
       
       @include disabled;
@@ -401,9 +402,9 @@
       }
       
       // &:not(:disabled) {
-        @include interaction-layer(hover) {
-          @extend %btn--default-skin_hover;
-        }
+      //   @include interaction-layer(hover) {
+      //     @extend %btn--default-skin_hover;
+      //   }
       // }
       
       // {pinned}
