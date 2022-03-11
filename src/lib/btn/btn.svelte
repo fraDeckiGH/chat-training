@@ -13,11 +13,9 @@
 
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
-  // import { writable$ } from "$lib/store";
-  import type { Theme } from "$lib/theme/theme"
   import type { Maybe } from "$lib/type/util"
-  import { onMount, setContext } from "svelte"
-  import { fade } from 'svelte/transition';
+  import { onMount } from "svelte"
+  import { fade } from 'svelte/transition'
   
   
   /**
@@ -205,7 +203,7 @@
 
 
 <div 
-  class="btn-wrap"
+  class="btn-wrap {emotionCss}"
 >
   {#if btnEl}
     
@@ -322,7 +320,8 @@
 </div>
 
 
-<style src="./style.scss"></style>
+<!-- <style src="./style.scss"></style> -->
+<style></style>
 
 
 
