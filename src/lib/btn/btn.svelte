@@ -203,7 +203,7 @@
 
 
 <div 
-  class="btn-wrap {emotionCss}"
+  class="btn-wrap"
 >
   {#if btnEl}
     
