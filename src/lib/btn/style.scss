@@ -296,11 +296,11 @@
     // .int-layer
     position: relative;
     
-    .int-layer {
-      border-radius: inherit;
-      @include util.overlay;
-      z-index: -1;
-    }
+    // .int-layer {
+    //   border-radius: inherit;
+    //   @include util.overlay;
+    //   z-index: -1;
+    // }
     
     
     // represents an el while is being activated
@@ -401,9 +401,9 @@
       }
       
       // &:not(:disabled) {
-        @include interaction-layer(hover) {
-          @extend %btn--default-skin_hover;
-        }
+        // @include interaction-layer(hover) {
+        //   @extend %btn--default-skin_hover;
+        // }
       // }
       
       // {pinned}

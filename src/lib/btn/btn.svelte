@@ -13,8 +13,10 @@
 
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
+  import { changes, writable$ } from "$lib/store"
+  import type { Theme } from "$lib/theme/theme"
   import type { Maybe } from "$lib/type/util"
-  import { onMount } from "svelte"
+  import { onMount, setContext } from "svelte"
   import { fade } from 'svelte/transition'
   
   
@@ -79,15 +81,33 @@
     hover?: boolean
   } = {}
   
+  let intLayers_importPath = <Maybe<string>>null
+  let theme = <Maybe<Theme>>null
+  
   
   $: {
     disabled = attr.disabled;
   }
-  
-  
-  onMount(() => {
-		// console.log(`onMount `, )
+  $: {
+    // does this work when u change theme?
+    console.log(`theme.current`, theme?.current)
     
+    if (theme) {
+      intLayers_importPath = `layers/${
+          btnStyling()
+        }/${
+          btnStyling2()
+        }/${
+          theme.current
+        }`
+      ;
+    }
+  }
+  
+  
+  onMount(async () => {
+		// console.log(`onMount `, )
+    theme = (await import("$lib/theme/theme")).theme
 	})
   
   
@@ -199,6 +219,23 @@
   }
   
   
+  // TODO move somewhere else
+  const intLayers_state = writable$({
+    disabled,
+    loading,
+    shownInteractionLayer,
+  })
+  setContext("state", intLayers_state)
+  
+  $: {
+    intLayers_state.update(val => ({
+      disabled, 
+      loading, 
+      shownInteractionLayer,
+    }))
+  }
+  
+  
 </script>
 
 
@@ -220,50 +257,10 @@
       {...attr}
       use:handleInteractionLayers
     > 
-      <!-- BUG in&out transitions not bidirectional 
-        noticeable on long(1/2sec) durations when triggering
-        fast both in and out
-        
-        tried solving it already, don't think there's a fast way
-        to do it
-      -->
-      {#if 
-        // when :disabled, the el loses :focus
-        disabled || 
-        
-        (loading && !shownInteractionLayer.focus) || 
-        
-        // every val of the obj is...
-        (Object.values(shownInteractionLayer)).every(val => !val)
-      }
-        <!-- fix flashing bug 
-          to avoid a bug which visually looks like the elem 
-          it's flashing (noticeable when focus by keyboard)
-          
-          out:fade must be equal to the longest in:fade 
-          of other layers
-        -->
-        <div 
-          class="int-layer int-layer--no-interaction"
-          out:fade={{ duration: 300 }}
-        ></div>
-      {/if}
-      {#if shownInteractionLayer.focus}
-        <div 
-          class="int-layer int-layer--focus"
-          in:fade={{ duration: 300 }}
-          out:fade={{ duration: 200 }}
-        ></div>
-      {/if}
-      {#if shownInteractionLayer.hover 
-        && !disabled
-        && !loading
-      }
-        <div 
-          class="int-layer int-layer--hover"
-          in:fade={{ duration: 250 }}
-          out:fade={{ duration: 200 }}
-        ></div>
+      {#if intLayers_importPath}
+        {#await import("./" + intLayers_importPath + ".svelte") then value}
+          <svelte:component this={value.default} />
+        {/await}
       {/if}
       
       
@@ -320,8 +317,7 @@
 </div>
 
 
-<!-- <style src="./style.scss"></style> -->
-<style></style>
+<style src="./style.scss"></style>
 
 
 
