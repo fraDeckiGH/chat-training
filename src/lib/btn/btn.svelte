@@ -9,15 +9,16 @@
   
   type Popover = typeof import("$lib/popover")
   
+  
 </script>
 
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
-  import { changes, writable$ } from "$lib/store"
+  import { writable$ } from "$lib/store"
   import type { Theme } from "$lib/theme/theme"
   import type { Maybe } from "$lib/type/util"
-  import { onMount, setContext } from "svelte"
-  import { fade } from 'svelte/transition'
+  import { onDestroy, onMount, setContext } from "svelte"
+  import type { Unsubscriber } from "svelte/store";
   
   
   /**
@@ -76,21 +77,23 @@
   // export let popoverArgs: PopoverArgs | undefined
   
   
+  let intLayers_importPath = <Maybe<string>>null
   let shownInteractionLayer: {
     focus?: boolean
     hover?: boolean
   } = {}
   
-  let intLayers_importPath = <Maybe<string>>null
   let theme = <Maybe<Theme>>null
+  let unsub_currentTheme = <Maybe<Unsubscriber>>null
+  ;
   
   
   $: {
     disabled = attr.disabled;
   }
-  $: {
+  /* $: {
     // does this work when u change theme?
-    console.log(`theme.current`, theme?.current)
+    console.log(`theme.current`, theme?.current$)
     
     if (theme) {
       intLayers_importPath = `layers/${
@@ -102,12 +105,33 @@
         }`
       ;
     }
-  }
+  } */
   
+  
+  // * lifecycle
+  
+  onDestroy(() => {
+		// console.log(`onDestroy `, )
+    unsub_currentTheme?.()
+  })
   
   onMount(async () => {
 		// console.log(`onMount `, )
     theme = (await import("$lib/theme/theme")).theme
+    
+    unsub_currentTheme = 
+      theme!.current$.subscribe((value) => {
+        intLayers_importPath = `layers/${
+            btnStyling()
+          }/${
+            btnStyling2()
+          }/${
+            value
+          }`
+        ;
+      })
+    ;
+    
 	})
   
   

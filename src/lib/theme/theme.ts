@@ -3,6 +3,11 @@
 // import this module only if the app is running in the browser
 
 import { browser } from '$app/env';
+import { writable$ } from '$lib/store';
+import type { Writable$ } from '$lib/store';
+import type { Maybe } from '$lib/type/util';
+import { get } from 'svelte/store';
+import type { Unsubscriber } from 'svelte/store';
 
 
 export {
@@ -38,6 +43,8 @@ function create() {
 class Theme {
   
   private _current!: TTheme
+  current$ = writable$(this.current)
+  
   private _switcher!: Switcher
   switcher_nextValue!: Switcher
   
@@ -53,6 +60,9 @@ class Theme {
     return this._current
   }
   public set current(value: TTheme) {
+    this._current = value
+    
+    // html
     switch (value) {
       case "dark":
         this.htmlEl.classList.add("theme-" + value)
@@ -67,7 +77,9 @@ class Theme {
         return
     }
     this.colorScheme_metaEl?.setAttribute("content", value)
-    this._current = value
+    
+    // store
+    this.current$.set(value)
   }
   
   public get switcher(): Switcher {
