@@ -1,0 +1,35 @@
+
+// * modifier2 shared
+
+@use "sass:map";
+// @use "sass:meta";
+@use "src/lib/color";
+@use "src/lib/palette" as plt;
+
+
+@mixin hover {
+  $bg: color.adjust(
+    map.get(plt.$light, "1"), 
+    $hue: -20,
+  );
+  
+  $bg1: color.scale(
+    $bg, 
+    $lightness: 75%,
+  );
+  $bg2: color.scale(
+    $bg, 
+    $lightness: 90%,
+  );
+  
+  background-image: linear-gradient(60deg, 
+    $bg1 , 
+    $bg2 35% 65%, 
+    $bg1 ,
+  );
+}
+
+
+
+
+

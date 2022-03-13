@@ -293,7 +293,7 @@
     
     width: 100%; // always fit wrapper
     
-    // .int-layer
+    // InteractionLayers
     position: relative;
     
     // .int-layer {
@@ -334,7 +334,7 @@
       :focus
       :hover
       
-      (after having clicked)
+      -> after having clicked
       
       :focus vs :hover (while hovering)
       none is given priority
@@ -350,8 +350,8 @@
       :focus-visible
       :hover
       
-      (after having focused by means of keyboard)
-      in this case hovering/not hovering - doesn't change things
+      -> after having focused by means of keyboard
+      (in this case hovering/not hovering - doesn't change things)
       
       :focus vs :hover
       :focus prevails
@@ -372,13 +372,13 @@
         text-decoration: line-through;
       }
     }
-    @mixin interaction-layer($modifier) {
-      .int-layer {
-        &.int-layer--#{$modifier} {
-          @content;
-        }
-      }
-    }
+    // @mixin interaction-layer($modifier) {
+    //   .int-layer {
+    //     &.int-layer--#{$modifier} {
+    //       @content;
+    //     }
+    //   }
+    // }
     @mixin link-overlay {
       &.w-link {
         .link-overlay {
@@ -387,7 +387,7 @@
       }
     }
     
-    &--default-skin {
+    &--default {
       // ? put here styles I may not want in other skins
       border-radius: var(--border-radius);
       color: var(--plt-1);
@@ -401,32 +401,33 @@
       }
       
       // &:not(:disabled) {
-        // @include interaction-layer(hover) {
-        //   @extend %btn--default-skin_hover;
-        // }
+      //   @include interaction-layer(hover) {
+      //     @extend %btn--default-skin_hover;
+      //   }
       // }
       
       // {pinned}
-      &.ordinary {
+      // &.ordinary {
         
-        @include interaction-layer(focus) {
-          @extend %btn--default-skin_ordinary_focus;
-        }
-        @include interaction-layer(no-interaction) {
-          @extend %btn--default-skin_ordinary_no-interaction;
-        }
         
-      }
-      &.highlighted {
+      //   @include interaction-layer(focus) {
+      //     @extend %btn--default-skin_ordinary_focus;
+      //   }
+      //   @include interaction-layer(no-interaction) {
+      //     @extend %btn--default-skin_ordinary_no-interaction;
+      //   }
         
-        @include interaction-layer(focus) {
-          @extend %btn--default-skin_highlighted_focus;
-        }
-        @include interaction-layer(no-interaction) {
-          @extend %btn--default-skin_highlighted_no-interaction;
-        }
+      // }
+      // &.highlighted {
         
-      }//&.highlighted
+      //   @include interaction-layer(focus) {
+      //     @extend %btn--default-skin_highlighted_focus;
+      //   }
+      //   @include interaction-layer(no-interaction) {
+      //     @extend %btn--default-skin_highlighted_no-interaction;
+      //   }
+        
+      // }//&.highlighted
     }//&--default-skin
     &--menu-item {
       border-radius: var(--border-radius);

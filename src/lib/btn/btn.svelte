@@ -4,8 +4,12 @@
     // Item as MenuItem,
   }
   
-  type Look = 
-    | "menuItem"
+  type Modifier = 
+    | "default"
+    | "menu-item"
+  type Modifier2 = 
+    | "highlighted"
+    | "ordinary"
   
   type Popover = typeof import("$lib/popover")
   
@@ -46,16 +50,6 @@
   // let isCta
   
   /**
-   * emphasized/emphasised, highlighted, marked
-   * very different from a CTA
-   * 
-   * usage eg
-   * when there are more options and I want to emphasise 
-   * the default/prioritary one
-   */
-  export let highlighted = <Maybe<boolean>>null
-  
-  /**
    * purpose navigation? pass the link
    */
   export let link = <Maybe<string>>null
@@ -67,10 +61,18 @@
    */
   export let loading = <Maybe<boolean>>null
   
-  /**
-   * aka 'skin'
+  
+  export let modifier = <Maybe<Modifier>>"default"
+  /** 'highlighted' prop description
+   * emphasized/emphasised, highlighted, marked
+   * very different from a CTA
+   * 
+   * usage eg
+   * when there are more options and I want to emphasise 
+   * the default/prioritary one
    */
-  export let look = <Maybe<Look>>null
+  export let modifier2 = <Maybe<Modifier2>>"ordinary"
+  
   
   export let popoverArgs = < Maybe<PopoverArgs<any>> >null
   // svelte warns: "prop not passed" (when cmp is created in HTML)
@@ -91,21 +93,6 @@
   $: {
     disabled = attr.disabled;
   }
-  /* $: {
-    // does this work when u change theme?
-    console.log(`theme.current`, theme?.current$)
-    
-    if (theme) {
-      intLayers_importPath = `layers/${
-          btnStyling()
-        }/${
-          btnStyling2()
-        }/${
-          theme.current
-        }`
-      ;
-    }
-  } */
   
   
   // * lifecycle
@@ -121,10 +108,11 @@
     
     unsub_currentTheme = 
       theme!.current$.subscribe((value) => {
-        intLayers_importPath = `layers/${
-            btnStyling()
-          }/${
-            btnStyling2()
+        intLayers_importPath = 
+          `interaction-layers/modifier/${
+            modifier
+          }/modifier2/${
+            modifier2
           }/${
             value
           }`
@@ -144,7 +132,7 @@
    */
   function handleInteractionLayers(
     htmlEl: HTMLAnchorElement | HTMLButtonElement, 
-    args?: any
+    // args?: any
     ) {
     // console.log(`htmlEl`, htmlEl)
     
@@ -198,24 +186,24 @@
   
   // btn styling (basic)
   
-  function btnStyling() {
+  /* function getModifierClass() {
     let addendum = ""
     
-    switch (look) {
+    switch (modifier) {
       case "menuItem":
         addendum += `menu-item`
         break;
     
+      case "default":
       default:
         // addendum += `plain`
-        addendum += `default-skin`
-        break;
+        addendum += `default`
     }
     
     return addendum
-  }
+  } */
   
-  function btnStyling2() {
+  /* function getModifier2Class() {
     let addendum = ""
     
     if (highlighted) {
@@ -225,7 +213,7 @@
     }
     
     return addendum
-  }
+  } */
   
   
   // * extra/opt-in features, usually lazy-loaded (on-need basis)
@@ -252,11 +240,11 @@
   setContext("state", intLayers_state)
   
   $: {
-    intLayers_state.update(val => ({
+    intLayers_state.set({
       disabled, 
       loading, 
       shownInteractionLayer,
-    }))
+    })
   }
   
   
@@ -272,7 +260,7 @@
       those which come before
     -->
     <button 
-      class="btn btn--{btnStyling()} {btnStyling2()}"
+      class="btn btn--{modifier} {modifier2}"
       class:is-loading={loading}
       class:w-link={link}
       {disabled}

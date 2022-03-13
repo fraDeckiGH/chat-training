@@ -1,0 +1,23 @@
+
+// * 
+// ? is this file nested/scaffolded correctly?
+
+
+@mixin interaction-layer($modifier) {
+  .int-layer {
+    &.int-layer--#{$modifier} {
+      @content;
+    }
+  }
+}
+
+@mixin unwanted-wrap {
+  all: inherit;
+  display: contents;
+}
+
+
+
+
+
+

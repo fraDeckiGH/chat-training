@@ -1,0 +1,33 @@
+
+
+about this setup
+
+
+------
+BUG temp glowing text: this made me drop transitions
+
+the text color of all buttons glows when I hover just 1 of them
+- it's even more noticeable if I change the color to "tomato"
+
+caused by
+both css & svelte transitiona
+
+------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

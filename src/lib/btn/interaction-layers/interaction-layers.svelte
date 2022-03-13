@@ -14,6 +14,7 @@
   
   
   $: {
+    // console.log(`$state`, $state)
     disabled = $state.disabled
     loading = $state.loading
     shownInteractionLayer = $state.shownInteractionLayer
@@ -46,26 +47,29 @@
     out:fade must be equal to the longest in:fade 
     of other layers
   -->
+  <!-- 
+    out:fade={{ duration: 300 }} -->
   <div 
     class="int-layer int-layer--no-interaction"
-    out:fade={{ duration: 300 }}
   ></div>
 {/if}
 {#if shownInteractionLayer.focus}
+  <!-- 
+    in:fade={{ duration: 300 }}
+    out:fade={{ duration: 200 }} -->
   <div 
     class="int-layer int-layer--focus"
-    in:fade={{ duration: 300 }}
-    out:fade={{ duration: 200 }}
   ></div>
 {/if}
 {#if shownInteractionLayer.hover 
   && !disabled
   && !loading
 }
+  <!-- 
+    in:fade={{ duration: 250 }}
+    out:fade={{ duration: 200 }} -->
   <div 
     class="int-layer int-layer--hover"
-    in:fade={{ duration: 250 }}
-    out:fade={{ duration: 200 }}
   ></div>
 {/if}
 
@@ -84,6 +88,34 @@
     border-radius: inherit;
     @include util.overlay;
     z-index: -1;
+    
+    // BUG fix tryout (see notes)
+    // #region
+    // transition-property: opacity;
+    // transition-timing-function: linear;
+    
+    // &.hide {
+    //   opacity: 0;
+    // }
+    // &.show {
+    //   opacity: 1;
+    // }
+    
+    // &--hover {
+    //   &.hide {
+    //     transition-duration: 2000ms;
+    //   }
+    //   &.show {
+    //     transition-duration: 2500ms;
+    //   }
+    // }
+    // &--no-interaction {
+    //   &.hide {
+    //     transition-duration: 3000ms;
+    //   }
+    // }
+    // #endregion
+    
   }
   
 </style>

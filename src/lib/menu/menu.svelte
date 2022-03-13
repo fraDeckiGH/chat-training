@@ -122,7 +122,7 @@
         >
           <Btn 
             link={item.link}
-            look="menuItem"
+            modifier="menu-item"
             on:click={() => selectItem(item)}
           >
             {item.lbl}
