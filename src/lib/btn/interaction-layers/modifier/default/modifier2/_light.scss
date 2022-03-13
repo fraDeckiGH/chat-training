@@ -1,16 +1,12 @@
 
 // * modifier2 shared
 
-@use "sass:map";
-// @use "sass:meta";
 @use "src/lib/color";
+@use "sass:map";
 @use "src/lib/palette" as plt;
 
 
-$bg: color.adjust(
-  map.get(plt.$light, "1"), 
-  $hue: -20,
-);
+$bg: map.get(plt.$light, "1--lessHue");
 
 @mixin hover {
   $bg1: color.scale(

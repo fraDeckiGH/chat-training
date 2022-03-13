@@ -143,7 +143,7 @@
           // style: "height: 2000px;",
           type: "submit",
         }}
-        modifier2="highlighted"
+        highlighted
         loading={submittingForm}
       >
         Enter

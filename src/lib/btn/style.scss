@@ -13,10 +13,6 @@
 .btn-wrap {
   display: inline-block; // default for 'button' tag
   
-  // #region .btn--default-skin
-  
-  // * {pinned} in common
-  
   %btn--default-skin_focus-visible {
     &:focus-visible {
       html.theme-dark & {
@@ -59,13 +55,9 @@
     }//&:focus-visible
   }
   
-  // #endregion .btn--default-skin
-  
   .btn {
     display: inherit;
-    
     border: 0; // tbs: <<value>> instead of initial
-    
     width: 100%; // always fit wrapper
     
     // InteractionLayers
@@ -109,8 +101,8 @@
       font-weight: 500;
       
       @include disabled;
-      
       @extend %btn--default-skin_focus-visible;
+      
       @include link-overlay {
         @extend %btn--default-skin_focus-visible;
       }

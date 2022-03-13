@@ -49,6 +49,18 @@
   // let cta
   // let isCta
   
+  /** 
+    sets prop 'modifier2'
+    
+    emphasized/emphasised, highlighted, marked
+    very different from a CTA
+    
+    usage eg
+    when there are more options and I want to emphasise 
+    the default/prioritary one
+  */
+  export let highlighted = <Maybe<boolean>>null
+  
   /**
    * purpose navigation? pass the link
    */
@@ -63,14 +75,6 @@
   
   
   export let modifier = <Maybe<Modifier>>"default"
-  /** 'highlighted' prop description
-   * emphasized/emphasised, highlighted, marked
-   * very different from a CTA
-   * 
-   * usage eg
-   * when there are more options and I want to emphasise 
-   * the default/prioritary one
-   */
   export let modifier2 = <Maybe<Modifier2>>"ordinary"
   
   
@@ -102,7 +106,12 @@
   // * reactives
   
   $: {
-    disabled = attr.disabled;
+    disabled = attr.disabled
+  }
+  $: {
+    if (highlighted) {
+      modifier2 = "highlighted"
+    }
   }
   $: {
     intLayers_state.set({
