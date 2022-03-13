@@ -13,7 +13,6 @@
 <style lang="scss">
   
   @use "sass:map";
-  // @use "sass:meta";
   @use "src/lib/color";
   @use "src/lib/palette" as plt;
   
@@ -29,24 +28,10 @@
   .wrap:global {
     
     @include helper.interaction-layer(focus) {
-      // @extend %btn--default-skin_ordinary_focus;
-      // TODO do the followings for dark mode as well
-      
-      // TODO get this color from outside (from standard bg eg. when el isnt hovered)
-      $bg: color.adjust(
-        map.get(plt.$light, "1"), 
-        $hue: -20,
-      );
-      // scale from lightness more dynamically (from standard bg eg. when el isnt hovered)
       $bg2: color.scale(
-        $bg, 
+        mod2.$bg, 
         $lightness: 88%,
       );
-      // ? for the future (read above)
-      // $bg2: color.scale(
-      //   , 
-      //   $lightness: -2%,
-      // );
       
       background-color: $bg2;
     }
@@ -54,14 +39,8 @@
       @include mod2.hover;
     }
     @include helper.interaction-layer(no-interaction) {
-      // @extend %btn--default-skin_ordinary_no-interaction;
-      $bg: color.adjust(
-        map.get(plt.$light, "1"), 
-        $hue: -20,
-      );
-      
       $bg2: color.scale(
-        $bg, 
+        mod2.$bg, 
         $lightness: 90%,
       );
       

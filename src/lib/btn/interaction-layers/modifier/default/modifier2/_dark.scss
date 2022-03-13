@@ -7,9 +7,9 @@
 @use "src/lib/palette" as plt;
 
 
+$bg: map.get(plt.$dark, "1");
+
 @mixin hover {
-  $bg: map.get(plt.$dark, "1");
-  
   $bg1: color.scale(
     $bg, 
     $lightness: -65%,
@@ -27,6 +27,50 @@
 }
 
 
+// valid aesthetics 
+// #region (this was saved in: ordinary/ >> --no-interaction)
+/* $bg: map.get(plt.$dark, "1");
 
+$bg1: color.scale(
+  $bg, 
+  $lightness: -65%,
+  // $alpha: -100%,
+);
+$bg2: color.scale(
+  $bg, 
+  $lightness: -85%,
+);
+
+// these are visible when $bg1 is transparent
+// background-color: aqua;
+// background-color: red;
+// background-color: white;
+
+background-image: linear-gradient(60deg, 
+  $bg1 , 
+  $bg2 35% 65%, 
+  $bg1 ,
+); */
+// background-image: linear-gradient(60deg, 
+//   $bg1 , 
+//   $bg2 40% 60%, 
+//   $bg1 ,
+// );
+// background-image: linear-gradient(60deg, 
+//   $bg1 40%, 
+//   $bg2 , 
+//   $bg1 60%,
+// );
+// background-image: linear-gradient(60deg, 
+//   $bg1 20%, 
+//   $bg2 , 
+//   $bg1 80%,
+// );
+// background-image: linear-gradient(60deg, 
+//   $bg1 30%, 
+//   $bg2 30% 70%, 
+//   $bg1 70%,
+// );
+// #endregion
 
 

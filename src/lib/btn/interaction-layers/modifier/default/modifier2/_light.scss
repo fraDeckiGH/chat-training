@@ -7,12 +7,12 @@
 @use "src/lib/palette" as plt;
 
 
+$bg: color.adjust(
+  map.get(plt.$light, "1"), 
+  $hue: -20,
+);
+
 @mixin hover {
-  $bg: color.adjust(
-    map.get(plt.$light, "1"), 
-    $hue: -20,
-  );
-  
   $bg1: color.scale(
     $bg, 
     $lightness: 75%,

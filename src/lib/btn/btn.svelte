@@ -79,19 +79,37 @@
   // export let popoverArgs: PopoverArgs | undefined
   
   
+  // * interaction layer
   let intLayers_importPath = <Maybe<string>>null
   let shownInteractionLayer: {
     focus?: boolean
     hover?: boolean
   } = {}
   
+  const intLayers_state = writable$({
+    disabled,
+    loading,
+    shownInteractionLayer,
+  })
+  setContext("state", intLayers_state)
+  
+  // * theme
   let theme = <Maybe<Theme>>null
   let unsub_currentTheme = <Maybe<Unsubscriber>>null
   ;
   
   
+  // * reactives
+  
   $: {
     disabled = attr.disabled;
+  }
+  $: {
+    intLayers_state.set({
+      disabled, 
+      loading, 
+      shownInteractionLayer,
+    })
   }
   
   
@@ -122,10 +140,6 @@
     
 	})
   
-  
-  // * basic/default features, usually loaded no matter what
-  
-  // btn styling (advanced)
   
   /**
    * layers on which some btn styles are applied
@@ -184,38 +198,6 @@
 		};
   }
   
-  // btn styling (basic)
-  
-  /* function getModifierClass() {
-    let addendum = ""
-    
-    switch (modifier) {
-      case "menuItem":
-        addendum += `menu-item`
-        break;
-    
-      case "default":
-      default:
-        // addendum += `plain`
-        addendum += `default`
-    }
-    
-    return addendum
-  } */
-  
-  /* function getModifier2Class() {
-    let addendum = ""
-    
-    if (highlighted) {
-      addendum += `highlighted`
-    } else {
-      addendum += `ordinary`
-    }
-    
-    return addendum
-  } */
-  
-  
   // * extra/opt-in features, usually lazy-loaded (on-need basis)
   
   function popover(htmlEl: HTMLElement, args: Popover) {
@@ -228,23 +210,6 @@
     }
     
     return args.popover(htmlEl.parentElement!, popoverArgs)
-  }
-  
-  
-  // TODO move somewhere else
-  const intLayers_state = writable$({
-    disabled,
-    loading,
-    shownInteractionLayer,
-  })
-  setContext("state", intLayers_state)
-  
-  $: {
-    intLayers_state.set({
-      disabled, 
-      loading, 
-      shownInteractionLayer,
-    })
   }
   
   

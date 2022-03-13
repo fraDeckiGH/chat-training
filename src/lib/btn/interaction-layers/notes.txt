@@ -15,8 +15,51 @@ both css & svelte transitiona
 ------
 
 
-
-
+/* reminders about interaction
+  --
+  legend
+  
+  "is present"
+  means if there is the css rule w/ 
+  at least 1(any) style rule written inside
+  --
+  
+  chrome (many tests were made)
+  --
+  click applies 
+  :focus
+  :hover
+  
+  -> after having clicked
+  
+  :focus vs :hover (while hovering)
+  none is given priority
+  
+  :focus vs :hover (while not hovering)
+  :focus prevails
+  if :focus rule isn't present :hover is shown instead
+  --
+  
+  --
+  keyboard "focus" applies
+  :focus
+  :focus-visible
+  :hover
+  
+  -> after having focused by means of keyboard
+  (in this case hovering/not hovering - doesn't change things)
+  
+  :focus vs :hover
+  :focus prevails
+  
+  :focus vs :focus-visible
+  none is given priority
+  
+  :focus-visible vs :hover
+  if :focus rule is present :focus-visible prevails; 
+  otherwise none is given priority
+  --
+*/
 
 
 

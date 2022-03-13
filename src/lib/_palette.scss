@@ -6,11 +6,14 @@ like "unused CSS selector" when importing the module
 just to use the palette
 
 
-? see also
+? {approach}
 https://github.com/material-components/material-components-web/tree/master/packages/mdc-theme
 
 there's an interesting "on-primary, on-secondary" approach
 which might be useful when using palette's color as background, eg in a btn
+
+? different ways of writing the colors
+https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl()
 
 
 * legend
@@ -22,14 +25,9 @@ accent - accent (NOT secondary)
 
 */
 
-
-// @use "sass:map";
+@use "color";
+@use "sass:map";
 // @use "sass:string";
-
-// @use "color";
-
-// ? there are different ways of writing the colors
-// https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/hsl()
 
 
 $dark: (
@@ -46,6 +44,17 @@ $light: (
   "1": hsl(154deg 87% 40%),
   "accent": hsl(53deg 88% 50%),
 );
+
+
+// * modifier
+
+$light: map.merge($light, (
+  "1--lessHue": color.adjust(
+    map.get($light, "1"), 
+    $hue: -20,
+  ),
+  
+));
 
 
 // ? might be useful in the future

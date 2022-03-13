@@ -12,10 +12,7 @@
 
 <style lang="scss">
   
-  @use "sass:map";
-  // @use "sass:meta";
   @use "src/lib/color";
-  @use "src/lib/palette" as plt;
   
   @use "src/lib/btn/interaction-layers/helper";
   @use "./../dark" as mod2;
@@ -29,14 +26,12 @@
   .wrap:global {
     
     @include helper.interaction-layer(focus) {
-      $bg: map.get(plt.$dark, "1");
-      
       $bg1: color.scale(
-        $bg, 
+        mod2.$bg, 
         $lightness: -85%,
       );
       $bg2: color.scale(
-        $bg, 
+        mod2.$bg, 
         $lightness: -90%,
       );
       
@@ -50,10 +45,8 @@
       @include mod2.hover;
     }
     @include helper.interaction-layer(no-interaction) {
-      $bg: map.get(plt.$dark, "1");
-      
       $bg2: color.scale(
-        $bg, 
+        mod2.$bg, 
         $lightness: -85%,
       );
       
