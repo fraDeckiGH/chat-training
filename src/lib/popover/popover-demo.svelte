@@ -27,10 +27,10 @@
   const items: Writable$<MenuItem[]> = writable$(<MenuItem[]>[
     // ? coercion is for tests
     {
-      lbl: "bbb",
+      lbl: "BBB irejgre gjiregijrei jg",
     },
     {
-      lbl: "aaa",
+      lbl: "Item theItem",
       link: "4354543534543543543",
     },
     {

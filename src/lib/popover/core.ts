@@ -242,7 +242,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     //   console.log(`onUntrigger`, instance, event)
     // },
     
-    placement: "bottom",
+    placement: "bottom-start",
     
     popperOptions: {
       modifiers: [

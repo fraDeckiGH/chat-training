@@ -2,7 +2,23 @@
 <script lang="ts" context=module>
   export type {
     // Item as MenuItem,
+    IntLayersState,
   }
+  
+  
+  // * interaction layer
+  
+  type IntLayersState = Writable$<{
+    disabled: boolean
+    loading: boolean
+    cmpInteraction: Interaction
+  }>
+  
+  type Interaction = {
+    focus?: boolean
+    hover?: boolean
+  }
+  
   
   type Modifier = 
     | "default"
@@ -13,12 +29,12 @@
   
   type Popover = typeof import("$lib/popover")
   
-  
 </script>
 
 <script lang=ts>
   import type { PopoverArgs } from "$lib/popover"
   import { writable$ } from "$lib/store"
+  import type { Writable$ } from "$lib/store"
   import type { Theme } from "$lib/theme/theme"
   import type { Maybe } from "$lib/type/util"
   import { onDestroy, onMount, setContext } from "svelte"
@@ -49,8 +65,7 @@
   // let cta
   // let isCta
   
-  /** 
-    sets prop 'modifier2'
+  /** sets prop 'modifier2'
     
     emphasized/emphasised, highlighted, marked
     very different from a CTA
@@ -75,7 +90,7 @@
   
   
   export let modifier = <Maybe<Modifier>>"default"
-  export let modifier2 = <Maybe<Modifier2>>"ordinary"
+  export let modifier2 = <Maybe<Modifier2>>null
   
   
   export let popoverArgs = < Maybe<PopoverArgs<any>> >null
@@ -85,15 +100,12 @@
   
   // * interaction layer
   let intLayers_importPath = <Maybe<string>>null
-  let shownInteractionLayer: {
-    focus?: boolean
-    hover?: boolean
-  } = {}
+  let cmpInteraction: Interaction = {}
   
   const intLayers_state = writable$({
     disabled,
     loading,
-    shownInteractionLayer,
+    cmpInteraction,
   })
   setContext("state", intLayers_state)
   
@@ -109,15 +121,14 @@
     disabled = attr.disabled
   }
   $: {
-    if (highlighted) {
-      modifier2 = "highlighted"
-    }
+    modifier2;
+    setModifier2()
   }
   $: {
     intLayers_state.set({
       disabled, 
       loading, 
-      shownInteractionLayer,
+      cmpInteraction,
     })
   }
   
@@ -135,7 +146,9 @@
     
     unsub_currentTheme = 
       theme!.current$.subscribe((value) => {
-        intLayers_importPath = 
+        let path = `interaction-layers/modifier/${modifier}`
+        
+        /* intLayers_importPath = 
           `interaction-layers/modifier/${
             modifier
           }/modifier2/${
@@ -143,7 +156,14 @@
           }/${
             value
           }`
-        ;
+        ; */
+        
+        if (modifier2) {
+          path += `/modifier2/${modifier2}`
+        }
+        
+        path += `/${value}`
+        intLayers_importPath = path
       })
     ;
     
@@ -153,7 +173,7 @@
   /**
    * layers on which some btn styles are applied
    */
-  function handleInteractionLayers(
+  function handleInteraction(
     htmlEl: HTMLAnchorElement | HTMLButtonElement, 
     // args?: any
     ) {
@@ -180,31 +200,55 @@
     
     htmlEl.onfocus = (ev) => {
       // console.log(`onfocus`, ev)
-      shownInteractionLayer.focus = true
+      cmpInteraction.focus = true
     }
     htmlEl.onblur = (ev) => {
       // console.log(`onblur`, ev)
-      shownInteractionLayer.focus = false
+      cmpInteraction.focus = false
     }
     
     htmlEl.onpointerenter = (ev) => {
       // console.log(`onpointerenter`, ev)
-      shownInteractionLayer.hover = true
+      cmpInteraction.hover = true
     }
     htmlEl.onpointerleave = (ev) => {
       // console.log(`onpointerleave`, ev)
-      shownInteractionLayer.hover = false
+      cmpInteraction.hover = false
     }
     
     return {
 			destroy() {
         // console.log(`destroy()`, )
-        shownInteractionLayer = {}
+        cmpInteraction = {}
 			},
       // update(updatedArgs: typeof args) {
-      //   console.log(`handleInteractionLayers update`, )
+      //   console.log(`handleInteraction update`, )
       // }
 		};
+  }
+  
+  function setModifier2() {
+    let res: typeof modifier2 
+    
+    switch (modifier) {
+      case "default":
+        res = "ordinary"
+        if (highlighted) {
+          res = "highlighted"
+        }
+        break;
+      
+      case "menu-item":
+        if (highlighted) {
+          res = null
+        }
+        break;
+      
+      default:
+        console.log(`default case`, )
+    }
+    
+    modifier2 = res
   }
   
   // * extra/opt-in features, usually lazy-loaded (on-need basis)
@@ -226,7 +270,7 @@
 
 
 <div 
-  class="btn-wrap"
+  class="btn-wrap btn-wrap--{modifier}"
 >
   {#if btnEl}
     
@@ -241,7 +285,7 @@
       on:click|trusted
       tabindex={link ? -1 : 0}
       {...attr}
-      use:handleInteractionLayers
+      use:handleInteraction
     > 
       {#if intLayers_importPath}
         {#await import("./" + intLayers_importPath + ".svelte") then value}
@@ -254,8 +298,14 @@
         component
         html
         text
-       -->
-      <slot></slot>
+      -->
+      
+      <span 
+        class="slot"
+        class:slot--focus-outside={cmpInteraction.focus}
+      >
+        <slot></slot>
+      </span>
       
       
       {#if link 
@@ -285,7 +335,7 @@
         <a 
           class="link-overlay"
           href="{link}"
-          use:handleInteractionLayers
+          use:handleInteraction
         ></a>
       {/if}
       

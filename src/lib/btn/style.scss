@@ -1,6 +1,5 @@
 
 @use "sass:map";
-@use "sass:meta";
 @use "src/lib/color";
 @use "src/lib/palette" as plt;
 @use "src/lib/reset";
@@ -11,7 +10,12 @@
 
 
 .btn-wrap {
-  display: inline-block; // default for 'button' tag
+  &--default {
+    display: inline-block; // default for 'button' tag
+  }
+  &--menu-item {
+    display: inherit; // ? 'initial' safer?
+  }
   
   %btn--default-skin_focus-visible {
     &:focus-visible {
@@ -28,9 +32,7 @@
       }
       html.theme-light & {
         $color: color.scale(
-          // $colorAdj,
           map.get(plt.$light, "1--lessHue"),
-          // $lightness: -25%,
         );
         
         outline-color: $color;
@@ -59,6 +61,8 @@
     display: inherit;
     border: 0; // tbs: <<value>> instead of initial
     width: 100%; // always fit wrapper
+    
+    text-align: inherit;
     
     // InteractionLayers
     position: relative;
@@ -95,27 +99,47 @@
       }
     }
     
+    
+    @extend %btn--default-skin_focus-visible;
+      
+    @include link-overlay {
+      @extend %btn--default-skin_focus-visible;
+    }
+    
+    
     &--default {
       border-radius: var(--border-radius);
       color: var(--plt-1);
       font-weight: 500;
+      text-align: center;
       
       @include disabled;
-      @extend %btn--default-skin_focus-visible;
+      // @extend %btn--default-skin_focus-visible;
       
-      @include link-overlay {
-        @extend %btn--default-skin_focus-visible;
-      }
+      // @include link-overlay {
+      //   @extend %btn--default-skin_focus-visible;
+      // }
       
     }
     &--menu-item {
       border-radius: var(--border-radius);
       padding: .4em .7em;
       
-      &:hover {
-        // background-color: tomato;
-        color: var(--plt-1);
+      .slot {
+        &--focus-outside {
+          color: var(--plt-1);
+          
+          html.theme-light & {
+            color: color.scale(
+              map.get(plt.$light, "1"),
+              // map.get(plt.$light, "1--lessHue"),
+              $lightness: -25%,
+            );
+          }
+          
+        }
       }
+      
     }
     
   }//.btn

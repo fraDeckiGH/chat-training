@@ -9,6 +9,10 @@ family: search (a better 1) on Google Fonts
 -----------
 
 
+changed the script
+"prepare" to "prepare:husky" - is it giving problems? if not remove this line
+
+
 
 onAuthStateChanged
 unsubscribe not working?

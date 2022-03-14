@@ -158,7 +158,9 @@
     grid-template-rows: 1fr;
     
     .scroller {
-      padding: 0 .5em;
+      // .2em is to avoid cutting off :focus-visible's focus-ring
+      // when selecting by keyboard
+      padding: .2em .5em;
       isolation: isolate;
       overflow-y: auto;
     }
@@ -167,7 +169,9 @@
       // max-width: 500ch; // test
       // max-width: 40ch; // best choice is w/out
       
-      .li {}
+      .li {
+        
+      }
     }
     
     :global(html.theme-dark) & {
@@ -175,7 +179,7 @@
         map.get(plt.$dark, "base"), 
         $lightness: 5%,
       );
-      background-color: rgba($bg, .7);
+      background-color: rgba($bg, .8);
       backdrop-filter: blur(.2em);
       
       // lightness 1 to 3
@@ -186,7 +190,7 @@
     
     :global(html.theme-light) & {
       // background-color: var(--plt-base);
-      background-color: hsl(var(--plt-base-hsl) / 70%);
+      background-color: hsl(var(--plt-base-hsl) / 60%);
       backdrop-filter: blur(.2em);
       
       // ? colored shadow = good idea?

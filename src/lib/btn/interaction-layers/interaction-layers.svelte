@@ -1,15 +1,15 @@
 
 <script lang=ts>
+  import type { IntLayersState } from "$lib/btn/btn.svelte";
   import { getContext } from "svelte";
-  import { fade } from 'svelte/transition';
+  // import { fade } from 'svelte/transition';
   
   
-  // TODO type needed
-  const state: any = getContext("state")
+  const state: IntLayersState = getContext("state")
   let {
     disabled,
     loading,
-    shownInteractionLayer,
+    cmpInteraction,
   } = $state
   
   
@@ -17,7 +17,7 @@
     // console.log(`$state`, $state)
     disabled = $state.disabled
     loading = $state.loading
-    shownInteractionLayer = $state.shownInteractionLayer
+    cmpInteraction = $state.cmpInteraction
   }
     
   
@@ -35,10 +35,10 @@
   // when :disabled, the el loses :focus
   disabled || 
   
-  (loading && !shownInteractionLayer.focus) || 
+  (loading && !cmpInteraction.focus) || 
   
   // every val of the obj is...
-  (Object.values(shownInteractionLayer)).every(val => !val)
+  (Object.values(cmpInteraction)).every(val => !val)
 }
   <!-- fix flashing bug 
     to avoid a bug which visually looks like the elem 
@@ -53,7 +53,7 @@
     class="int-layer int-layer--no-interaction"
   ></div>
 {/if}
-{#if shownInteractionLayer.focus}
+{#if cmpInteraction.focus}
   <!-- 
     in:fade={{ duration: 300 }}
     out:fade={{ duration: 200 }} -->
@@ -61,7 +61,7 @@
     class="int-layer int-layer--focus"
   ></div>
 {/if}
-{#if shownInteractionLayer.hover 
+{#if cmpInteraction.hover 
   && !disabled
   && !loading
 }
