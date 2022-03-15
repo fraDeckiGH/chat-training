@@ -152,16 +152,6 @@
       theme!.current$.subscribe((value) => {
         let path = `interaction-layers/modifier/${modifier}`
         
-        /* intLayers_importPath = 
-          `interaction-layers/modifier/${
-            modifier
-          }/modifier2/${
-            modifier2
-          }/${
-            value
-          }`
-        ; */
-        
         if (modifier2) {
           path += `/modifier2/${modifier2}`
         }

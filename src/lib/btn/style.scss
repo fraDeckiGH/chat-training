@@ -28,7 +28,7 @@
         outline-color: $color;
         // outline-offset: 0;
         outline-style: solid;
-        outline-width: .2em;
+        outline-width: var(--outline-width);
       }
       html.theme-light & {
         $color: color.scale(
@@ -38,7 +38,7 @@
         outline-color: $color;
         // outline-offset: 0;
         outline-style: solid;
-        outline-width: .2em;
+        outline-width: var(--outline-width);
         
         /* shadow as focus-ring
           outline-style: none; // no focus-ring
@@ -85,6 +85,11 @@
     }
     
     
+    .slot {
+      // display: contents;
+    }
+    
+    
     @mixin disabled {
       &:disabled {
         filter: grayscale(50%);
@@ -127,8 +132,10 @@
       
       .slot {
         &--focus-outside {
-          color: var(--plt-1);
           
+          html.theme-dark & {
+            color: var(--plt-1);
+          }
           html.theme-light & {
             color: color.scale(
               map.get(plt.$light, "1"),

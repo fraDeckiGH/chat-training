@@ -159,8 +159,8 @@
     
     .scroller {
       // .2em is to avoid cutting off :focus-visible's focus-ring
-      // when selecting by keyboard
-      padding: .2em .5em;
+      // (eg. when selecting by keyboard)
+      padding: var(--outline-width) .5em;
       isolation: isolate;
       overflow-y: auto;
     }
@@ -169,9 +169,7 @@
       // max-width: 500ch; // test
       // max-width: 40ch; // best choice is w/out
       
-      .li {
-        
-      }
+      .li {}
     }
     
     :global(html.theme-dark) & {
