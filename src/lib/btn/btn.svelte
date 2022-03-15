@@ -2,24 +2,16 @@
 <script lang="ts" context=module>
   export type {
     // Item as MenuItem,
-    IntLayersState,
+    $IntLayersState,
   }
   
-  
-  // * interaction layer
-  
-  type IntLayersState = Writable$<{
-    disabled: boolean
-    loading: boolean
-    cmpInteraction: Interaction
-  }>
-  
+  type Disabled = Maybe<boolean>
   type Interaction = {
     focus?: boolean
     hover?: boolean
   }
-  
-  
+  type Loading = Maybe<boolean>
+    
   type Modifier = 
     | "default"
     | "menu-item"
@@ -28,6 +20,17 @@
     | "ordinary"
   
   type Popover = typeof import("$lib/popover")
+  
+  
+  // * interaction layer
+  
+  type IntLayersState = {
+    disabled: Disabled
+    loading: Loading
+    cmpInteraction: Interaction
+  }
+  type $IntLayersState = Writable$<IntLayersState>
+  
   
 </script>
 
@@ -59,7 +62,7 @@
   /**
    * don't use this 1 for loadings
    */
-  export let disabled = <Maybe<boolean>>null
+  export let disabled = <Disabled>null
   
   // Call To Action: bg and/or color 'accent' instead of 'primary'
   // let cta
@@ -86,7 +89,7 @@
     unlike :disabled, removes only a part of the interaction
     (I wanted this)
    */
-  export let loading = <Maybe<boolean>>null
+  export let loading = <Loading>null
   
   
   export let modifier = <Maybe<Modifier>>"default"
@@ -102,12 +105,13 @@
   let intLayers_importPath = <Maybe<string>>null
   let cmpInteraction: Interaction = {}
   
-  const intLayers_state = writable$({
+  const intLayers_state: IntLayersState = {
     disabled,
     loading,
     cmpInteraction,
-  })
-  setContext("state", intLayers_state)
+  }
+  const intLayers_state$: $IntLayersState = writable$(intLayers_state)
+  setContext("state", intLayers_state$)
   
   // * theme
   let theme = <Maybe<Theme>>null
@@ -125,7 +129,7 @@
     setModifier2()
   }
   $: {
-    intLayers_state.set({
+    intLayers_state$.set({
       disabled, 
       loading, 
       cmpInteraction,

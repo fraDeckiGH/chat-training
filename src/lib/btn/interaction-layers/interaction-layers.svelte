@@ -1,11 +1,11 @@
 
 <script lang=ts>
-  import type { IntLayersState } from "$lib/btn/btn.svelte";
+  import type { $IntLayersState } from "$lib/btn/btn.svelte";
   import { getContext } from "svelte";
   // import { fade } from 'svelte/transition';
   
   
-  const state: IntLayersState = getContext("state")
+  const state: $IntLayersState = getContext("state")
   let {
     disabled,
     loading,
