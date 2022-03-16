@@ -1,21 +1,4 @@
 
-<script lang="ts" context=module>
-  export type {
-    Item as MenuItem,
-  }
-  
-  type Item = {
-    // icon: 
-    id: string
-    lbl: string
-    
-    /**
-     * when a redirect is desired
-     */
-    link?: string
-  }
-  
-</script>
 <script lang="ts">
   /*
     todo
@@ -29,8 +12,10 @@
     here? shouldn't I keep things simple?
     --
   */
-  import Btn from "$lib/btn/btn.svelte";
+  // import Btn from "$lib/btn/btn.svelte";
+  // import Item from "$lib/menu-item/menu-item.svelte"
   import type Cmp from "$lib/menu/menu.svelte"
+  import MenuItem from "$lib/menu-item/menu-item.svelte";
   import type { 
     PopoverCtrls_val, 
   } from "$lib/popover";
@@ -39,10 +24,14 @@
   import { onDestroy } from "svelte";
   import type { Unsubscriber } from "svelte/store"
   
+  /**
+    the component to render for each item in the list
+   */
+  export let itemCmp = <unknown>MenuItem
   
   // (pass only 1 of these)
   // non-reactive
-  export let items = <Item[]>[]
+  export let items = <unknown[]>[]
   // store
   export let items$ = < Maybe<Writable$<typeof items>> >null
   const unsub_items$: Maybe<Unsubscriber> = 
@@ -55,7 +44,7 @@
   // BUG svelte "$popoverCtrl.prop not possible on type never"
   // export let popoverCtrl: Maybe< PopoverCtrls_val<Cmp> > = null
   
-  let selectedItem: Item | undefined
+  let selectedItem: unknown | undefined
   
   
   // * lifecycle
@@ -75,7 +64,7 @@
     return selectedItem
   }
   
-  function selectItem(item: Item) {
+  function selectItem(item: unknown) {
     // console.log(`selectItem() `, item)
     selectedItem = item
     
@@ -96,7 +85,7 @@
    * also tried w/out export by making this func trigger from here
    */
   export function alterMenuItems() {
-    items.push(<Item>{
+    items.push(<unknown>{
       lbl: "4444",
     })
     items = items
@@ -120,13 +109,11 @@
         <li 
           class="li"
         >
-          <Btn 
-            link={item.link}
-            modifier="menu-item"
+          <svelte:component 
+            this={itemCmp} 
+            {...item}
             on:click={() => selectItem(item)}
-          >
-            {item.lbl}
-          </Btn>
+          />
         </li>
       {/each}
     

@@ -32,7 +32,7 @@
   to do it
 -->
 {#if 
-  // when :disabled, the el loses :focus
+  // when :disabled, the el loses :focus (this is how <button> behaves)
   disabled || 
   
   (loading && !cmpInteraction.focus) || 

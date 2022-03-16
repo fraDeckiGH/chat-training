@@ -1,6 +1,10 @@
 
 <script lang="ts" context=module>
   export type {
+    Disabled,
+    Link,
+    // Loading,
+    
     // Item as MenuItem,
     $IntLayersState,
   }
@@ -10,12 +14,14 @@
     focus?: boolean
     hover?: boolean
   }
+  type Link = Maybe<string>
   type Loading = Maybe<boolean>
     
   type Modifier = 
     | "default"
     | "menu-item"
   type Modifier2 = 
+    | ""
     | "highlighted"
     | "ordinary"
   
@@ -82,7 +88,7 @@
   /**
    * purpose navigation? pass the link
    */
-  export let link = <Maybe<string>>null
+  export let link = <Link>null
   
   /**
     is the cmp in a loading state?
@@ -91,10 +97,8 @@
    */
   export let loading = <Loading>null
   
-  
   export let modifier = <Maybe<Modifier>>"default"
   export let modifier2 = <Maybe<Modifier2>>null
-  
   
   export let popoverArgs = < Maybe<PopoverArgs<any>> >null
   // svelte warns: "prop not passed" (when cmp is created in HTML)
@@ -105,13 +109,19 @@
   let intLayers_importPath = <Maybe<string>>null
   let cmpInteraction: Interaction = {}
   
-  const intLayers_state: IntLayersState = {
+  const intLayers_state: $IntLayersState = writable$({
     disabled,
     loading,
     cmpInteraction,
+  })
+  setContext("state", intLayers_state)
+  
+  // * 
+  let state = {
+    disabled,
+    loading,
+    ...cmpInteraction,
   }
-  const intLayers_state$: $IntLayersState = writable$(intLayers_state)
-  setContext("state", intLayers_state$)
   
   // * theme
   let theme = <Maybe<Theme>>null
@@ -122,18 +132,41 @@
   // * reactives
   
   $: {
-    disabled = attr.disabled
+    /*
+      val ?? true
+      check is passed if 'val' === (null || undefined)
+      doesn't pass if it is 1 of the other falsies
+      
+      val ?? false
+      'val' === (null || undefined) ? else : then
+    */
+    // both works
+    // if (attr.disabled ?? false) {
+    if (typeof attr.disabled === "boolean") { // more explicit
+      // ? attr.disabled is a boolean
+      disabled = attr.disabled
+    }
   }
+  
   $: {
-    modifier2;
-    setModifier2()
-  }
-  $: {
-    intLayers_state$.set({
+    intLayers_state.set({
       disabled, 
       loading, 
       cmpInteraction,
     })
+  }
+  
+  $: {
+    modifier2;
+    setModifier2()
+  }
+  
+  $: {
+    state = {
+      disabled, 
+      loading, 
+      ...cmpInteraction,
+    }
   }
   
   
@@ -148,18 +181,20 @@
 		// console.log(`onMount `, )
     theme = (await import("$lib/theme/theme")).theme
     
-    unsub_currentTheme = 
-      theme!.current$.subscribe((value) => {
-        let path = `interaction-layers/modifier/${modifier}`
-        
-        if (modifier2) {
-          path += `/modifier2/${modifier2}`
-        }
-        
-        path += `/${value}`
-        intLayers_importPath = path
-      })
-    ;
+    if (modifier === "default") {
+      unsub_currentTheme = 
+        theme!.current$.subscribe((value) => {
+          let path = `interaction-layers/modifier/${modifier}`
+          
+          if (modifier2) {
+            path += `/modifier2/${modifier2}`
+          }
+          
+          path += `/${value}`
+          intLayers_importPath = path
+        })
+      ;
+    }
     
 	})
   
@@ -233,9 +268,7 @@
         break;
       
       case "menu-item":
-        if (highlighted) {
-          res = null
-        }
+        res = ""
         break;
       
       default:
@@ -273,7 +306,6 @@
     -->
     <button 
       class="btn btn--{modifier} {modifier2}"
-      class:is-loading={loading}
       class:w-link={link}
       {disabled}
       on:click|trusted
@@ -293,13 +325,15 @@
         html
         text
       -->
-      
-      <span 
+      <!-- <span 
         class="slot"
         class:slot--focus-outside={cmpInteraction.focus}
       >
         <slot></slot>
-      </span>
+      </span> -->
+      <slot 
+        {state}
+      ></slot>
       
       
       {#if link 

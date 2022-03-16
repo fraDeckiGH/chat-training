@@ -12,7 +12,6 @@
   // this component's instance
   export let component: Component
   
-  
   // * component creation/destruction
   
   // governs component's DOM

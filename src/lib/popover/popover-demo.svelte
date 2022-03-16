@@ -8,7 +8,7 @@
   import Btn from "$lib/btn/btn.svelte"
   
   import Menu from "$lib/menu/menu.svelte"
-  import type { MenuItem } from "$lib/menu"
+  import type { MenuItemProps } from "$lib/menu-item/menu-item.svelte";
   
   import { 
     popoverCtrls, 
@@ -23,8 +23,7 @@
   // const ctrlId = "randId"
   const ctrlId = Symbol()
   
-  // let items: MenuItem[] = (<MenuItem[]>[
-  const items: Writable$<MenuItem[]> = writable$(<MenuItem[]>[
+  const itemsArray: MenuItemProps[] = <any>[
     // ? coercion is for tests
     {
       lbl: "BBB irejgre gjiregijrei jg",
@@ -34,10 +33,12 @@
       link: "4354543534543543543",
     },
     {
+      disabled: true,
       lbl: "ccc",
     },
     
-  ])
+  ]
+  const items = writable$(itemsArray)
   
   
   // may also be a simple literal in the HTML
@@ -46,6 +47,8 @@
     
     // cmpProps: {},
     cmpProps: {
+      // itemCmp: MenuItem2,
+      
       // items,
       items$: items,
       
@@ -101,7 +104,7 @@
     
     // 1
     
-    // items.push(<MenuItem>{
+    // items.push(<MenuItemProps>{
     //   lbl: "4444",
     // })
     // items = items
@@ -112,7 +115,7 @@
     // 2
     
     items.update((val) => {
-      val.push(<MenuItem>{
+      val.push(<MenuItemProps>{
         lbl: "4444",
       })
       return val
