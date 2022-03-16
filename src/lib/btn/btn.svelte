@@ -29,14 +29,7 @@
   type Popover = typeof import("$lib/popover")
   
   
-  // * interaction, state
-  
-  type BtnState = {
-    disabled: Disabled
-    loading: Loading
-  } & Interaction
-  type BtnState$ = Writable$<BtnState>
-  ;
+  // * interaction
   
   type Interaction = {
     focus?: boolean
@@ -47,6 +40,16 @@
     | "focus"
     | "hover"
     | "no-interaction"
+  ;
+  
+  
+  // * state
+  
+  type BtnState = {
+    disabled: Disabled
+    loading: Loading
+  } & Interaction
+  type BtnState$ = Writable$<BtnState>
   ;
   
   
@@ -130,7 +133,7 @@
   // * interaction
   
   let interaction: Interaction = {}
-  let resultingInteraction: Readable<ResultingInteraction>
+  // let resultingInteraction: Readable<ResultingInteraction>
   
   // * state
   
@@ -151,7 +154,7 @@
   
   // * assignments (mainly for un-hoisted vars)
   
-  resultingInteraction = derived(
+  const resultingInteraction = derived(
     state, 
     (val) => calcResultingInteraction(val)
   )
@@ -403,6 +406,7 @@
         text
       -->
       <slot 
+        resultingInteraction={$resultingInteraction}
         state={$state}
       ></slot>
       

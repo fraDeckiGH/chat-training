@@ -43,14 +43,13 @@
   {disabled}
   {link}
   modifier="menu-item"
+  let:resultingInteraction
   let:state
   on:click
 >
   <div 
-    class="slot"
+    class="slot slot--{resultingInteraction}"
     class:disabled={state.disabled}
-    class:focus={state.focus}
-    class:hover={state.hover}
   >
     <!-- <slot></slot> -->
     {lbl}
@@ -69,10 +68,7 @@
     border-radius: var(--border-radius);
     padding: .4em .7em;
     
-    &.disabled {
-      opacity: 50%;
-    }
-    &.focus {
+    &--focus {
       
       :global html.theme-dark & {
         color: var(--plt-1);
@@ -86,7 +82,7 @@
       }
       
     }
-    &.hover {
+    &--hover {
       
       :global(html.theme-dark) & {
         // background-color: color.scale(
@@ -101,6 +97,12 @@
         background-color: hsl(var(--plt-cover-hsl) / .05);
       }
       
+    }
+    // &--no-interaction {}
+    
+    
+    &.disabled {
+      opacity: 50%;
     }
     
   }

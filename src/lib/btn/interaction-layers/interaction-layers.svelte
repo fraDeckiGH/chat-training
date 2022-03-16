@@ -1,29 +1,9 @@
 
 <script lang=ts>
-  import { btnCtxKey,/*  stateKey, */ } from "$lib/btn/btn.svelte";
+  import { btnCtxKey, } from "$lib/btn/btn.svelte";
   import type { ResultingInteraction, } from "$lib/btn/btn.svelte";
-  // import type { BtnState$ } from "$lib/btn/btn.svelte";
-  // import type { Maybe } from "$lib/type/util";
   import { getContext } from "svelte";
-  // import { derived, Readable } from 'svelte/store';
   import type { Readable } from 'svelte/store';
-  // import { fade } from 'svelte/transition';
-  
-  
-  // let resultingInteraction: ResultingInteraction
-  // let resultingInteraction$: Readable<ResultingInteraction>
-  // const state: BtnState$ = getContext(stateKey)
-  
-  
-  // $: {
-  //   resultingInteraction = calcResultingInteraction($state)
-  // }
-  
-  
-  // resultingInteraction$ = derived(
-  //   state, 
-  //   (val) => calcResultingInteraction(val)
-  // )
   
   
   const resultingInteraction: Readable<ResultingInteraction> = 

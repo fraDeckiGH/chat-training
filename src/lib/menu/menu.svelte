@@ -12,8 +12,6 @@
     here? shouldn't I keep things simple?
     --
   */
-  // import Btn from "$lib/btn/btn.svelte";
-  // import Item from "$lib/menu-item/menu-item.svelte"
   import type Cmp from "$lib/menu/menu.svelte"
   import MenuItem from "$lib/menu-item/menu-item.svelte";
   import type { 
@@ -23,6 +21,7 @@
   import type { Maybe } from "$lib/type/util";
   import { onDestroy } from "svelte";
   import type { Unsubscriber } from "svelte/store"
+  
   
   /**
     the component to render for each item in the list
