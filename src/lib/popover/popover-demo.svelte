@@ -23,7 +23,7 @@
   // const ctrlId = "randId"
   const ctrlId = Symbol()
   
-  const itemsArray: MenuItemProps[] = <any>[
+  const itemsVal: MenuItemProps[] = <any>[
     // ? coercion is for tests
     {
       lbl: "BBB irejgre gjiregijrei jg",
@@ -38,7 +38,7 @@
     },
     
   ]
-  const items = writable$(itemsArray)
+  const items = writable$(itemsVal)
   
   
   // may also be a simple literal in the HTML

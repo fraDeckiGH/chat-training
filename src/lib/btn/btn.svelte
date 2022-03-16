@@ -1,19 +1,20 @@
 
 <script lang="ts" context=module>
+  
+  export {
+    ctxKey as btnCtxKey,
+  }
   export type {
+    BtnState$,
     Disabled,
     Link,
     // Loading,
+    ResultingInteraction,
     
-    // Item as MenuItem,
-    $IntLayersState,
   }
   
+  
   type Disabled = Maybe<boolean>
-  type Interaction = {
-    focus?: boolean
-    hover?: boolean
-  }
   type Link = Maybe<string>
   type Loading = Maybe<boolean>
     
@@ -28,14 +29,33 @@
   type Popover = typeof import("$lib/popover")
   
   
-  // * interaction layer
+  // * interaction, state
   
-  type IntLayersState = {
+  type BtnState = {
     disabled: Disabled
     loading: Loading
-    cmpInteraction: Interaction
+  } & Interaction
+  type BtnState$ = Writable$<BtnState>
+  ;
+  
+  type Interaction = {
+    focus?: boolean
+    hover?: boolean
   }
-  type $IntLayersState = Writable$<IntLayersState>
+  type ResultingInteraction = 
+    | "resultingInteractionError" // {pinned}
+    | "focus"
+    | "hover"
+    | "no-interaction"
+  ;
+  
+  
+  // * context keys. usage: getContext(<<key>>)
+  
+  const ctxKey = {
+    resultingInteraction: Symbol(),
+    state: Symbol(),
+  }
   
   
 </script>
@@ -47,7 +67,7 @@
   import type { Theme } from "$lib/theme/theme"
   import type { Maybe } from "$lib/type/util"
   import { onDestroy, onMount, setContext } from "svelte"
-  import type { Unsubscriber } from "svelte/store";
+  import { derived, Readable, Unsubscriber } from "svelte/store";
   
   
   /**
@@ -105,28 +125,37 @@
   // export let popoverArgs: PopoverArgs | undefined
   
   
-  // * interaction layer
   let intLayers_importPath = <Maybe<string>>null
-  let cmpInteraction: Interaction = {}
   
-  const intLayers_state: $IntLayersState = writable$({
+  // * interaction
+  
+  let interaction: Interaction = {}
+  let resultingInteraction: Readable<ResultingInteraction>
+  
+  // * state
+  
+  const stateVal: BtnState = {
     disabled,
     loading,
-    cmpInteraction,
-  })
-  setContext("state", intLayers_state)
-  
-  // * 
-  let state = {
-    disabled,
-    loading,
-    ...cmpInteraction,
+    ...interaction,
   }
+  const state: BtnState$ = writable$(stateVal)
+  // setContext(stateKey, state)
   
   // * theme
+  
   let theme = <Maybe<Theme>>null
   let unsub_currentTheme = <Maybe<Unsubscriber>>null
   ;
+  
+  
+  // * assignments (mainly for un-hoisted vars)
+  
+  resultingInteraction = derived(
+    state, 
+    (val) => calcResultingInteraction(val)
+  )
+  setContext(ctxKey.resultingInteraction, resultingInteraction)
   
   
   // * reactives
@@ -149,24 +178,16 @@
   }
   
   $: {
-    intLayers_state.set({
+    state.set({
       disabled, 
       loading, 
-      cmpInteraction,
+      ...interaction,
     })
   }
   
   $: {
     modifier2;
     setModifier2()
-  }
-  
-  $: {
-    state = {
-      disabled, 
-      loading, 
-      ...cmpInteraction,
-    }
   }
   
   
@@ -229,31 +250,87 @@
     
     htmlEl.onfocus = (ev) => {
       // console.log(`onfocus`, ev)
-      cmpInteraction.focus = true
+      interaction.focus = true
     }
     htmlEl.onblur = (ev) => {
       // console.log(`onblur`, ev)
-      cmpInteraction.focus = false
+      interaction.focus = false
     }
     
     htmlEl.onpointerenter = (ev) => {
       // console.log(`onpointerenter`, ev)
-      cmpInteraction.hover = true
+      interaction.hover = true
     }
     htmlEl.onpointerleave = (ev) => {
       // console.log(`onpointerleave`, ev)
-      cmpInteraction.hover = false
+      interaction.hover = false
     }
     
     return {
 			destroy() {
         // console.log(`destroy()`, )
-        cmpInteraction = {}
+        interaction = {}
 			},
       // update(updatedArgs: typeof args) {
       //   console.log(`handleInteraction update`, )
       // }
 		};
+  }
+  
+  function calcResultingInteraction(state: BtnState) {
+    const {
+      disabled,
+      focus,
+      loading,
+      hover,
+    } = state
+    
+    let res: ResultingInteraction = "resultingInteractionError"
+    
+    
+    // * utils
+    /* ? in case I need to do a check like 
+      
+      // every val of the obj is...
+      (Object.values(objToCheck)).every(val => !val))
+    */
+    
+    const interaction = {
+      focus,
+      hover,
+    }
+    /* const sideEffect = {
+      disabled,
+      loading,
+      // selected,
+    } */
+    
+    
+    // * calc
+    
+    if (
+      // when :disabled, the el loses :focus; this is how <button> behaves
+      disabled || 
+      
+      (loading && !focus) || 
+      
+      // every val of the obj is...
+      (Object.values(interaction)).every(val => !val)
+    ) {
+      res = "no-interaction"
+    }
+    if (focus) {
+      res = "focus"
+    }
+    if (hover 
+      && !disabled
+      && !loading
+    ) {
+      res = "hover"
+    }
+    
+    
+    return res
   }
   
   function setModifier2() {
@@ -325,14 +402,8 @@
         html
         text
       -->
-      <!-- <span 
-        class="slot"
-        class:slot--focus-outside={cmpInteraction.focus}
-      >
-        <slot></slot>
-      </span> -->
       <slot 
-        {state}
+        state={$state}
       ></slot>
       
       
