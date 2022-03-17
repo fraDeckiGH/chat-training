@@ -151,12 +151,13 @@
       overflow-y: auto;
     }
     
-    .list-items {
-      // max-width: 500ch; // test
-      // max-width: 40ch; // best choice is w/out
+    // .list-items {
+    //   // best choice seems w/out
+    //   // max-width: 500ch; // test
+    //   // max-width: 40ch;
       
-      .li {}
-    }
+    //   .li {}
+    // }
     
     :global(html.theme-dark) & {
       $bg: color.scale(

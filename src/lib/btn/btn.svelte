@@ -70,7 +70,7 @@
   import type { Theme } from "$lib/theme/theme"
   import type { Maybe } from "$lib/type/util"
   import { onDestroy, onMount, setContext } from "svelte"
-  import { derived, Readable, Unsubscriber } from "svelte/store";
+  import { derived, Unsubscriber } from "svelte/store";
   
   
   /**
@@ -142,8 +142,8 @@
     loading,
     ...interaction,
   }
-  const state: BtnState$ = writable$(stateVal)
-  // setContext(stateKey, state)
+  const state = writable$(stateVal)
+  // setContext(ctxKey.state, state)
   
   // * theme
   

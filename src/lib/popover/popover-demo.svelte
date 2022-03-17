@@ -11,11 +11,12 @@
   import type { MenuItemProps } from "$lib/menu-item/menu-item.svelte";
   
   import { 
+    popoverChanges,
     popoverCtrls, 
   } from "$lib/popover"
   import type { PopoverArgs, PopoverCtrls_val } from "$lib/popover"
   
-  import { changes, Writable$, writable$ } from "$lib/store"
+  import { writable$ } from "$lib/store"
   import type { Maybe } from "$lib/type/util"
   
   
@@ -85,8 +86,9 @@
   $: console.log(`$items `, $items)
   
   $: {
-    $changes;
+    $popoverChanges;
     popoverCtrl = popoverCtrls[ctrlId]
+    console.log(`popoverCtrl`, popoverCtrl)
   }
   $: {
     console.log(

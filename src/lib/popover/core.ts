@@ -19,7 +19,7 @@ import type {
   
 } from "./type"
 import { stackingContext } from "$lib/misc"
-import { changes, writable$ } from "$lib/store"
+import { writable$ } from "$lib/store"
 import type { Maybe } from "$lib/type/util"
 
 import maxSize from 'popper-max-size-modifier'
@@ -38,8 +38,9 @@ import 'tippy.js/dist/tippy.css'
 
 
 export {
-  controllers as popoverCtrls,
   popover,
+  changes as popoverChanges,
+  controllers as popoverCtrls,
 }
 
 
@@ -77,8 +78,25 @@ const applyMaxSize = {
   }
 }
 
-const controllers: Controllers<any> = {}
+/**
+  help syncing changes
+  
+  NOTE bad use of reactivity
+  use this helper scarcely as every emit triggers on ALL
+  all possible receivers
+  
+  --
+  usage
+  
+  emit sender (eg. $lib/popover/core)
+    changes.sync()
+  
+  receiver (eg. $lib/popover/popover-demo)
+    $changes
+*/
+const changes = writable$()
 
+const controllers: Controllers<any> = {}
 
 
 /**
