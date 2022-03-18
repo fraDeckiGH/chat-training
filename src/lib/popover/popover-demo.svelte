@@ -27,18 +27,15 @@
   const items_val: ListItemProps[] = [
     // ? coercion is for tests
     {
-      // id: "1",
       id: Symbol(),
       lbl: "BBB irejgre gjiregijrei jg",
     },
     {
-      // id: "2",
       id: Symbol(),
       lbl: "Item theItem",
       link: "4354543534543543543",
     },
     {
-      // id: "3",
       id: Symbol(),
       disabled: true,
       lbl: "ccc",
@@ -98,8 +95,7 @@
   $: {
     console.log(
       `selected item`, 
-      // $popoverCtrl?.cmp.getSelectedItem()
-      
+      $popoverCtrl?.cmp.getSelectedItem()
     )
   }
   

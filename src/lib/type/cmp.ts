@@ -9,7 +9,7 @@ export type {
 
 type ItemCommonProps = {
   // id: PropertyKey
-  id: symbol
+  id: string | symbol
 }
 
 

@@ -175,16 +175,16 @@
   }
   
   $: {
+    modifier2;
+    setModifier2()
+  }
+  
+  $: {
     state.set({
       disabled, 
       loading, 
       ...interaction,
     })
-  }
-  
-  $: {
-    modifier2;
-    setModifier2()
   }
   
   
