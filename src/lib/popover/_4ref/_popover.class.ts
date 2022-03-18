@@ -22,9 +22,9 @@ import './_popover.scss'
 
 import maxSize from 'popper-max-size-modifier';
 
-import type { /* SvelteComponent,  */SvelteComponentTyped } from 'svelte'
-import type Menu from "$lib/menu/menu.svelte"
-import type Menu1 from "$lib/menu/_4ref/menu-1.test.svelte"
+// import type { SvelteComponent, SvelteComponentTyped } from 'svelte'
+// import type Menu from "$lib/list/list.svelte"
+// import type Menu1 from "$lib/menu/_4ref/menu-1.test.svelte"
 
 
 export {

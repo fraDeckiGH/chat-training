@@ -1,7 +1,7 @@
 
 <script lang=ts context=module>
   export type {
-    Props as MenuItemProps,
+    Props as ListItemProps,
   }
   
   type Props = 
@@ -134,8 +134,7 @@
       :global(html.theme-light) & {
         background-color: color.scale(
           // map.get(plt.$light, "1"),
-          // map.get(plt.$light, "1--lessHue"),
-          map.get(plt.$light, "accent"),
+          map.get(plt.$light, "1--lessHue"),
           $alpha: -90%,
         );
         

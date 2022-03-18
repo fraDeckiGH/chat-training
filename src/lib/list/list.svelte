@@ -12,8 +12,8 @@
     here? shouldn't I keep things simple?
     --
   */
-  import type Cmp from "$lib/menu/menu.svelte"
-  import MenuItem from "$lib/menu-item/menu-item.svelte";
+  import type Cmp from "$lib/list/list.svelte"
+  import ListItem from "$lib/list-item/list-item.svelte";
   import type { 
     PopoverCtrls_val, 
   } from "$lib/popover";
@@ -27,7 +27,7 @@
   /**
     the component to render for each item in the list
    */
-  export let itemCmp = <unknown>MenuItem
+  export let itemCmp = <unknown>ListItem
   
   // (pass only 1 of these)
   // non-reactive

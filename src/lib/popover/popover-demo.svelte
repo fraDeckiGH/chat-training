@@ -3,12 +3,12 @@
   /* 
     dependencies
     Btn ($lib/btn)
-    Menu ($lib/menu)
+    List ($lib/menu)
   */
   import Btn from "$lib/btn/btn.svelte"
   
-  import Menu from "$lib/menu/menu.svelte"
-  import type { MenuItemProps } from "$lib/menu-item/menu-item.svelte";
+  import List from "$lib/list/list.svelte"
+  import type { ListItemProps } from "$lib/list-item/list-item.svelte";
   
   import { 
     popoverChanges,
@@ -24,7 +24,7 @@
   // const ctrlId = "randId"
   const ctrlId = Symbol()
   
-  const items_val: MenuItemProps[] = [
+  const items_val: ListItemProps[] = [
     // ? coercion is for tests
     {
       // id: "1",
@@ -49,8 +49,8 @@
   
   
   // may also be a simple literal in the HTML
-  const popoverArgs: PopoverArgs<Menu> = {
-    cmp: Menu,
+  const popoverArgs: PopoverArgs<List> = {
+    cmp: List,
     
     // cmpProps: {},
     cmpProps: {
@@ -84,7 +84,7 @@
     
   }
   
-  let popoverCtrl: Maybe< PopoverCtrls_val<Menu> >
+  let popoverCtrl: Maybe< PopoverCtrls_val<List> >
   let showReferenceElem = true
   
   
@@ -112,7 +112,7 @@
     
     // 1
     
-    // items.push(<MenuItemProps>{
+    // items.push(<ListItemProps>{
     //   lbl: "4444",
     // })
     // items = items
@@ -123,7 +123,7 @@
     // 2
     
     items.update((val) => {
-      val.push(<MenuItemProps>{
+      val.push(<ListItemProps>{
         lbl: "4444",
       })
       return val
@@ -195,9 +195,9 @@
 -->
 
 <!-- simple usage -->
-<!-- <Menu
+<!-- <List
   items$={items}
-></Menu> -->
+></List> -->
 
 <Btn
   btnEl={showReferenceElem}
