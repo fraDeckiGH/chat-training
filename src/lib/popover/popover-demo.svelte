@@ -24,22 +24,28 @@
   // const ctrlId = "randId"
   const ctrlId = Symbol()
   
-  const itemsVal: MenuItemProps[] = <any>[
+  const items_val: MenuItemProps[] = [
     // ? coercion is for tests
     {
+      // id: "1",
+      id: Symbol(),
       lbl: "BBB irejgre gjiregijrei jg",
     },
     {
+      // id: "2",
+      id: Symbol(),
       lbl: "Item theItem",
       link: "4354543534543543543",
     },
     {
+      // id: "3",
+      id: Symbol(),
       disabled: true,
       lbl: "ccc",
     },
     
   ]
-  const items = writable$(itemsVal)
+  const items = writable$(items_val)
   
   
   // may also be a simple literal in the HTML
@@ -88,12 +94,12 @@
   $: {
     $popoverChanges;
     popoverCtrl = popoverCtrls[ctrlId]
-    console.log(`popoverCtrl`, popoverCtrl)
   }
   $: {
     console.log(
       `selected item`, 
-      $popoverCtrl?.cmp.get_selectedItem()
+      // $popoverCtrl?.cmp.getSelectedItem()
+      
     )
   }
   

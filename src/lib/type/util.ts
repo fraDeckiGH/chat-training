@@ -8,7 +8,7 @@
 export type {
   Func,
   Maybe,
-  UnionToIntersection,
+  // UnionToIntersection,
 }
 
 

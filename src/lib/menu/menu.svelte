@@ -18,6 +18,7 @@
     PopoverCtrls_val, 
   } from "$lib/popover";
   import type { Writable$ } from "$lib/store";
+  import type { ItemCommonProps } from "$lib/type/cmp";
   import type { Maybe } from "$lib/type/util";
   import { onDestroy } from "svelte";
   import type { Unsubscriber } from "svelte/store"
@@ -30,7 +31,7 @@
   
   // (pass only 1 of these)
   // non-reactive
-  export let items = <unknown[]>[]
+  export let items = <ItemCommonProps[]>[]
   // store
   export let items$ = < Maybe<Writable$<typeof items>> >null
   const unsub_items$: Maybe<Unsubscriber> = 
@@ -43,7 +44,7 @@
   // BUG svelte "$popoverCtrl.prop not possible on type never"
   // export let popoverCtrl: Maybe< PopoverCtrls_val<Cmp> > = null
   
-  let selectedItem: unknown | undefined
+  export let selectedItem_id = <Maybe<ItemCommonProps["id"]>>null
   
   
   // * lifecycle
@@ -59,20 +60,22 @@
 	}) */
   
   
-  export function get_selectedItem() {
-    return selectedItem
+  export function getSelectedItem() {
+    const i = items.findIndex((el) => el.id === selectedItem_id)
+    if (i > -1) {
+      return items[i]
+    } else {
+      return null
+    }
   }
   
-  function selectItem(item: unknown) {
-    // console.log(`selectItem() `, item)
-    selectedItem = item
+  function selectItem(id: ItemCommonProps["id"]) {
+    selectedItem_id = id
     
     if (popoverCtrl && $popoverCtrl) {
       popoverCtrl.sync()
-      $popoverCtrl.tooltip.hide()
+      // $popoverCtrl.tooltip.hide()
     }
-    
-    return item
 	}
   
   
@@ -84,7 +87,7 @@
    * also tried w/out export by making this func trigger from here
    */
   export function alterMenuItems() {
-    items.push(<unknown>{
+    items.push(<any>{
       lbl: "4444",
     })
     items = items
@@ -104,16 +107,18 @@
   <nav class="scroller">
     <ul class="list-items">
     
-      {#each items as item}
+      {#each items as { id, ...item }}
         <li 
           class="li"
         >
-          <svelte:component 
-            this={itemCmp} 
+          <svelte:component this={itemCmp} 
             {...item}
-            on:click={() => selectItem(item)}
+            selected={id === selectedItem_id}
+            on:click={() => selectItem(id)}
           />
         </li>
+      {:else}
+	      <p>No items!</p>
       {/each}
     
     </ul>

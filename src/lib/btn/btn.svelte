@@ -137,12 +137,12 @@
   
   // * state
   
-  const stateVal: BtnState = {
+  const state_val: BtnState = {
     disabled,
     loading,
     ...interaction,
   }
-  const state = writable$(stateVal)
+  const state = writable$(state_val)
   // setContext(ctxKey.state, state)
   
   // * theme
@@ -223,6 +223,62 @@
 	})
   
   
+  function calcResultingInteraction(state: BtnState) {
+    const {
+      disabled,
+      focus,
+      loading,
+      hover,
+    } = state
+    
+    let res: ResultingInteraction = "resultingInteractionError"
+    
+    
+    // * utils
+    /* ? in case I need to do a check like 
+      
+      // every val of the obj is...
+      (Object.values(objToCheck)).every(val => !val))
+    */
+    
+    const interaction = {
+      focus,
+      hover,
+    }
+    /* const sideEffect = {
+      disabled,
+      loading,
+      selected,
+    } */
+    
+    
+    // * calc
+    
+    if (
+      // when :disabled, the el loses :focus; this is how <button> behaves
+      disabled || 
+      
+      (loading && !focus) || 
+      
+      // every val of the obj is...
+      (Object.values(interaction)).every(val => !val)
+    ) {
+      res = "no-interaction"
+    }
+    if (focus) {
+      res = "focus"
+    }
+    if (hover 
+      && !disabled
+      && !loading
+    ) {
+      res = "hover"
+    }
+    
+    
+    return res
+  }
+  
   /**
    * layers on which some btn styles are applied
    */
@@ -278,62 +334,6 @@
       //   console.log(`handleInteraction update`, )
       // }
 		};
-  }
-  
-  function calcResultingInteraction(state: BtnState) {
-    const {
-      disabled,
-      focus,
-      loading,
-      hover,
-    } = state
-    
-    let res: ResultingInteraction = "resultingInteractionError"
-    
-    
-    // * utils
-    /* ? in case I need to do a check like 
-      
-      // every val of the obj is...
-      (Object.values(objToCheck)).every(val => !val))
-    */
-    
-    const interaction = {
-      focus,
-      hover,
-    }
-    /* const sideEffect = {
-      disabled,
-      loading,
-      // selected,
-    } */
-    
-    
-    // * calc
-    
-    if (
-      // when :disabled, the el loses :focus; this is how <button> behaves
-      disabled || 
-      
-      (loading && !focus) || 
-      
-      // every val of the obj is...
-      (Object.values(interaction)).every(val => !val)
-    ) {
-      res = "no-interaction"
-    }
-    if (focus) {
-      res = "focus"
-    }
-    if (hover 
-      && !disabled
-      && !loading
-    ) {
-      res = "hover"
-    }
-    
-    
-    return res
   }
   
   function setModifier2() {

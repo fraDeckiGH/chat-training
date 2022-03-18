@@ -4,17 +4,21 @@
     Props as MenuItemProps,
   }
   
-  type Props = {
-    disabled?: Disabled
-    // icon: 
-    id: string
-    lbl: string
-    
-    /**
-     * when a redirect is desired
-     */
-    link?: Link
-  }
+  type Props = 
+    & ItemCommonProps
+    & {
+      disabled?: Disabled
+      // icon: unknown
+      
+      lbl: string
+      
+      /**
+      * when a redirect is desired
+      */
+      link?: Link
+      
+    }
+  ;
   
 </script>
 
@@ -22,18 +26,20 @@
   import Btn from "$lib/btn/btn.svelte";
   import type { Disabled, Link, } from "$lib/btn/btn.svelte";
   // import type { MenuItem } from "$lib/menu/menu.svelte";
+  import type { ItemCommonProps, } from "$lib/type/cmp";
   import type { Maybe } from "$lib/type/util";
   
   
   export let disabled = <Disabled>null
   
-  // export let id = <Maybe<string>>null
   export let lbl = <Maybe<string>>null
   
   /**
     when a redirect is desired
   */
   export let link = <Link>null
+  
+  export let selected = <Maybe<boolean>>null
   
   
 </script>
@@ -47,9 +53,15 @@
   let:state
   on:click
 >
+  <!-- state sync
+    I want to use 'disabled' returned from Btn so 
+    there is no discrepancy between Btn being disabled 
+    and its content being not
+  -->
   <div 
     class="slot slot--{resultingInteraction}"
     class:disabled={state.disabled}
+    class:selected={selected}
   >
     <!-- <slot></slot> -->
     {lbl}
@@ -91,10 +103,10 @@
         //   // $lightness: 100%,
         // );
         
-        background-color: hsl(var(--plt-cover-hsl) / .1);
+        background-color: hsl(var(--plt-cover-hsl) / 10%);
       }
       :global(html.theme-light) & {
-        background-color: hsl(var(--plt-cover-hsl) / .05);
+        background-color: hsl(var(--plt-cover-hsl) / 05%);
       }
       
     }
@@ -103,6 +115,9 @@
     
     &.disabled {
       opacity: 50%;
+    }
+    &.selected {
+      background-color: red;
     }
     
   }
