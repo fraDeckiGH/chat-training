@@ -1,7 +1,7 @@
 
 <script lang=ts>
   import { btnCtxKey, } from "$lib/btn/btn.svelte";
-  import type { ResultingInteraction, } from "$lib/btn/btn.svelte";
+  import type { ResultingInteraction, } from "$lib/interaction";
   import { getContext } from "svelte";
   import type { Readable } from 'svelte/store';
   

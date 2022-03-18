@@ -25,6 +25,7 @@
 <script lang="ts">
   import Btn from "$lib/btn/btn.svelte";
   import type { Disabled, Link, } from "$lib/btn/btn.svelte";
+  import { calcResultingInteraction } from "$lib/interaction";
   // import type { MenuItem } from "$lib/menu/menu.svelte";
   import type { ItemCommonProps, } from "$lib/type/cmp";
   import type { Maybe } from "$lib/type/util";
@@ -39,17 +40,21 @@
   */
   export let link = <Link>null
   
+  /**
+    :checked
+  */
   export let selected = <Maybe<boolean>>null
   
   
 </script>
 
 
+<!-- 
+  let:resultingInteraction -->
 <Btn 
   {disabled}
   {link}
   modifier="menu-item"
-  let:resultingInteraction
   let:state
   on:click
 >
@@ -59,7 +64,12 @@
     and its content being not
   -->
   <div 
-    class="slot slot--{resultingInteraction}"
+    class="slot slot--{
+      calcResultingInteraction({
+        ...state,
+        selected,
+      })
+    }"
     class:disabled={state.disabled}
     class:selected={selected}
   >
@@ -117,7 +127,20 @@
       opacity: 50%;
     }
     &.selected {
-      background-color: red;
+      
+      :global(html.theme-dark) & {
+        background-color: hsl(var(--plt-1-hsl) / 10%);
+      }
+      :global(html.theme-light) & {
+        background-color: color.scale(
+          // map.get(plt.$light, "1"),
+          // map.get(plt.$light, "1--lessHue"),
+          map.get(plt.$light, "accent"),
+          $alpha: -90%,
+        );
+        
+      }
+      
     }
     
   }

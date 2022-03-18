@@ -9,7 +9,6 @@
     Disabled,
     Link,
     // Loading,
-    ResultingInteraction,
     
   }
   
@@ -35,12 +34,6 @@
     focus?: boolean
     hover?: boolean
   }
-  type ResultingInteraction = 
-    | "resultingInteractionError" // {pinned}
-    | "focus"
-    | "hover"
-    | "no-interaction"
-  ;
   
   
   // * state
@@ -64,6 +57,7 @@
 </script>
 
 <script lang=ts>
+  import { calcResultingInteraction } from "$lib/interaction";
   import type { PopoverArgs } from "$lib/popover"
   import { writable$ } from "$lib/store"
   import type { Writable$ } from "$lib/store"
@@ -222,62 +216,6 @@
     
 	})
   
-  
-  function calcResultingInteraction(state: BtnState) {
-    const {
-      disabled,
-      focus,
-      loading,
-      hover,
-    } = state
-    
-    let res: ResultingInteraction = "resultingInteractionError"
-    
-    
-    // * utils
-    /* ? in case I need to do a check like 
-      
-      // every val of the obj is...
-      (Object.values(objToCheck)).every(val => !val))
-    */
-    
-    const interaction = {
-      focus,
-      hover,
-    }
-    /* const sideEffect = {
-      disabled,
-      loading,
-      selected,
-    } */
-    
-    
-    // * calc
-    
-    if (
-      // when :disabled, the el loses :focus; this is how <button> behaves
-      disabled || 
-      
-      (loading && !focus) || 
-      
-      // every val of the obj is...
-      (Object.values(interaction)).every(val => !val)
-    ) {
-      res = "no-interaction"
-    }
-    if (focus) {
-      res = "focus"
-    }
-    if (hover 
-      && !disabled
-      && !loading
-    ) {
-      res = "hover"
-    }
-    
-    
-    return res
-  }
   
   /**
    * layers on which some btn styles are applied

@@ -74,7 +74,7 @@
     
     if (popoverCtrl && $popoverCtrl) {
       popoverCtrl.sync()
-      // $popoverCtrl.tooltip.hide()
+      $popoverCtrl.tooltip.hide()
     }
 	}
   
