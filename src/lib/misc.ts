@@ -13,9 +13,11 @@ const htmlElems: {
 } = {}
 
 /**
- * zIndexes throughout the app
- * <cmpName>: value
- */
+  zIndexes throughout the app
+  higher number prevails
+  
+  <cmpName>: value
+*/
 const stackingContext: Readonly<{
   [key: string]: number
 }> = {
