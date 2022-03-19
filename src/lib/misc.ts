@@ -12,6 +12,15 @@ const htmlElems: {
   appScrollable?: HTMLElement
 } = {}
 
+/** 
+  dynamic import map
+  <CmpName>: path
+*/
+const importPath = {
+  // List: "$lib/list/list.svelte",
+  // ListItem: "$lib/list-item/list-item.svelte",
+}
+
 /**
   zIndexes throughout the app
   higher number prevails

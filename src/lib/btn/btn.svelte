@@ -333,7 +333,13 @@
     > 
       {#if intLayers_importPath}
         {#await import("./" + intLayers_importPath + ".svelte") then value}
+          <!-- both work -->
+          
           <svelte:component this={value.default} />
+          
+          <!-- {@const LazyCmp = value.default}
+          <LazyCmp /> -->
+          
         {/await}
       {/if}
       

@@ -25,6 +25,7 @@
 <script lang="ts">
   import Btn from "$lib/btn/btn.svelte";
   import type { Disabled, Link, } from "$lib/btn/btn.svelte";
+  // import Icon from "$lib/icon/icon.svelte";
   import { calcResultingInteraction } from "$lib/interaction";
   // import type { MenuItem } from "$lib/menu/menu.svelte";
   import type { ItemCommonProps, } from "$lib/type/cmp";
@@ -33,7 +34,7 @@
   
   export let disabled = <Disabled>null
   
-  export let lbl = <Maybe<string>>null
+  export let lbl: string
   
   /**
     when a redirect is desired

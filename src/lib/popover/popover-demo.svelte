@@ -8,6 +8,8 @@
   import Btn from "$lib/btn/btn.svelte"
   
   import List from "$lib/list/list.svelte"
+  // in case I want to dynamically load popover's content-cmp
+  // import type List from "$lib/list/list.svelte"
   import type { ListItemProps } from "$lib/list-item/list-item.svelte";
   
   import { 
@@ -48,6 +50,8 @@
   // may also be a simple literal in the HTML
   const popoverArgs: PopoverArgs<List> = {
     cmp: List,
+    // ? future: dynamically load popover content
+    // cmp: <any>"List",
     
     // cmpProps: {},
     cmpProps: {

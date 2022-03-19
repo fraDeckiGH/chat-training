@@ -8,7 +8,9 @@
   REPL (corrected 1) https://svelte.dev/repl/ffd2b212ae9e48e4b0279e72c1c7cb21?version=3.17.3
 */
 
+// TODO import dynamically when popover is shown
 import './_core.scss'
+
 import type { 
   Args, 
   Cmp, 
@@ -191,7 +193,26 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     }
     instance.popper.className += "popover tippy-root"
     
+    // ? dynamic content
+    //#region 
+    /*
+      https://atomiks.github.io/tippyjs/v6/ajax/
+      
+      also notice 
+      custom state properties on 'instance'
+      eg instance._isFetching
+    */
+    //#endregion 
+    
+    // instance.setContent("Loading content...")
+    
+    // await was giving problems w/ tippy
+    // import(importPath.List).then(val => {
+    // instance.setContent("")
+    
     cmp = new cmpClass({ 
+    // @ts-ignore
+    // cmp = new val.default({ 
       target: instance.popper.querySelector('.tippy-content')!,
       
       ...cmpOpts,
@@ -205,6 +226,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     })
     
     createController()
+    // }) // END dynamic import :then
   }
   
   
@@ -335,6 +357,8 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     
     ...tooltipOpts
   })
+  
+  // ? move inside tooltip.onCreate() ?
   createController()
   
   

@@ -140,6 +140,7 @@
     // console.log(`toasts length`, toasts.length + 1)
     // console.log(`toastsToAdd.length`, toastsToAdd.length)
     
+    // FIXME this is the only usage of nanoid
     const id = nanoid()
     
     toasts.push({
