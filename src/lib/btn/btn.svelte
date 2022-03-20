@@ -202,7 +202,7 @@
     if (modifier === "default") {
       unsub_currentTheme = 
         theme!.current$.subscribe((value) => {
-          let path = `interaction-layers/modifier/${modifier}`
+          let path = `modifier/${modifier}`
           
           if (modifier2) {
             path += `/modifier2/${modifier2}`
@@ -332,7 +332,7 @@
       use:handleInteraction
     > 
       {#if intLayers_importPath}
-        {#await import("./" + intLayers_importPath + ".svelte") then value}
+        {#await import(`./interaction-layers/${intLayers_importPath}.svelte`) then value}
           <!-- both work -->
           
           <svelte:component this={value.default} />

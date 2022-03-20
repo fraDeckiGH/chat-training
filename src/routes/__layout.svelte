@@ -1,11 +1,20 @@
 
 <script lang=ts>
   import "../app.scss"
+  
+  // * <Icon/> setup -- moved inside the cmp itself
+  //#region 
+  // ? https://github.com/antfu/purge-icons/blob/main/examples/vite/src/main.js
+  // import '@iconify/iconify'
+  // import '@purge-icons/generated'
+  //#endregion 
+  
   import Btn from "$lib/btn/btn.svelte";
   import { htmlElems } from "$lib/misc";
   import type { Theme } from "$lib/theme/theme"
   import ToastHandlerDemo from "$lib/toast-handler/toast-handler-demo.svelte";
   import { onMount } from "svelte"
+  
   
   let theme: Theme | undefined
   
@@ -33,7 +42,7 @@
   // * content wrappers
   
   function scroller(htmlEl: HTMLElement) {
-    htmlElems.appScroller = htmlEl
+    htmlElems.appScroller = htmlEl  
   }
   function scrollable(htmlEl: HTMLElement) {
     htmlElems.appScrollable = htmlEl

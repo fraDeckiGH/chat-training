@@ -2,7 +2,7 @@
 <script lang=ts>
   import type { Auth } from "$lib/auth"
   import Btn from "$lib/btn/btn.svelte";
-import Icon from "$lib/icon/icon.svelte";
+  import Icon from "$lib/icon/icon.svelte";
   import { createModal } from "$lib/modal/modal"
   import PopoverDemo from "$lib/popover/popover-demo.svelte"
   import ToastHandlerDemo from "$lib/toast-handler/toast-handler-demo.svelte";
@@ -147,7 +147,7 @@ import Icon from "$lib/icon/icon.svelte";
         loading={submittingForm}
       >
         <Icon 
-          src="mdi/account-box"
+          src=mdi-light:home
         ></Icon>
         Enter
       </Btn>

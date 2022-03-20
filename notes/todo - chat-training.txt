@@ -1,0 +1,45 @@
+	
+	
+	
+	changed the script
+	"prepare" to "prepare:husky" - is it giving problems? if not remove this line
+	
+	
+	lazy load components (eg. popover's content-cmp)
+	
+	
+	modal
+	finish it
+	
+	
+	--------
+	LAST TIME in this codebase what was I doing?
+	I was writing <Icon/> cmp
+	
+	in detail:
+	trying to find a way to see if the pkg 'purge-icons' 
+	is doing what it's supposed to.
+	Cuz maybe the icons are arriving from iconify's api and not from 
+	an auto-generated bundle produced by purge-icons
+	
+	-------
+	
+	
+	unpluginAutoImport
+	try w/ svelte functions/"APIs"
+	
+	
+	--
+	(keeping track of) recently installed deps:
+	@iconify/iconify
+	-D @iconify/svelte
+	
+	purge-icons 
+	does it work w/ @iconify/svelte ?
+	--
+	
+	
+	
+	
+	
+	
