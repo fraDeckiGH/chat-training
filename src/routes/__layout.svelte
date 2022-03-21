@@ -2,7 +2,7 @@
 <script lang=ts>
   import "../app.scss"
   
-  // * <Icon/> setup -- moved inside the cmp itself
+  // * <Icon/> setup: purge-icons -- moved inside the cmp itself
   //#region 
   // ? https://github.com/antfu/purge-icons/blob/main/examples/vite/src/main.js
   // import '@iconify/iconify'

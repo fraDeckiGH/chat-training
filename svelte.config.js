@@ -2,10 +2,10 @@
 
 // import adapterNode from '@sveltejs/adapter-node'
 import preprocess from 'svelte-preprocess'
-import unpluginAutoImport from 'unplugin-auto-import/vite'
+// import unpluginAutoImport from 'unplugin-auto-import/vite'
 // import resolver_unpluginIcons from 'unplugin-icons/resolver'
 // import unpluginIcons from 'unplugin-icons/vite'
-import purgeIcons from 'vite-plugin-purge-icons'
+// import purgeIcons from 'vite-plugin-purge-icons'
 
 
 // const scss = preprocess
@@ -50,24 +50,18 @@ const config = {
 		vite: {
       plugins: [
 				
-				// unpluginAutoImport({
-				// 	// ? 'auto-imports.d.ts' path
-				// 	// dts: "",
-				// 	imports: [
-				// 		'svelte',
-				// 		'svelte/animate',
-				// 		'svelte/easing',
-				// 		'svelte/motion',
-				// 		'svelte/store',
-				// 		'svelte/transition',
-				// 	],
+				// * <Icon/> setup: purge-icons
+				//#region 
+				// purgeIcons({
+				// 	// ? PurgeIcons options
 					
+				// 	// not in vite example (docs'), but from Google
+				// 	// content: [
+				// 	// 	'./src/**/*.svelte',
+				// 	// 	// './src/**/*.{svelte|ts}',
+				// 	// ],
 				// }),
-				
-				// * <Icon/> setup
-				purgeIcons({
-					// ? PurgeIcons options
-				}),
+				//#endregion 
 				
 				// * <Icon/> setup: unplugin-icons + unplugin-auto-import
 				//#region 

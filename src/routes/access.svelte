@@ -147,7 +147,8 @@
         loading={submittingForm}
       >
         <Icon 
-          src=mdi-light:home
+          inline
+          src=ic:baseline-airplanemode-active
         ></Icon>
         Enter
       </Btn>

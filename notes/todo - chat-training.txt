@@ -33,6 +33,7 @@
 	(keeping track of) recently installed deps:
 	@iconify/iconify
 	-D @iconify/svelte
+	-D @iconify-icons/bi
 	
 	purge-icons 
 	does it work w/ @iconify/svelte ?
