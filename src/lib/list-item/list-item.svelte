@@ -13,7 +13,7 @@
       lbl: string
       
       /**
-      * when a redirect is desired
+        when a redirect is desired
       */
       link?: Link
       

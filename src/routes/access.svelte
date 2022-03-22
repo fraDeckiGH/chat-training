@@ -144,12 +144,14 @@
           type: "submit",
         }}
         highlighted
+        icon={{
+          pos: "start",
+          src: "ic:round-login",
+          // src: "ic:round-app-registration",
+          // src: "ic:round-launch",
+        }}
         loading={submittingForm}
       >
-        <Icon 
-          inline
-          src=ic:baseline-airplanemode-active
-        ></Icon>
         Enter
       </Btn>
       

@@ -154,6 +154,10 @@ function calcResultingInteraction(state: State) {
   } */
   
   if (
+    disabled || 
+    
+    (loading && !focus) || 
+    
     // every val of the obj is...
     (Object.values(interaction)).every(val => !val)
   ) {

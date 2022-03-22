@@ -5,6 +5,7 @@
     ctxKey as btnCtxKey,
   }
   export type {
+    BtnIconProps,
     BtnState$,
     Disabled,
     Link,
@@ -14,6 +15,16 @@
   
   
   type Disabled = Maybe<boolean>
+  
+  type BtnIconProps = 
+    & IconProps
+    & {
+      pos: 
+        | "end"
+        | "start"
+    }
+  ;
+  
   type Link = Maybe<string>
   type Loading = Maybe<boolean>
     
@@ -57,6 +68,8 @@
 </script>
 
 <script lang=ts>
+  import Icon from "./icon.svelte";
+  import type { IconProps } from "$lib/icon/icon.svelte";
   import { calcResultingInteraction } from "$lib/interaction";
   import type { PopoverArgs } from "$lib/popover"
   import { writable$ } from "$lib/store"
@@ -101,6 +114,11 @@
     the default/prioritary one
   */
   export let highlighted = <Maybe<boolean>>null
+  
+  /**
+    an icon which accompanies the rest of the content
+  */
+  export let icon = <Maybe<BtnIconProps>>null
   
   /**
    * purpose navigation? pass the link
@@ -344,15 +362,23 @@
       {/if}
       
       
+      {#if icon?.pos === "start"}
+        <Icon {icon}></Icon>
+      {/if}
+      
       <!-- possible content ideas
         component
         html
         text
       -->
-      <slot 
+      <slot
         resultingInteraction={$resultingInteraction}
         state={$state}
       ></slot>
+      
+      {#if icon?.pos === "end"}
+        <Icon {icon}></Icon>
+      {/if}
       
       
       {#if link 

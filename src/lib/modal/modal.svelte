@@ -228,7 +228,9 @@
     >
       <!-- <div class="modal__content"> -->
     
-        <ProgressCircular></ProgressCircular>
+        <ProgressCircular
+          size=300%
+        ></ProgressCircular>
         
         <div class="text">
           this is a modal
