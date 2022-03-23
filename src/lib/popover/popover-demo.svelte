@@ -75,6 +75,8 @@
     // content: "my tip is...",
     ctrlId,
     
+    pos: "bottom-start",
+    
     // tooltipOpts: {},
     tooltipOpts: {
       // hideOnClick: false,
@@ -201,7 +203,7 @@
 
 <Btn
   btnEl={showReferenceElem}
-  {popoverArgs}
+  popover={popoverArgs}
 >
   menu
 </Btn>

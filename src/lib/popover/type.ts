@@ -11,7 +11,10 @@ import type {
 import type { 
   Content as TooltipContent,
   Instance as TooltipInstance, 
+  
   Props as TooltipProps,
+  Placement as PlacementTooltipProp,
+  
 } from 'tippy.js'
 
 
@@ -49,9 +52,14 @@ type Args<T> = {
   // ? destructuring makes 'readonly' useless
   readonly ctrlId?: PropertyKey
   
+  /** position / placement */
+  pos: PlacementTooltipProp
+  
   /**
-   * tooltip options
-   */
+    tooltip options
+    these overwrite the ones passed by other means, 
+    eg. 'pos' (which sets the placement)
+  */
   tooltipOpts?: Partial<TooltipProps>
 }
 

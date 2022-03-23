@@ -110,6 +110,7 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     cmpProps = {}, 
     cmpOpts,
     ctrlId,
+    pos: position,
     tooltipOpts = {},
   } = args
   
@@ -282,7 +283,9 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     //   console.log(`onUntrigger`, instance, event)
     // },
     
-    placement: "bottom-start",
+    // ? tbs: now required to the user (as argument)
+    // placement: "bottom-start",
+    placement: position,
     
     popperOptions: {
       modifiers: [

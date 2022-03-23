@@ -5,7 +5,10 @@
 	"prepare" to "prepare:husky" - is it giving problems? if not remove this line
 	
 	
-	lazy load components (eg. popover's content-cmp)
+	lazy load components 
+	list
+	list-item
+	popover's content-cmp
 	
 	
 	modal
@@ -13,12 +16,8 @@
 	
 	
 	popover
-	add a required prop 'pos' 
 	?dynamic loads
 	
-	
-	icon or btn
-	loading
 	
 	
 	

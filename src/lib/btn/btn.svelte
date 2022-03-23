@@ -80,6 +80,14 @@
   import { derived, Unsubscriber } from "svelte/store";
   
   
+  export { 
+    popoverArgs as popover,
+    
+  }
+  
+  
+  // * props
+  
   /**
     <button> attributes
     eg
@@ -135,7 +143,7 @@
   export let modifier = <Maybe<Modifier>>"default"
   export let modifier2 = <Maybe<Modifier2>>null
   
-  export let popoverArgs = < Maybe<PopoverArgs<any>> >null
+  /* export  */let popoverArgs = < Maybe<PopoverArgs<any>> >null
   // svelte warns: "prop not passed" (when cmp is created in HTML)
   // export let popoverArgs: PopoverArgs | undefined
   
@@ -316,7 +324,7 @@
   
   // * extra/opt-in features, usually lazy-loaded (on-need basis)
   
-  function popover(htmlEl: HTMLElement, args: Popover) {
+  function initPopover(htmlEl: HTMLElement, args: Popover) {
     if (!args) {
       // console.log(`return: !args`, args)
       return
@@ -422,7 +430,7 @@
         {#await import("$lib/popover") then value}
           <div 
             class="logic-only"
-            use:popover={value}
+            use:initPopover={value}
           ></div>
         {/await}
       {/if}
