@@ -14,6 +14,7 @@
 	
 	popover
 	add a required prop 'pos' 
+	?dynamic loads
 	
 	
 	icon or btn

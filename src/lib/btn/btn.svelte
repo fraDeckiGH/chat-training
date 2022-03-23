@@ -9,7 +9,7 @@
     BtnState$,
     Disabled,
     Link,
-    // Loading,
+    Loading,
     
   }
   
@@ -61,7 +61,7 @@
   
   const ctxKey = {
     resultingInteraction: Symbol(),
-    state: Symbol(),
+    // state: Symbol(),
   }
   
   
@@ -363,7 +363,10 @@
       
       
       {#if icon?.pos === "start"}
-        <Icon {icon}></Icon>
+        <Icon 
+          iconProps={icon}
+          {loading}
+        ></Icon>
       {/if}
       
       <!-- possible content ideas
@@ -377,7 +380,10 @@
       ></slot>
       
       {#if icon?.pos === "end"}
-        <Icon {icon}></Icon>
+        <Icon 
+          iconProps={icon}
+          {loading}
+        ></Icon>
       {/if}
       
       

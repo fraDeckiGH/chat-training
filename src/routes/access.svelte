@@ -2,7 +2,6 @@
 <script lang=ts>
   import type { Auth } from "$lib/auth"
   import Btn from "$lib/btn/btn.svelte";
-  import Icon from "$lib/icon/icon.svelte";
   import { createModal } from "$lib/modal/modal"
   import PopoverDemo from "$lib/popover/popover-demo.svelte"
   import ToastHandlerDemo from "$lib/toast-handler/toast-handler-demo.svelte";

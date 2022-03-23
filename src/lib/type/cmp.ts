@@ -3,6 +3,7 @@
 
 export type {
   ItemCommonProps,
+  Size,
   
 }
 
@@ -12,7 +13,10 @@ type ItemCommonProps = {
   id: string | symbol
 }
 
-
+/**
+  the values accepted by an html attr
+*/
+type Size = number | string
 
 
 

@@ -1,17 +1,47 @@
 
+<script lang="ts" context=module>
+  export type {
+    // Props as ProgressCircularProps,
+  }
+  
+  type Props = {
+    /**
+      when put inside text
+    */
+    inline?: Maybe<boolean>
+    
+    /** sets font-size
+      usage eg. size=120%
+    */
+    size?: Maybe<Size>
+    
+    /** inline styles */
+    style?: Maybe<string>
+    
+  }
+  
+</script>
+
 <script lang=ts>
   // https://github.com/material-components/material-components-web/tree/master/packages/mdc-circular-progress
   
   // import "@material/circular-progress/mdc-circular-progress.scss"
+  import type { Size } from "$lib/type/cmp";
   import type { Maybe } from "$lib/type/util";
   import { MDCCircularProgress } from "@material/circular-progress";
   
-  
   /**
-    sets font-size
+    when put inside text
+  */
+  export let inline = <Maybe<boolean>>null
+  
+  /** sets font-size
     usage eg. size=120%
   */
-  export let size = <Maybe<string>>null
+  export let size = <Maybe<Size>>null
+  
+  /** inline styles */
+  export let style = <Maybe<string>>""
   
   
   let guideline = { 
@@ -25,6 +55,13 @@
     strokeWidth_gapPatch: 2.4,
   }
   let mdcCmp: MDCCircularProgress
+  
+  
+  $: {
+    size;
+    // style;
+    setInlineStyles()
+  }
   
   
   /** 
@@ -101,6 +138,14 @@
     }
   }
   
+  /**
+    adds only for now
+  */
+  function setInlineStyles() {
+    if (size) {
+      style += `font-size: ${size};`
+    }
+  }
   
 </script>
 
@@ -123,10 +168,10 @@
   class="
     mdc-circular-progress 
     mdc-circular-progress--indeterminate
+    {inline ? "d-inlineish" : "d-blockish"}
   "
-  style="
-    font-size: {size};
-  "
+  {style}
+  
   role="progressbar"
   aria-label="Example Progress Bar"
   
@@ -234,38 +279,44 @@
 
 <!-- svelte-ignore css-unused-selector -->
 <style lang="scss">
+  // @use "sass:map";
   
   @use "@material/circular-progress/mdc-circular-progress"; // gives warning
   @use "@material/circular-progress/mixins";
   
-  // @use "sass:map";
-  // @use "../lib/palette" as plt;
-  @use "../lib/util";
+  // @use "src/lib/palette" as plt;
+  @use "src/lib/util";
   
   
   // works outside as well
   // @include mixins.color(var(--plt-1));
   
   .mdc-circular-progress {
+    // #region things tried out (broken)
     // breaks
     // @include mixins.core-styles;
-    
-    // work
-    @include util.trueHeight;
-    // @include util.trueHeight(block);
-    // @include util.trueHeight($display: block);
-    
-    // both work
-    @include mixins.color(var(--plt-1));
-    // @include mixins.color(map.get(plt.$dark, "1"));
     
     // dont work
     // @include mdc-circular-progress-color(red);
     // @include mdc-circular-progress.mdc-circular-progress-color(red);
+    // #endregion
+    
+    // both work
+    @include mixins.color(var(--plt-1));
+    // @include mixins.color(map.get(plt.$dark, "1"));
+    // @include mixins.color("inherit"); // doesn't work
     
     // following in Iconify's footsteps
     height: 1em;
     width: 1em;
+    
+    &.d-blockish {
+      @include util.trueHeight;
+    }
+    &.d-inlineish {
+      // like Iconify does
+      vertical-align: -0.125em;
+    }
   }
   
 </style>
