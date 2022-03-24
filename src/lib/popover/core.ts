@@ -268,10 +268,11 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     //   console.log(`onMount instance`, instance)
     // },
     
-    // onShow(instance) {
-    //   console.log(`onShow instance`, instance)
-    // },
-    onShow: createCmp,
+    onShow(instance) {
+      // console.log(`onShow instance`, instance)
+      createCmp(instance)
+    },
+    // onShow: createCmp,
     
     // onShown(instance) {
     //   console.log(`onShown instance`, instance)
@@ -345,12 +346,12 @@ function popover<T>(htmlEl: HTMLElement, args: Args<T>) {
     // hide only upon clicking the reference, but not outside
     // hideOnClick: 'toggle',
     
-    trigger: "click",
+    // trigger: "click",
     // trigger: 'click mouseenter', // no keyboard "mouse hover"-like behavior
     // trigger: 'click focus mouseenter',
     // trigger: 'click focus pointerenter',
     // trigger: 'click focus focusin mouseenter',
-    // trigger: 'click focusin mouseenter', // * best (not perfect)
+    trigger: 'click focusin mouseenter', // * best (not perfect)
     // trigger: 'focus mouseenter', // * default
     // trigger: 'focus pointerenter',
     // trigger: 'mousedown', // no keyboard (at all)

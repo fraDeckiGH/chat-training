@@ -7,7 +7,7 @@
 	
 	lazy load components 
 	list
-	list-item
+	list-item (maybe start from this one, since it's the most nested one should be easier)
 	popover's content-cmp
 	
 	
