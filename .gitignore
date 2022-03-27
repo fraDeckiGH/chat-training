@@ -68,6 +68,8 @@
 
 # Icon must end with two \r
 Icon
+# fix by fdc
+!src/**/icon/
 
 # Thumbnails
 ._*
