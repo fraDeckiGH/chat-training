@@ -5,18 +5,32 @@
 	"prepare" to "prepare:husky" - is it giving problems? if not remove this line
 	
 	
-	lazy load components 
+	
+	
+	lazy load components (last time I was about to do this 1)
+	-------------
 	list
-	list-item (maybe start from this one, since it's the most nested one should be easier)
+	
+	list-item 
+	(maybe start from this one, since it's the most nested one should be easier)
+	
 	popover's content-cmp
+	
+	------------
+	
 	
 	
 	modal
 	finish it
 	
 	
+	
+	
 	popover
+	
 	?dynamic loads
+	some code for a quick demo of how it'ld behave is in place already
+	search for "? dynamic content" in popover/core.ts
 	
 	
 	
