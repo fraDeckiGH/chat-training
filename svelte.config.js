@@ -1,6 +1,5 @@
 // @ts-check
 
-// import adapterNode from '@sveltejs/adapter-node'
 import preprocess from 'svelte-preprocess'
 // import unpluginAutoImport from 'unplugin-auto-import/vite'
 // import resolver_unpluginIcons from 'unplugin-icons/resolver'
@@ -43,7 +42,7 @@ const config = {
 	kit: {
 		// ssr: false,
 		
-		// hydrate the <div id="svelte"> element in src/app.html
+		// hydrates <el id="svelte"> in src/app.html
 		target: "#svelte",
 		// target: "", // targets document.body
 		
