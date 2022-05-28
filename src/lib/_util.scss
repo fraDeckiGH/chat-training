@@ -19,7 +19,11 @@
  * remove that annoying ~3px space at the bottom of images 
  */
 @mixin trueHeight($display: flex) {
-  @if $display == (flex or block) {
+  @if 
+    $display == block 
+    or 
+    $display == flex 
+  {
     display: $display;
   } @else {
     @error "\

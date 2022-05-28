@@ -8,8 +8,12 @@
 
 
 // * defaults
-/* 
-  main excerpts
+/* main excerpts
+  --
+  import from 'tippy.js/dist/tippy.css'
+  (tippy props)
+  animation: "fade" (default)
+  --
   
   .tippy-box {
     position: relative;
@@ -83,8 +87,10 @@
     // white-space: inherit;
     
     .tippy-content {
-      // overflow-y: auto;
       max-height: inherit;
+      // nice-to-have, in case the content of the tooltip sucks
+      // may confuse during tests tho
+      // overflow-y: auto;
       
       // * resets
       padding: inherit;
