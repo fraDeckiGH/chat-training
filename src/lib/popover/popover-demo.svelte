@@ -79,7 +79,7 @@
     
     // tooltipOpts: {},
     tooltipOpts: {
-      // hideOnClick: false,
+      // hideOnClick: false, // tests
       hideOnClick: 'toggle',
       // placement: "left",
       
